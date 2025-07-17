@@ -39,29 +39,53 @@
   };
 
   async function loadVinoData() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const vinoId = urlParams.get('vino_id');
-    const lang = urlParams.get('lang') || 'en';
+    try {
+      const urlParams = new URLSearchParams(window.location.search);
+      const vinoId = urlParams.get('vino_id');
+      const lang = urlParams.get('lang') || 'en';
 
-    const langSelect = document.getElementById("lang");
-    langSelect.value = lang;
+      const langSelect = document.getElementById("lang");
+      langSelect.value = lang;
+      langSelect.addEventListener("change", () => {
+        window.location.href = `${window.location.pathname}?vino_id=${vinoId}&lang=${langSelect.value}`;
+      });
 
-    langSelect.addEventListener("change", () => {
-      window.location.href = `${window.location.pathname}?vino_id=${vinoId}&lang=${langSelect.value}`;
-    });
+      if (!vinoId) throw new Error("vino_id es obligatorio");
 
-    if (!vinoId) return;
+      const response = await fetch(`https://sommelierlab-api-production.up.railway.app/api/vino-legal/${vinoId}`);
+      const data = await response.json();
 
-    const response = await fetch(`https://sommelierlab-api-production.up.railway.app/api/vino-legal/${vinoId}`);
-    const data = await response.json();
+      // Imagen del vino
+      const imagenUrl = data.imagen?.[0]?.url || "";
+      document.getElementById("vinoImagen").src = imagenUrl;
+      document.getElementById("vinoImagen").alt = data.nombre || "Imagen del vino";
 
-    // CAMPO CORRECTO: imagen (en minúsculas)
-    const imagenUrl = data.imagen?.[0]?.url || "";
+      // Texto del vino
+      document.getElementById("vinoNombre").textContent = data.nombre || "";
+      document.getElementById("ingredientes").textContent = data.ingredientes || "";
+      document.getElementById("nutricion").textContent = `Energy ${data.valor_energetico_kcal || 0} kcal`;
+      document.getElementById("nutricion_ext").textContent = `Fat ${data.grasas_totales || 0}g (saturated ${data.grasas_saturadas || 0}g), Carbs ${data.hidratos || 0}g (sugars ${data.azucares || 0}g), Protein ${data.proteinas || 0}g, Salt ${data.sal || 0}g`;
+      document.getElementById("alergenos").textContent = `Contains: ${data.alergenos || ""}`;
 
-    document.getElementById("vinoImagen").src = imagenUrl;
-    document.getElementById("vinoNombre").textContent = data.nombre || "";
-    document.getElementById("ingredientes").textContent = data.ingredientes || "";
-    document.getElementById("nutricion").textContent = `Energy ${data.valor_energetico_kcal || 0} kcal`;
-    document.getElementById("nutricion_ext").textContent =
-      `Fat ${data.grasas_totales || 0}g (saturated ${data.grasas_saturadas || 0}g), ` +
-      `Carbs ${data.hidratos || 0}g (
+      // Link a QR2 sin añadir parámetros (ya vienen en el campo)
+      document.getElementById("qr2link").href = data.url_qr2 || "#";
+
+      // Traducción
+      const t = translations[lang] || translations.en;
+      document.getElementById("title").textContent = t.title;
+      document.getElementById("subtitle").textContent = t.subtitle;
+      document.getElementById("ingredientsTitle").textContent = t.ingredients;
+      document.getElementById("nutritionTitle").textContent = t.nutrition;
+      document.getElementById("allergensTitle").textContent = t.allergens;
+      document.getElementById("footerMore").textContent = t.more;
+      document.getElementById("qr2link").textContent = t.view;
+
+    } catch (error) {
+      console.error("❌ Error cargando los datos del vino:", error);
+      document.body.innerHTML = "<p style='text-align:center;margin-top:4rem;'>⚠️ Error cargando la información del vino. Por favor, verifica el QR o intenta más tarde.</p>";
+    }
+  }
+
+  loadVinoData();
+</script>
+
