@@ -74,7 +74,6 @@
     }
   </style>
 </head>
-
 <body>
   <div class="language-selector">
     <label for="lang">🌐</label>
@@ -176,7 +175,6 @@
 
       const langSelect = document.getElementById("lang");
       if (langSelect) langSelect.value = lang;
-
       langSelect.addEventListener("change", () => {
         window.location.href = `${window.location.pathname}?vino_id=${vinoId}&lang=${langSelect.value}`;
       });
@@ -185,9 +183,14 @@
 
       const response = await fetch(`https://sommelierlab-api-production.up.railway.app/api/vino-legal/${vinoId}`);
       const data = await response.json();
+      console.log("Datos recibidos:", data);
 
-      // Imagen
-      document.getElementById("vinoImagen").src = data.imagen?.[0]?.url || "";
+      const imgUrl = Array.isArray(data.imagen)
+        ? data.imagen[0]?.url
+        : (typeof data.imagen === 'string' ? data.imagen : "");
+
+      document.getElementById("vinoImagen").src = imgUrl || "";
+      if (!imgUrl) document.getElementById("vinoImagen").style.display = "none";
 
       document.getElementById("vinoNombre").textContent = data.nombre || "";
       document.getElementById("ingredientes").textContent = data.ingredientes || "";
@@ -195,7 +198,6 @@
       document.getElementById("nutricion_ext").textContent = `Fat ${data.grasas || 0}g (saturated ${data.grasas_saturadas || 0}g), Carbs ${data.hidratos || 0}g (sugars ${data.azucares || 0}g), Protein ${data.proteinas || 0}g, Salt ${data.sal || 0}g`;
       document.getElementById("alergenos").textContent = `Contains: ${data.alergenos || ""}`;
 
-      // Iconos y logos
       document.getElementById("icono_embarazo").src = data.icono_embarazo || "";
       document.getElementById("icono_menores").src = data.icono_menores || "";
       document.getElementById("logo_moderation").src = data.logo_moderation || "";
@@ -204,10 +206,9 @@
       document.getElementById("icono_reciclaje").src = data.icono_reciclaje || "";
       document.getElementById("texto_reciclaje").textContent = data.texto_reciclaje || "";
 
-      // Enlace a ficha sensorial QR2 con parámetros
-      document.getElementById("qr2link").href = `${data.url_qr2}?vino_id=${vinoId}&lang=${lang}`;
+      const qr2 = data.url_qr2 ? `${data.url_qr2}?vino_id=${vinoId}&lang=${lang}` : "#";
+      document.getElementById("qr2link").href = qr2;
 
-      // Traducción
       const t = translations[lang] || translations.en;
       document.getElementById("title").textContent = t.title;
       document.getElementById("subtitle").textContent = t.subtitle;
