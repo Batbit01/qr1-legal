@@ -1,77 +1,52 @@
 <script>
   const translations = {
-    es: {
-      title: "ETIQUETA DIGITAL DEL PRODUCTO",
-      subtitle: "Información proporcionada mediante código QR en el envase de la bebida",
-      ingredients: "INGREDIENTES",
-      nutrition: "DECLARACIÓN NUTRICIONAL",
-      allergens: "ALÉRGENOS",
-      more: "¿Quieres saber más sobre este vino?",
-      view: "Ver perfil sensorial →"
-    },
-    en: {
-      title: "DIGITAL PRODUCT LABEL",
-      subtitle: "Information provided via a QR code on the beverage packaging",
-      ingredients: "INGREDIENTS",
-      nutrition: "NUTRITION DECLARATION",
-      allergens: "ALLERGENS",
-      more: "Want to learn more about this wine?",
-      view: "View sensory profile →"
-    },
-    fr: {
-      title: "ÉTIQUETTE NUMÉRIQUE DU PRODUIT",
-      subtitle: "Informations fournies via un code QR sur l'emballage de la boisson",
-      ingredients: "INGRÉDIENTS",
-      nutrition: "DÉCLARATION NUTRITIONNELLE",
-      allergens: "ALLERGÈNES",
-      more: "Vous souhaitez en savoir plus sur ce vin ?",
-      view: "Voir le profil sensoriel →"
-    },
-    de: {
-      title: "DIGITALES PRODUKTETIKETT",
-      subtitle: "Informationen über einen QR-Code auf der Verpackung des Getränks bereitgestellt",
-      ingredients: "ZUTATEN",
-      nutrition: "NÄHRWERTDEKLARATION",
-      allergens: "ALLERGENE",
-      more: "Möchten Sie mehr über diesen Wein erfahren?",
-      view: "Sensorisches Profil ansehen →"
-    }
+    es: { title: "ETIQUETA DIGITAL DEL PRODUCTO", subtitle: "Información proporcionada mediante código QR en el envase de la bebida", ingredients: "INGREDIENTES", nutrition: "DECLARACIÓN NUTRICIONAL", allergens: "ALÉRGENOS", more: "¿Quieres saber más sobre este vino?", view: "Ver perfil sensorial →" },
+    en: { title: "DIGITAL PRODUCT LABEL", subtitle: "Information provided via a QR code on the beverage packaging", ingredients: "INGREDIENTS", nutrition: "NUTRITION DECLARATION", allergens: "ALLERGENS", more: "Want to learn more about this wine?", view: "View sensory profile →" },
+    fr: { title: "ÉTIQUETTE NUMÉRIQUE DU PRODUIT", subtitle: "Informations fournies via un code QR sur l'emballage de la boisson", ingredients: "INGRÉDIENTS", nutrition: "DÉCLARATION NUTRITIONNELLE", allergens: "ALLERGÈNES", more: "Vous souhaitez en savoir plus sur ce vin ?", view: "Voir le profil sensoriel →" },
+    de: { title: "DIGITALES PRODUKTETIKETT", subtitle: "Informationen über einen QR-Code auf der Verpackung des Getränks bereitgestellt", ingredients: "ZUTATEN", nutrition: "NÄHRWERTDEKLARATION", allergens: "ALLERGENE", more: "Möchten Sie mehr über diesen Wein erfahren?", view: "Sensorisches Profil ansehen →" }
   };
 
-  async function loadVinoData() {
-    try {
-      const urlParams = new URLSearchParams(window.location.search);
-      const vinoId = urlParams.get('vino_id');
-      const lang = urlParams.get('lang') || 'en';
+  window.addEventListener("DOMContentLoaded", async function () {
+    const urlParams = new URLSearchParams(window.location.search);
+    const vinoId = urlParams.get('vino_id');
+    const langParam = urlParams.get('lang') || 'en';
+    const langSelect = document.getElementById("lang");
 
-      const langSelect = document.getElementById("lang");
-      langSelect.value = lang;
+    if (langSelect) {
+      langSelect.value = langParam;
       langSelect.addEventListener("change", () => {
         window.location.href = `${window.location.pathname}?vino_id=${vinoId}&lang=${langSelect.value}`;
       });
+    }
 
-      if (!vinoId) throw new Error("vino_id es obligatorio");
+    if (!vinoId) return;
 
+    try {
       const response = await fetch(`https://sommelierlab-api-production.up.railway.app/api/vino-legal/${vinoId}`);
       const data = await response.json();
 
-      // Imagen del vino
-      const imagenUrl = data.imagen?.[0]?.url || "";
-      document.getElementById("vinoImagen").src = imagenUrl;
-      document.getElementById("vinoImagen").alt = data.nombre || "Imagen del vino";
+      document.getElementById("vinoNombre").textContent = data.nombre;
+      document.getElementById("vinoImagen").src = data.Imagen?.[0]?.url || "";
 
-      // Texto del vino
-      document.getElementById("vinoNombre").textContent = data.nombre || "";
-      document.getElementById("ingredientes").textContent = data.ingredientes || "";
-      document.getElementById("nutricion").textContent = `Energy ${data.valor_energetico_kcal || 0} kcal`;
+      document.getElementById("ingredientes").textContent = data.ingredientes;
+      document.getElementById("nutricion").textContent = `Energy ${data.valor_energetico_kcal} kcal (${data.valor_energetico_kj || 0} kJ) per 100 ml`;
       document.getElementById("nutricion_ext").textContent = `Fat ${data.grasas_totales || 0}g (saturated ${data.grasas_saturadas || 0}g), Carbs ${data.hidratos || 0}g (sugars ${data.azucares || 0}g), Protein ${data.proteinas || 0}g, Salt ${data.sal || 0}g`;
-      document.getElementById("alergenos").textContent = `Contains: ${data.alergenos || ""}`;
+      document.getElementById("alergenos").textContent = `Contains: ${data.alergenos}`;
 
-      // Link a QR2 sin añadir parámetros (ya vienen en el campo)
-      document.getElementById("qr2link").href = data.url_qr2 || "#";
+      document.getElementById("icono_embarazo").src = "https://sommelierlab.com/assets/icons/embarazo.png";
+      document.getElementById("icono_menores").src = "https://sommelierlab.com/assets/icons/menores.png";
+      document.getElementById("logo_moderation").src = "https://sommelierlab.com/assets/icons/moderation.png";
+      document.getElementById("texto_moderation").textContent = "Disfruta del vino con moderación";
+      document.getElementById("link_moderation").href = "https://www.wineinmoderation.eu/";
 
-      // Traducción
-      const t = translations[lang] || translations.en;
+      document.getElementById("icono_reciclaje").src = "https://sommelierlab.com/assets/icons/reciclaje.png";
+      document.getElementById("texto_reciclaje").textContent = "Recicla la botella en el contenedor verde";
+
+      const qr2UrlBase = data.url_qr2 || "https://sommelierlab.com";
+      const separator = qr2UrlBase.includes("?") ? "&" : "?";
+      document.getElementById("qr2link").href = `${qr2UrlBase}${separator}vino_id=${vinoId}&lang=${langParam}`;
+
+      const t = translations[langParam] || translations.en;
       document.getElementById("title").textContent = t.title;
       document.getElementById("subtitle").textContent = t.subtitle;
       document.getElementById("ingredientsTitle").textContent = t.ingredients;
@@ -79,13 +54,10 @@
       document.getElementById("allergensTitle").textContent = t.allergens;
       document.getElementById("footerMore").textContent = t.more;
       document.getElementById("qr2link").textContent = t.view;
-
-    } catch (error) {
-      console.error("❌ Error cargando los datos del vino:", error);
-      document.body.innerHTML = "<p style='text-align:center;margin-top:4rem;'>⚠️ Error cargando la información del vino. Por favor, verifica el QR o intenta más tarde.</p>";
+    } catch (err) {
+      console.error("Error al cargar los datos del vino:", err);
     }
-  }
-
-  loadVinoData();
+  });
 </script>
+
 
