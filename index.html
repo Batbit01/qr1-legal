@@ -53,38 +53,119 @@
       color: #007BFF;
       text-decoration: none;
     }
+    .language-selector {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+    }
+    select {
+      padding: 0.3rem;
+      font-size: 0.9rem;
+    }
   </style>
 </head>
 <body>
-  <h1>DIGITAL PRODUCT LABEL</h1>
-  <div class="subtitle">Information provided via a QR code on the beverage packaging</div>
+  <div class="language-selector">
+    <label for="lang">🌐</label>
+    <select id="lang">
+      <option value="es">Español</option>
+      <option value="en">English</option>
+      <option value="fr">Français</option>
+      <option value="de">Deutsch</option>
+    </select>
+  </div>
+
+  <h1 id="title">DIGITAL PRODUCT LABEL</h1>
+  <div class="subtitle" id="subtitle">Information provided via a QR code on the beverage packaging</div>
   <img id="vinoImagen" src="" alt="Imagen del vino">
   <h1 id="vinoNombre">Nombre del vino</h1>
 
   <div class="section">
-    <h2>INGREDIENTS</h2>
+    <h2 id="ingredientsTitle">INGREDIENTS</h2>
     <p id="ingredientes"></p>
   </div>
 
   <div class="section">
-    <h2>NUTRITION DECLARATION</h2>
+    <h2 id="nutritionTitle">NUTRITION DECLARATION</h2>
     <p id="nutricion"></p>
   </div>
 
   <div class="section">
-    <h2>ALLERGENS</h2>
+    <h2 id="allergensTitle">ALLERGENS</h2>
     <p id="alergenos"></p>
   </div>
 
   <div class="footer">
-    <p>Want to learn more about this wine?</p>
+    <p id="footerMore">Want to learn more about this wine?</p>
     <a id="qr2link" href="#" target="_blank">View sensory profile →</a>
   </div>
 
   <script>
+    const translations = {
+      es: {
+        title: "ETIQUETA DIGITAL DEL PRODUCTO",
+        subtitle: "Información proporcionada mediante código QR en el envase de la bebida",
+        ingredients: "INGREDIENTES",
+        nutrition: "DECLARACIÓN NUTRICIONAL",
+        allergens: "ALÉRGENOS",
+        more: "¿Quieres saber más sobre este vino?",
+        view: "Ver perfil sensorial →"
+      },
+      en: {
+        title: "DIGITAL PRODUCT LABEL",
+        subtitle: "Information provided via a QR code on the beverage packaging",
+        ingredients: "INGREDIENTS",
+        nutrition: "NUTRITION DECLARATION",
+        allergens: "ALLERGENS",
+        more: "Want to learn more about this wine?",
+        view: "View sensory profile →"
+      },
+      fr: {
+        title: "ÉTIQUETTE NUMÉRIQUE DU PRODUIT",
+        subtitle: "Informations fournies via un code QR sur l'emballage de la boisson",
+        ingredients: "INGRÉDIENTS",
+        nutrition: "DÉCLARATION NUTRITIONNELLE",
+        allergens: "ALLERGÈNES",
+        more: "Vous souhaitez en savoir plus sur ce vin ?",
+        view: "Voir le profil sensoriel →"
+      },
+      de: {
+        title: "DIGITALES PRODUKTETIKETT",
+        subtitle: "Informationen über einen QR-Code auf der Verpackung des Getränks bereitgestellt",
+        ingredients: "ZUTATEN",
+        nutrition: "NÄHRWERTDEKLARATION",
+        allergens: "ALLERGENE",
+        more: "Möchten Sie mehr über diesen Wein erfahren?",
+        view: "Sensorisches Profil ansehen →"
+      }
+    };
+
+    function setLanguage(lang, data) {
+      const t = translations[lang] || translations.en;
+      document.getElementById("title").textContent = t.title;
+      document.getElementById("subtitle").textContent = t.subtitle;
+      document.getElementById("ingredientsTitle").textContent = t.ingredients;
+      document.getElementById("nutritionTitle").textContent = t.nutrition;
+      document.getElementById("allergensTitle").textContent = t.allergens;
+      document.getElementById("footerMore").textContent = t.more;
+      document.getElementById("qr2link").textContent = t.view;
+    }
+
     async function loadVinoData() {
       const urlParams = new URLSearchParams(window.location.search);
       const vinoId = urlParams.get('vino_id');
+      const langParam = urlParams.get('lang');
+      const langSelect = document.getElementById("lang");
+
+      if (langParam) langSelect.value = langParam;
+      else langSelect.value = navigator.language.slice(0, 2);
+
+      langSelect.addEventListener("change", () => {
+        const newLang = langSelect.value;
+        const newUrl = `${window.location.pathname}?vino_id=${vinoId}&lang=${newLang}`;
+        window.location.href = newUrl;
+      });
+
       if (!vinoId) return;
 
       const response = await fetch(`/api/vino-legal/${vinoId}`);
@@ -95,6 +176,8 @@
       document.getElementById("nutricion").textContent = `Energy ${data.valor_energetico_kcal} kcal (${data.valor_energetico_kj} kJ) per 100 ml`;
       document.getElementById("alergenos").textContent = `Contains: ${data.alergenos}`;
       document.getElementById("qr2link").href = data.url_qr2;
+
+      setLanguage(langSelect.value, data);
     }
 
     loadVinoData();
