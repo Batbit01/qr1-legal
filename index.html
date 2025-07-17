@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -93,18 +92,18 @@
   <h1 id="vinoNombre">Nombre del vino</h1>
 
   <div class="section">
-    <h2 id="ingredientsTitle">INGREDIENTS</h2>
+    <h2 id="ingredientsTitle">INGREDIENTES</h2>
     <p id="ingredientes"></p>
   </div>
 
   <div class="section">
-    <h2 id="nutritionTitle">NUTRITION DECLARATION</h2>
+    <h2 id="nutritionTitle">DECLARACIÓN NUTRICIONAL</h2>
     <p id="nutricion"></p>
     <p id="nutricion_ext"></p>
   </div>
 
   <div class="section">
-    <h2 id="allergensTitle">ALLERGENS</h2>
+    <h2 id="allergensTitle">ALÉRGENOS</h2>
     <p id="alergenos"></p>
   </div>
 
@@ -144,75 +143,4 @@
       en: {
         title: "DIGITAL PRODUCT LABEL",
         subtitle: "Information provided via a QR code on the beverage packaging",
-        ingredients: "INGREDIENTS",
-        nutrition: "NUTRITION DECLARATION",
-        allergens: "ALLERGENS",
-        more: "Want to learn more about this wine?",
-        view: "View sensory profile →"
-      },
-      fr: {
-        title: "ÉTIQUETTE NUMÉRIQUE DU PRODUIT",
-        subtitle: "Informations fournies via un code QR sur l'emballage de la boisson",
-        ingredients: "INGRÉDIENTS",
-        nutrition: "DÉCLARATION NUTRITIONNELLE",
-        allergens: "ALLERGÈNES",
-        more: "Vous souhaitez en savoir plus sur ce vin ?",
-        view: "Voir le profil sensoriel →"
-      },
-      de: {
-        title: "DIGITALES PRODUKTETIKETT",
-        subtitle: "Informationen über einen QR-Code auf der Verpackung des Getränks bereitgestellt",
-        ingredients: "ZUTATEN",
-        nutrition: "NÄHRWERTDEKLARATION",
-        allergens: "ALLERGENE",
-        more: "Möchten Sie mehr über diesen Wein erfahren?",
-        view: "Sensorisches Profil ansehen →"
-      }
-    };
-
-    async function loadVinoData() {
-      const urlParams = new URLSearchParams(window.location.search);
-      const vinoId = urlParams.get('vino_id');
-      const langParam = urlParams.get('lang') || 'en';
-      const langSelect = document.getElementById("lang");
-      langSelect.value = langParam;
-      langSelect.addEventListener("change", () => {
-        window.location.href = `${window.location.pathname}?vino_id=${vinoId}&lang=${langSelect.value}`;
-      });
-
-      if (!vinoId) return;
-      const response = await fetch(`https://sommelierlab-api-production.up.railway.app/api/vino-legal/${vinoId}`);
-      const data = await response.json();
-
-      document.getElementById("vinoNombre").textContent = data.nombre;
-      document.getElementById("vinoImagen").src = data.imagen[0]?.url || "";
-      document.getElementById("ingredientes").textContent = data.ingredientes;
-      document.getElementById("nutricion").textContent = `Energy ${data.valor_energetico_kcal} kcal (${data.valor_energetico_kj || 0} kJ) per 100 ml`;
-      document.getElementById("nutricion_ext").textContent = `Fat ${data.grasas}g (saturated ${data.grasas_saturadas}g), Carbs ${data.hidratos}g (sugars ${data.azucares}g), Protein ${data.proteinas}g, Salt ${data.sal}g`;
-      document.getElementById("alergenos").textContent = `Contains: ${data.alergenos}`;
-
-      document.getElementById("icono_embarazo").src = data.icono_embarazo;
-      document.getElementById("icono_menores").src = data.icono_menores;
-      document.getElementById("logo_moderation").src = data.logo_moderation;
-      document.getElementById("texto_moderation").textContent = data.texto_moderation;
-      document.getElementById("link_moderation").href = data.enlace_moderation;
-
-      document.getElementById("icono_reciclaje").src = data.icono_reciclaje;
-      document.getElementById("texto_reciclaje").textContent = data.texto_reciclaje;
-
-      document.getElementById("qr2link").href = `${data.url_qr2}?vino_id=${vinoId}&lang=${langParam}`;
-
-      const t = translations[langParam] || translations.en;
-      document.getElementById("title").textContent = t.title;
-      document.getElementById("subtitle").textContent = t.subtitle;
-      document.getElementById("ingredientsTitle").textContent = t.ingredients;
-      document.getElementById("nutritionTitle").textContent = t.nutrition;
-      document.getElementById("allergensTitle").textContent = t.allergens;
-      document.getElementById("footerMore").textContent = t.more;
-      document.getElementById("qr2link").textContent = t.view;
-    }
-
-    loadVinoData();
-  </script>
-</body>
-</html>
+        ingredients:
