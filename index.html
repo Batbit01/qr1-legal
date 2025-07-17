@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Digital Product Label</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 2rem;
+      background: #fff;
+      color: #000;
+      max-width: 480px;
+      margin: auto;
+    }
+    h1 {
+      font-size: 1.4rem;
+      margin-top: 1rem;
+      text-align: center;
+    }
+    .subtitle {
+      text-align: center;
+      font-size: 0.9rem;
+      color: #555;
+      margin-bottom: 2rem;
+    }
+    img {
+      display: block;
+      margin: auto;
+      max-width: 200px;
+      height: auto;
+    }
+    .section {
+      margin-top: 1.5rem;
+      border-top: 1px solid #ddd;
+      padding-top: 1rem;
+    }
+    .section h2 {
+      font-size: 0.95rem;
+      margin-bottom: 0.5rem;
+    }
+    .section p {
+      margin: 0;
+      font-size: 0.95rem;
+    }
+    .footer {
+      margin-top: 2rem;
+      font-size: 0.9rem;
+      text-align: center;
+    }
+    .footer a {
+      color: #007BFF;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>DIGITAL PRODUCT LABEL</h1>
+  <div class="subtitle">Information provided via a QR code on the beverage packaging</div>
+  <img id="vinoImagen" src="" alt="Imagen del vino">
+  <h1 id="vinoNombre">Nombre del vino</h1>
+
+  <div class="section">
+    <h2>INGREDIENTS</h2>
+    <p id="ingredientes"></p>
+  </div>
+
+  <div class="section">
+    <h2>NUTRITION DECLARATION</h2>
+    <p id="nutricion"></p>
+  </div>
+
+  <div class="section">
+    <h2>ALLERGENS</h2>
+    <p id="alergenos"></p>
+  </div>
+
+  <div class="footer">
+    <p>Want to learn more about this wine?</p>
+    <a id="qr2link" href="#" target="_blank">View sensory profile →</a>
+  </div>
+
+  <script>
+    async function loadVinoData() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const vinoId = urlParams.get('vino_id');
+      if (!vinoId) return;
+
+      const response = await fetch(`/api/vino-legal/${vinoId}`);
+      const data = await response.json();
+
+      document.getElementById("vinoNombre").textContent = data.nombre;
+      document.getElementById("ingredientes").textContent = data.ingredientes;
+      document.getElementById("nutricion").textContent = `Energy ${data.valor_energetico_kcal} kcal (${data.valor_energetico_kj} kJ) per 100 ml`;
+      document.getElementById("alergenos").textContent = `Contains: ${data.alergenos}`;
+      document.getElementById("qr2link").href = data.url_qr2;
+    }
+
+    loadVinoData();
+  </script>
+</body>
+</html>
