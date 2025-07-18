@@ -185,8 +185,9 @@
 
       document.getElementById("alergenos").textContent = `Contains: ${data.alergenos || ""}`;
 
-      document.getElementById("alcoholData").textContent =
-        `${data.graduacion_alcoholica || "-"}% vol · ${data.volumen_ml || "-"} ml`;
+      const alcohol = (data.graduacion_alcoholica || "").toString().trim() || "-";
+      const volumen = (data.volumen_ml || "").toString().trim() || "-";
+      document.getElementById("alcoholData").textContent = `${alcohol}% vol · ${volumen} ml`;
 
       document.getElementById("qr2link").href = `https://sommelierlab.com/?vino_id=${vinoId}&lang=${langParam}`;
 
@@ -199,10 +200,10 @@
       document.getElementById("alcoholTitle").textContent = t.alcohol;
       document.getElementById("footerMore").textContent = t.more;
       document.getElementById("qr2link").textContent = t.view;
-
     } catch (err) {
       console.error("Error al cargar los datos del vino:", err);
     }
   });
 </script>
+
 
