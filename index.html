@@ -187,7 +187,8 @@
 
       const alcohol = (data.graduacion_alcoholica || "").toString().trim() || "-";
       const volumen = (data.volumen_ml || "").toString().trim() || "-";
-      document.getElementById("alcoholData").textContent = `${alcohol}% vol · ${volumen} ml`;
+     document.getElementById("alcoholData").textContent = `${alcohol} · ${volumen}`;
+
 
       document.getElementById("qr2link").href = `https://sommelierlab.com/?vino_id=${vinoId}&lang=${langParam}`;
 
