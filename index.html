@@ -64,8 +64,8 @@
     }
   </style>
 </head>
-
 <body>
+
   <div class="language-selector">
     <label for="lang">🌐</label>
     <select id="lang">
@@ -78,6 +78,7 @@
 
   <h1 id="title">DIGITAL PRODUCT LABEL</h1>
   <div class="subtitle" id="subtitle">Information provided via a QR code on the beverage packaging</div>
+
   <img id="vinoImagen" class="vino-img" src="" alt="Imagen del vino">
   <h1 id="vinoNombre">Nombre del vino</h1>
 
@@ -97,6 +98,12 @@
     <p id="alergenos"></p>
   </div>
 
+  <!-- NUEVA SECCIÓN: ALCOHOL Y VOLUMEN -->
+  <div class="section">
+    <h2 id="alcoholTitle">ALCOHOL CONTENT & VOLUME</h2>
+    <p id="alcoholData"></p>
+  </div>
+
   <div class="footer">
     <p id="footerMore">Want to learn more about this wine?</p>
     <a id="qr2link" href="#">View sensory profile →</a>
@@ -110,6 +117,7 @@
         ingredients: "INGREDIENTES",
         nutrition: "DECLARACIÓN NUTRICIONAL",
         allergens: "ALÉRGENOS",
+        alcohol: "GRADUACIÓN Y VOLUMEN",
         more: "¿Quieres saber más sobre este vino?",
         view: "Ver perfil sensorial →"
       },
@@ -119,6 +127,7 @@
         ingredients: "INGREDIENTS",
         nutrition: "NUTRITION DECLARATION",
         allergens: "ALLERGENS",
+        alcohol: "ALCOHOL CONTENT & VOLUME",
         more: "Want to learn more about this wine?",
         view: "View sensory profile →"
       },
@@ -128,6 +137,7 @@
         ingredients: "INGRÉDIENTS",
         nutrition: "DÉCLARATION NUTRITIONNELLE",
         allergens: "ALLERGÈNES",
+        alcohol: "TENEUR EN ALCOOL ET VOLUME",
         more: "Vous souhaitez en savoir plus sur ce vin ?",
         view: "Voir le profil sensoriel →"
       },
@@ -137,6 +147,7 @@
         ingredients: "ZUTATEN",
         nutrition: "NÄHRWERTDEKLARATION",
         allergens: "ALLERGENE",
+        alcohol: "ALKOHOLGEHALT & VOLUMEN",
         more: "Möchten Sie mehr über diesen Wein erfahren?",
         view: "Sensorisches Profil ansehen →"
       }
@@ -163,32 +174,5 @@
 
         document.getElementById("vinoNombre").textContent = data.nombre || "";
         document.getElementById("vinoImagen").src = (data.Imagen && Array.isArray(data.Imagen) && data.Imagen[0]?.url) ? data.Imagen[0].url : "";
-
         document.getElementById("ingredientes").textContent = data.ingredientes || "";
-        document.getElementById("nutricion").textContent = `Energy ${data.valor_energetico_kcal || 0} kcal`;
-        document.getElementById("nutricion_ext").textContent =
-          `Fat ${data.grasas_totales || 0}g (saturated ${data.grasas_saturadas || 0}g), ` +
-          `Carbs ${data.hidratos || 0}g (sugars ${data.azucares || 0}g), ` +
-          `Protein ${data.proteinas || 0}g, Salt ${data.sal || 0}g`;
-
-        document.getElementById("alergenos").textContent = `Contains: ${data.alergenos || ""}`;
-
-        // ENLACE CORREGIDO A FICHA 2 → SOLO con vino_id y lang
-        document.getElementById("qr2link").href = `https://sommelierlab.com/?vino_id=${vinoId}&lang=${langParam}`;
-
-        // Traducciones
-        const t = translations[langParam] || translations.en;
-        document.getElementById("title").textContent = t.title;
-        document.getElementById("subtitle").textContent = t.subtitle;
-        document.getElementById("ingredientsTitle").textContent = t.ingredients;
-        document.getElementById("nutritionTitle").textContent = t.nutrition;
-        document.getElementById("allergensTitle").textContent = t.allergens;
-        document.getElementById("footerMore").textContent = t.more;
-        document.getElementById("qr2link").textContent = t.view;
-      } catch (err) {
-        console.error("Error al cargar los datos del vino:", err);
-      }
-    });
-  </script>
-</body>
-</html>
+        document.getElementById("nutricion").textConte
