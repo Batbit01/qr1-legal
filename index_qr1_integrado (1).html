@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Digital Product Label</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 2rem;
+      background: #fff;
+      color: #000;
+      max-width: 480px;
+      margin: auto;
+    }
+    h1 {
+      font-size: 1.4rem;
+      margin-top: 1rem;
+      text-align: center;
+    }
+    .subtitle {
+      text-align: center;
+      font-size: 0.9rem;
+      color: #555;
+      margin-bottom: 2rem;
+    }
+    .vino-img {
+      display: block;
+      margin: auto;
+      max-width: 160px;
+      height: auto;
+    }
+    .section {
+      margin-top: 1.5rem;
+      border-top: 1px solid #ddd;
+      padding-top: 1rem;
+    }
+    .section h2 {
+      font-size: 0.95rem;
+      margin-bottom: 0.5rem;
+    }
+    .section p {
+      margin: 0;
+      font-size: 0.95rem;
+    }
+    .footer {
+      margin-top: 2rem;
+      font-size: 0.9rem;
+      text-align: center;
+    }
+    .footer a {
+      color: #007BFF;
+      text-decoration: none;
+    }
+    .language-selector {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+    }
+    select {
+      padding: 0.3rem;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="language-selector">
+    <label for="lang">🌐</label>
+    <select id="lang">
+      <option value="es">Español</option>
+      <option value="en">English</option>
+      <option value="fr">Français</option>
+      <option value="de">Deutsch</option>
+    </select>
+  </div>
+
+  <h1 id="title">DIGITAL PRODUCT LABEL</h1>
+  <div class="subtitle" id="subtitle">Information provided via a QR code on the beverage packaging</div>
+
+  <img id="vinoImagen" class="vino-img" src="" alt="Imagen del vino">
+  <h1 id="vinoNombre">Nombre del vino</h1>
+
+  <div class="section">
+    <h2 id="ingredientsTitle">INGREDIENTS</h2>
+    <p id="ingredientes"></p>
+  </div>
+
+  <div class="section">
+    <h2 id="nutritionTitle">NUTRITION DECLARATION</h2>
+    <p id="nutricion"></p>
+    <p id="nutricion_ext"></p>
+  </div>
+
+  <div class="section">
+    <h2 id="allergensTitle">ALLERGENS</h2>
+    <p id="alergenos"></p>
+  </div>
+
+  <!-- NUEVA SECCIÓN: ALCOHOL Y VOLUMEN -->
+  <div class="section">
+    <h2 id="alcoholTitle">ALCOHOL CONTENT & VOLUME</h2>
+    <p id="alcoholData"></p>
+  </div>
+
+  <div class="footer">
+    <p id="footerMore">Want to learn more about this wine?</p>
+    <a id="qr2link" href="#">View sensory profile →</a>
+  </div>
+
+  <script>
+  const translations = {
+    es: {
+      title: "ETIQUETA DIGITAL DEL PRODUCTO",
+      subtitle: "Información proporcionada mediante código QR en el envase de la bebida",
+      ingredients: "INGREDIENTES",
+      nutrition: "DECLARACIÓN NUTRICIONAL",
+      allergens: "ALÉRGENOS",
+      alcohol: "GRADUACIÓN Y VOLUMEN",
+      more: "¿Quieres saber más sobre este vino?",
+      view: "Ver perfil sensorial →"
+    },
+    en: {
+      title: "DIGITAL PRODUCT LABEL",
+      subtitle: "Information provided via a QR code on the beverage packaging",
+      ingredients: "INGREDIENTS",
+      nutrition: "NUTRITION DECLARATION",
+      allergens: "ALLERGENS",
+      alcohol: "ALCOHOL CONTENT & VOLUME",
+      more: "Want to learn more about this wine?",
+      view: "View sensory profile →"
+    },
+    fr: {
+      title: "ÉTIQUETTE NUMÉRIQUE DU PRODUIT",
+      subtitle: "Informations fournies via un code QR sur l'emballage de la boisson",
+      ingredients: "INGRÉDIENTS",
+      nutrition: "DÉCLARATION NUTRITIONNELLE",
+      allergens: "ALLERGÈNES",
+      alcohol: "TENEUR EN ALCOOL ET VOLUME",
+      more: "Vous souhaitez en savoir plus sur ce vin ?",
+      view: "Voir le profil sensoriel →"
+    },
+    de: {
+      title: "DIGITALES PRODUKTETIKETT",
+      subtitle: "Informationen über einen QR-Code auf der Verpackung des Getränks bereitgestellt",
+      ingredients: "ZUTATEN",
+      nutrition: "NÄHRWERTDEKLARATION",
+      allergens: "ALLERGENE",
+      alcohol: "ALKOHOLGEHALT & VOLUMEN",
+      more: "Möchten Sie mehr über diesen Wein erfahren?",
+      view: "Sensorisches Profil ansehen →"
+    }
+  };
+
+  window.addEventListener("DOMContentLoaded", async function () {
+    const urlParams = new URLSearchParams(window.location.search);
+    const vinoId = urlParams.get('vino_id');
+    const langParam = urlParams.get('lang') || 'en';
+
+    const langSelect = document.getElementById("lang");
+    if (langSelect) {
+      langSelect.value = langParam;
+      langSelect.addEventListener("change", () => {
+        window.location.href = `${window.location.pathname}?vino_id=${vinoId}&lang=${langSelect.value}`;
+      });
+    }
+
+    if (!vinoId) return;
+
+    try {
+      const response = await fetch(`https://sommelierlab-api-production.up.railway.app/api/vino-legal/${vinoId}`);
+      const data = await response.json();
+
+      document.getElementById("vinoNombre").textContent = data.nombre || "";
+      document.getElementById("vinoImagen").src = (data.Imagen && Array.isArray(data.Imagen) && data.Imagen[0]?.url) ? data.Imagen[0].url : "";
+
+      document.getElementById("ingredientes").textContent = data.ingredientes || "";
+
+      document.getElementById("nutricion").textContent = `Energy ${data.valor_energetico_kcal || 0} kcal`;
+      document.getElementById("nutricion_ext").textContent =
+        `Fat ${data.grasas_totales || 0}g (saturated ${data.grasas_saturadas || 0}g), ` +
+        `Carbs ${data.hidratos || 0}g (sugars ${data.azucares || 0}g), ` +
+        `Protein ${data.proteinas || 0}g, Salt ${data.sal || 0}g`;
+
+      document.getElementById("alergenos").textContent = `Contains: ${data.alergenos || ""}`;
+
+const alcohol = (data.graduacion_alcoholica || "-").toString().trim(); 
+const volumen = (data.volumen_ml || "-").toString().trim();
+
+document.getElementById("alcoholData").textContent = `${alcohol} · ${volumen}`;
+
+
+
+      document.getElementById("qr2link").href = `https://sommelierlab.com/?vino_id=${vinoId}&lang=${langParam}`;
+
+      const t = translations[langParam] || translations.en;
+      document.getElementById("title").textContent = t.title;
+      document.getElementById("subtitle").textContent = t.subtitle;
+      document.getElementById("ingredientsTitle").textContent = t.ingredients;
+      document.getElementById("nutritionTitle").textContent = t.nutrition;
+      document.getElementById("allergensTitle").textContent = t.allergens;
+      document.getElementById("alcoholTitle").textContent = t.alcohol;
+      document.getElementById("footerMore").textContent = t.more;
+      document.getElementById("qr2link").textContent = t.view;
+    } catch (err) {
+      console.error("Error al cargar los datos del vino:", err);
+    }
+  });
+</script>
+
+
