@@ -1,0 +1,242 @@
+{
+  "bg": {
+    "title": "[Bulgarian] Wine Information",
+    "subtitle": "[Bulgarian] Discover this wine",
+    "ingredients": "[Bulgarian] Ingredients",
+    "nutrition": "[Bulgarian] Nutritional Information",
+    "allergens": "[Bulgarian] Allergens",
+    "alcohol": "[Bulgarian] Alcohol Content",
+    "more": "[Bulgarian] More details",
+    "view": "[Bulgarian] View legal info"
+  },
+  "hr": {
+    "title": "[Croatian] Wine Information",
+    "subtitle": "[Croatian] Discover this wine",
+    "ingredients": "[Croatian] Ingredients",
+    "nutrition": "[Croatian] Nutritional Information",
+    "allergens": "[Croatian] Allergens",
+    "alcohol": "[Croatian] Alcohol Content",
+    "more": "[Croatian] More details",
+    "view": "[Croatian] View legal info"
+  },
+  "cs": {
+    "title": "[Czech] Wine Information",
+    "subtitle": "[Czech] Discover this wine",
+    "ingredients": "[Czech] Ingredients",
+    "nutrition": "[Czech] Nutritional Information",
+    "allergens": "[Czech] Allergens",
+    "alcohol": "[Czech] Alcohol Content",
+    "more": "[Czech] More details",
+    "view": "[Czech] View legal info"
+  },
+  "da": {
+    "title": "[Danish] Wine Information",
+    "subtitle": "[Danish] Discover this wine",
+    "ingredients": "[Danish] Ingredients",
+    "nutrition": "[Danish] Nutritional Information",
+    "allergens": "[Danish] Allergens",
+    "alcohol": "[Danish] Alcohol Content",
+    "more": "[Danish] More details",
+    "view": "[Danish] View legal info"
+  },
+  "nl": {
+    "title": "[Dutch] Wine Information",
+    "subtitle": "[Dutch] Discover this wine",
+    "ingredients": "[Dutch] Ingredients",
+    "nutrition": "[Dutch] Nutritional Information",
+    "allergens": "[Dutch] Allergens",
+    "alcohol": "[Dutch] Alcohol Content",
+    "more": "[Dutch] More details",
+    "view": "[Dutch] View legal info"
+  },
+  "en": {
+    "title": "[English] Wine Information",
+    "subtitle": "[English] Discover this wine",
+    "ingredients": "[English] Ingredients",
+    "nutrition": "[English] Nutritional Information",
+    "allergens": "[English] Allergens",
+    "alcohol": "[English] Alcohol Content",
+    "more": "[English] More details",
+    "view": "[English] View legal info"
+  },
+  "et": {
+    "title": "[Estonian] Wine Information",
+    "subtitle": "[Estonian] Discover this wine",
+    "ingredients": "[Estonian] Ingredients",
+    "nutrition": "[Estonian] Nutritional Information",
+    "allergens": "[Estonian] Allergens",
+    "alcohol": "[Estonian] Alcohol Content",
+    "more": "[Estonian] More details",
+    "view": "[Estonian] View legal info"
+  },
+  "fi": {
+    "title": "[Finnish] Wine Information",
+    "subtitle": "[Finnish] Discover this wine",
+    "ingredients": "[Finnish] Ingredients",
+    "nutrition": "[Finnish] Nutritional Information",
+    "allergens": "[Finnish] Allergens",
+    "alcohol": "[Finnish] Alcohol Content",
+    "more": "[Finnish] More details",
+    "view": "[Finnish] View legal info"
+  },
+  "fr": {
+    "title": "[French] Wine Information",
+    "subtitle": "[French] Discover this wine",
+    "ingredients": "[French] Ingredients",
+    "nutrition": "[French] Nutritional Information",
+    "allergens": "[French] Allergens",
+    "alcohol": "[French] Alcohol Content",
+    "more": "[French] More details",
+    "view": "[French] View legal info"
+  },
+  "de": {
+    "title": "[German] Wine Information",
+    "subtitle": "[German] Discover this wine",
+    "ingredients": "[German] Ingredients",
+    "nutrition": "[German] Nutritional Information",
+    "allergens": "[German] Allergens",
+    "alcohol": "[German] Alcohol Content",
+    "more": "[German] More details",
+    "view": "[German] View legal info"
+  },
+  "el": {
+    "title": "[Greek] Wine Information",
+    "subtitle": "[Greek] Discover this wine",
+    "ingredients": "[Greek] Ingredients",
+    "nutrition": "[Greek] Nutritional Information",
+    "allergens": "[Greek] Allergens",
+    "alcohol": "[Greek] Alcohol Content",
+    "more": "[Greek] More details",
+    "view": "[Greek] View legal info"
+  },
+  "hu": {
+    "title": "[Hungarian] Wine Information",
+    "subtitle": "[Hungarian] Discover this wine",
+    "ingredients": "[Hungarian] Ingredients",
+    "nutrition": "[Hungarian] Nutritional Information",
+    "allergens": "[Hungarian] Allergens",
+    "alcohol": "[Hungarian] Alcohol Content",
+    "more": "[Hungarian] More details",
+    "view": "[Hungarian] View legal info"
+  },
+  "ga": {
+    "title": "[Irish] Wine Information",
+    "subtitle": "[Irish] Discover this wine",
+    "ingredients": "[Irish] Ingredients",
+    "nutrition": "[Irish] Nutritional Information",
+    "allergens": "[Irish] Allergens",
+    "alcohol": "[Irish] Alcohol Content",
+    "more": "[Irish] More details",
+    "view": "[Irish] View legal info"
+  },
+  "it": {
+    "title": "[Italian] Wine Information",
+    "subtitle": "[Italian] Discover this wine",
+    "ingredients": "[Italian] Ingredients",
+    "nutrition": "[Italian] Nutritional Information",
+    "allergens": "[Italian] Allergens",
+    "alcohol": "[Italian] Alcohol Content",
+    "more": "[Italian] More details",
+    "view": "[Italian] View legal info"
+  },
+  "lv": {
+    "title": "[Latvian] Wine Information",
+    "subtitle": "[Latvian] Discover this wine",
+    "ingredients": "[Latvian] Ingredients",
+    "nutrition": "[Latvian] Nutritional Information",
+    "allergens": "[Latvian] Allergens",
+    "alcohol": "[Latvian] Alcohol Content",
+    "more": "[Latvian] More details",
+    "view": "[Latvian] View legal info"
+  },
+  "lt": {
+    "title": "[Lithuanian] Wine Information",
+    "subtitle": "[Lithuanian] Discover this wine",
+    "ingredients": "[Lithuanian] Ingredients",
+    "nutrition": "[Lithuanian] Nutritional Information",
+    "allergens": "[Lithuanian] Allergens",
+    "alcohol": "[Lithuanian] Alcohol Content",
+    "more": "[Lithuanian] More details",
+    "view": "[Lithuanian] View legal info"
+  },
+  "mt": {
+    "title": "[Maltese] Wine Information",
+    "subtitle": "[Maltese] Discover this wine",
+    "ingredients": "[Maltese] Ingredients",
+    "nutrition": "[Maltese] Nutritional Information",
+    "allergens": "[Maltese] Allergens",
+    "alcohol": "[Maltese] Alcohol Content",
+    "more": "[Maltese] More details",
+    "view": "[Maltese] View legal info"
+  },
+  "pl": {
+    "title": "[Polish] Wine Information",
+    "subtitle": "[Polish] Discover this wine",
+    "ingredients": "[Polish] Ingredients",
+    "nutrition": "[Polish] Nutritional Information",
+    "allergens": "[Polish] Allergens",
+    "alcohol": "[Polish] Alcohol Content",
+    "more": "[Polish] More details",
+    "view": "[Polish] View legal info"
+  },
+  "pt": {
+    "title": "[Portuguese] Wine Information",
+    "subtitle": "[Portuguese] Discover this wine",
+    "ingredients": "[Portuguese] Ingredients",
+    "nutrition": "[Portuguese] Nutritional Information",
+    "allergens": "[Portuguese] Allergens",
+    "alcohol": "[Portuguese] Alcohol Content",
+    "more": "[Portuguese] More details",
+    "view": "[Portuguese] View legal info"
+  },
+  "ro": {
+    "title": "[Romanian] Wine Information",
+    "subtitle": "[Romanian] Discover this wine",
+    "ingredients": "[Romanian] Ingredients",
+    "nutrition": "[Romanian] Nutritional Information",
+    "allergens": "[Romanian] Allergens",
+    "alcohol": "[Romanian] Alcohol Content",
+    "more": "[Romanian] More details",
+    "view": "[Romanian] View legal info"
+  },
+  "sk": {
+    "title": "[Slovak] Wine Information",
+    "subtitle": "[Slovak] Discover this wine",
+    "ingredients": "[Slovak] Ingredients",
+    "nutrition": "[Slovak] Nutritional Information",
+    "allergens": "[Slovak] Allergens",
+    "alcohol": "[Slovak] Alcohol Content",
+    "more": "[Slovak] More details",
+    "view": "[Slovak] View legal info"
+  },
+  "sl": {
+    "title": "[Slovene] Wine Information",
+    "subtitle": "[Slovene] Discover this wine",
+    "ingredients": "[Slovene] Ingredients",
+    "nutrition": "[Slovene] Nutritional Information",
+    "allergens": "[Slovene] Allergens",
+    "alcohol": "[Slovene] Alcohol Content",
+    "more": "[Slovene] More details",
+    "view": "[Slovene] View legal info"
+  },
+  "es": {
+    "title": "[Spanish] Wine Information",
+    "subtitle": "[Spanish] Discover this wine",
+    "ingredients": "[Spanish] Ingredients",
+    "nutrition": "[Spanish] Nutritional Information",
+    "allergens": "[Spanish] Allergens",
+    "alcohol": "[Spanish] Alcohol Content",
+    "more": "[Spanish] More details",
+    "view": "[Spanish] View legal info"
+  },
+  "sv": {
+    "title": "[Swedish] Wine Information",
+    "subtitle": "[Swedish] Discover this wine",
+    "ingredients": "[Swedish] Ingredients",
+    "nutrition": "[Swedish] Nutritional Information",
+    "allergens": "[Swedish] Allergens",
+    "alcohol": "[Swedish] Alcohol Content",
+    "more": "[Swedish] More details",
+    "view": "[Swedish] View legal info"
+  }
+}
