@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>QR1 – U‑Label Multilenguaje</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; padding: 2rem; background: #fff; color: #000; max-width: 520px; margin: auto; }
+    h1 { font-size: 1.4rem; margin-top: 1rem; text-align: center; }
+    .subtitle { text-align: center; font-size: 0.9rem; color: #555; margin-bottom: 2rem; }
+    .section { margin-top: 1.5rem; border-top: 1px solid #ddd; padding-top: 1rem; }
+    .section h2 { font-size: 0.95rem; margin-bottom: 0.5rem; }
+    .footer { margin-top: 2rem; font-size: 0.9rem; text-align: center; }
+    .language-selector { position: absolute; top: 1rem; right: 1rem; }
+    select { padding: 0.3rem; font-size: 0.9rem; }
+    a { color: #007bff; text-decoration: none; }
+  </style>
+</head>
+<body>
+  <div class="language-selector">
+    <label for="lang">🌐</label>
+    <select id="lang"></select>
+  </div>
+
+  <h1 id="title">DIGITAL PRODUCT LABEL</h1>
+  <div class="subtitle" id="subtitle">Information provided via a QR code on the beverage packaging</div>
+
+  <div class="section">
+    <h2 id="ingredientsTitle">INGREDIENTS</h2>
+    <p id="ingredientes"></p>
+  </div>
+
+  <div class="section">
+    <h2 id="nutritionTitle">NUTRITION INFORMATION</h2>
+    <p id="nutricion"></p>
+  </div>
+
+  <div class="section">
+    <h2 id="allergensTitle">ALLERGENS</h2>
+    <p id="alergenos"></p>
+  </div>
+
+  <div class="section">
+    <h2 id="alcoholTitle">ALCOHOL CONTENT & VOLUME</h2>
+    <p id="alcoholData"></p>
+  </div>
+
+  <div class="footer">
+    <p id="footerMore">Want to learn more about this wine?</p>
+    <a id="qr2link" href="https://sommelierlab.com/">View profile →</a>
+  </div>
+
+  <script>
+    const LABELS_URL = './qr1.labels.ue.json';
+    const NATIVE = {bg:'Български', cs:'Čeština', da:'Dansk', de:'Deutsch', et:'Eesti', el:'Ελληνικά',
+      en:'English', es:'Español', fr:'Français', ga:'Gaeilge', hr:'Hrvatski', it:'Italiano',
+      lv:'Latviešu', lt:'Lietuvių', hu:'Magyar', mt:'Malti', nl:'Nederlands', pl:'Polski',
+      pt:'Português', ro:'Română', sk:'Slovenčina', sl:'Slovenščina', fi:'Suomi', sv:'Svenska'};
+
+    let LABELS = null;
+    const qs = new URLSearchParams(location.search);
+    const vinoId = qs.get('vino_id') || '';
+
+    function getInitialLang() {
+      const fromUrl = (qs.get('idioma') || qs.get('lang') || '').slice(0,2).toLowerCase();
+      const fromLS  = (localStorage.getItem('qr1.lang') || '').slice(0,2).toLowerCase();
+      const fromNav = (navigator.language || 'en').slice(0,2).toLowerCase();
+      const first = Object.keys(LABELS || {})[0] || 'en';
+      const preferred = [fromUrl, fromLS, fromNav, 'en', first].find(l => l && LABELS && LABELS[l]);
+      return preferred || 'en';
+    }
+
+    function applyLang(lang) {
+      const t = (LABELS && LABELS[lang]) || (LABELS && LABELS.en) || {};
+      document.getElementById('title').textContent = t.title || 'DIGITAL PRODUCT LABEL';
+      document.getElementById('subtitle').textContent = t.subtitle || '';
+      document.getElementById('ingredientsTitle').textContent = t.ingredients || 'INGREDIENTS';
+      document.getElementById('nutritionTitle').textContent = t.nutrition || 'NUTRITION INFORMATION';
+      document.getElementById('allergensTitle').textContent = t.allergens || 'ALLERGENS';
+      document.getElementById('alcoholTitle').textContent = t.alcohol || 'ALCOHOL CONTENT & VOLUME';
+      document.getElementById('footerMore').textContent = t.more || 'Want to learn more about this wine?';
+      document.getElementById('qr2link').textContent = t.view || 'View profile →';
+
+      localStorage.setItem('qr1.lang', lang);
+      const url = new URL(location.href);
+      url.searchParams.set('idioma', lang);
+      url.searchParams.set('lang', lang);
+      history.replaceState({}, '', url.toString());
+
+      const a = document.getElementById('qr2link');
+      if (a) {
+        const u = new URL(a.href);
+        if (vinoId) u.searchParams.set('vino_id', vinoId);
+        u.searchParams.set('idioma', lang);
+        u.searchParams.set('lang', lang);
+        u.searchParams.set('qr','1');
+        a.href = u.toString();
+      }
+    }
+
+    async function loadLabels() {
+      try {
+        const res = await fetch(LABELS_URL, { cache: 'no-store' });
+        LABELS = await res.json();
+      } catch (e) {
+        console.error('No se pudo cargar el JSON externo de etiquetas.', e);
+        LABELS = { en: { title: 'DIGITAL PRODUCT LABEL', subtitle: '', ingredients: 'INGREDIENTS', nutrition: 'NUTRITION INFORMATION', allergens: 'ALLERGENS', alcohol: 'ALCOHOL CONTENT & VOLUME', more: 'Learn more about this wine?', view: 'View profile →' } };
+      }
+    }
+
+    async function init() {
+      await loadLabels();
+      const sel = document.getElementById('lang');
+      const langs = Object.keys(LABELS);
+      sel.innerHTML = langs.map(c => `<option value="${c}">${NATIVE[c]||c}</option>`).join('');
+      const initial = getInitialLang();
+      sel.value = initial;
+      applyLang(initial);
+      sel.addEventListener('change', () => applyLang(sel.value));
+    }
+
+    document.addEventListener('DOMContentLoaded', init);
+  </script>
+</body>
+</html>
