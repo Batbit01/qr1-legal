@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>QR1 – U‑Label Multilenguaje</title>
+  <title>QR1 – U-Label Multilenguaje</title>
   <style>
     body { font-family: Arial, sans-serif; margin: 0; padding: 2rem; background: #fff; color: #000; max-width: 520px; margin: auto; }
     h1 { font-size: 1.4rem; margin-top: 1rem; text-align: center; }
@@ -51,53 +51,36 @@
   </div>
 
   <script>
-    const LABELS_URL = './qr1.labels.ue.json';
+    /** ───────── CONFIG URIs/LANGS ───────── **/
+    const CDN_BASE   = "https://cdn.tu-dominio";   // ⬅️ CAMBIA ESTO por tu Cloudflare/B2
+    const PREFIX_QR1 = "qr1";                      // para QR2 usarías "qr2"
+    const VERSION    = "";                         // ej: "?v={{source_hash}}" si publicas versionado
+    const LABELS_URL = "./qr1.labels.ue.json";     // etiquetas UI (como ya tenías)
+
+    // Idiomas UE + cooficiales
+    const LANGS = ["es","ca","eu","gl","bg","cs","da","de","el","en","et","fi","fr","ga","hr","it","lv","lt","hu","mt","nl","pl","pt","ro","sk","sl","sv"];
+    const FALLBACKS = ["en","es"];
+
+    // Nombres nativos (para el selector)
     const NATIVE = {bg:'Български', cs:'Čeština', da:'Dansk', de:'Deutsch', et:'Eesti', el:'Ελληνικά',
       en:'English', es:'Español', fr:'Français', ga:'Gaeilge', hr:'Hrvatski', it:'Italiano',
       lv:'Latviešu', lt:'Lietuvių', hu:'Magyar', mt:'Malti', nl:'Nederlands', pl:'Polski',
       pt:'Português', ro:'Română', sk:'Slovenčina', sl:'Slovenščina', fi:'Suomi', sv:'Svenska'};
 
+    /** ───────── HELPERS ───────── **/
     let LABELS = null;
     const qs = new URLSearchParams(location.search);
-    const vinoId = qs.get('vino_id') || '';
+    const vinoId = qs.get('vino_id') || "";
 
-    function getInitialLang() {
-      const fromUrl = (qs.get('idioma') || qs.get('lang') || '').slice(0,2).toLowerCase();
-      const fromLS  = (localStorage.getItem('qr1.lang') || '').slice(0,2).toLowerCase();
-      const fromNav = (navigator.language || 'en').slice(0,2).toLowerCase();
-      const first = Object.keys(LABELS || {})[0] || 'en';
-      const preferred = [fromUrl, fromLS, fromNav, 'en', first].find(l => l && LABELS && LABELS[l]);
-      return preferred || 'en';
-    }
+    const norm = s => String(s||"").trim().toLowerCase().slice(0,5);
+    const inLangs = l => LANGS.includes(l);
+    const jsonUrl = (vino, lang, prefix=PREFIX_QR1) =>
+      `${CDN_BASE}/${prefix}/${encodeURIComponent(vino)}/${lang}.json${VERSION ? ("?" + VERSION.replace(/^\?/, "")) : ""}`;
 
-    function applyLang(lang) {
-      const t = (LABELS && LABELS[lang]) || (LABELS && LABELS.en) || {};
-      document.getElementById('title').textContent = t.title || 'DIGITAL PRODUCT LABEL';
-      document.getElementById('subtitle').textContent = t.subtitle || '';
-      document.getElementById('ingredientsTitle').textContent = t.ingredients || 'INGREDIENTS';
-      document.getElementById('nutritionTitle').textContent = t.nutrition || 'NUTRITION INFORMATION';
-      document.getElementById('allergensTitle').textContent = t.allergens || 'ALLERGENS';
-      document.getElementById('alcoholTitle').textContent = t.alcohol || 'ALCOHOL CONTENT & VOLUME';
-      document.getElementById('footerMore').textContent = t.more || 'Want to learn more about this wine?';
-      document.getElementById('qr2link').textContent = t.view || 'View profile →';
+    // Cache en memoria para vino/lang
+    const memo = new Map();
 
-      localStorage.setItem('qr1.lang', lang);
-      const url = new URL(location.href);
-      url.searchParams.set('idioma', lang);
-      url.searchParams.set('lang', lang);
-      history.replaceState({}, '', url.toString());
-
-      const a = document.getElementById('qr2link');
-      if (a) {
-        const u = new URL(a.href);
-        if (vinoId) u.searchParams.set('vino_id', vinoId);
-        u.searchParams.set('idioma', lang);
-        u.searchParams.set('lang', lang);
-        u.searchParams.set('qr','1');
-        a.href = u.toString();
-      }
-    }
-
+    /** ───────── CARGA LABELS DE UI ───────── **/
     async function loadLabels() {
       try {
         const res = await fetch(LABELS_URL, { cache: 'no-store' });
@@ -108,14 +91,146 @@
       }
     }
 
+    /** ───────── UI: seleccionar idioma ───────── **/
+    function getInitialLang() {
+      const fromUrl = (qs.get('idioma') || qs.get('lang') || '').slice(0,2).toLowerCase();
+      const fromLS  = (localStorage.getItem('qr1.lang') || '').slice(0,2).toLowerCase();
+      const fromNav = (navigator.language || 'en').slice(0,2).toLowerCase();
+      const first   = Object.keys(LABELS || {})[0] || 'en';
+      const preferred = [fromUrl, fromLS, fromNav, 'en', first].find(l => l && LABELS && LABELS[l]);
+      return preferred || 'en';
+    }
+
+    function applyLang(lang) {
+      // Pinta textos de la interfaz (labels UI)
+      const t = (LABELS && LABELS[lang]) || (LABELS && LABELS.en) || {};
+      document.getElementById('title').textContent          = t.title || 'DIGITAL PRODUCT LABEL';
+      document.getElementById('subtitle').textContent       = t.subtitle || '';
+      document.getElementById('ingredientsTitle').textContent = t.ingredients || 'INGREDIENTS';
+      document.getElementById('nutritionTitle').textContent   = t.nutrition || 'NUTRITION INFORMATION';
+      document.getElementById('allergensTitle').textContent   = t.allergens || 'ALLERGENS';
+      document.getElementById('alcoholTitle').textContent     = t.alcohol || 'ALCOHOL CONTENT & VOLUME';
+      document.getElementById('footerMore').textContent       = t.more || 'Want to learn more about this wine?';
+      document.getElementById('qr2link').textContent          = t.view || 'View profile →';
+
+      // Guarda preferencia y refleja en URL
+      localStorage.setItem('qr1.lang', lang);
+      const url = new URL(location.href);
+      url.searchParams.set('idioma', lang);
+      url.searchParams.set('lang', lang);
+      history.replaceState({}, '', url.toString());
+
+      // Actualiza link QR2 con params
+      const a = document.getElementById('qr2link');
+      if (a) {
+        const u = new URL(a.href);
+        if (vinoId) u.searchParams.set('vino_id', vinoId);
+        u.searchParams.set('idioma', lang);
+        u.searchParams.set('lang', lang);
+        u.searchParams.set('qr','1');
+        a.href = u.toString();
+      }
+
+      // Carga el JSON del vino en ese idioma (con fallback)
+      loadWine(lang);
+    }
+
+    /** ───────── FETCH QR1 JSON (con fallback lang→en→es) ───────── **/
+    async function fetchQrPayload(vino, requestedLang, prefix=PREFIX_QR1) {
+      const chain = [requestedLang, ...FALLBACKS.filter(l => l !== requestedLang)];
+      for (const lang of chain) {
+        const key = `${prefix}:${vino}:${lang}`;
+        if (memo.has(key)) return { lang, data: memo.get(key) };
+        try {
+          const res = await fetch(jsonUrl(vino, lang, prefix), { cache: "no-store" });
+          if (res.ok) {
+            const data = await res.json();
+            memo.set(key, data);
+            return { lang, data };
+          }
+        } catch { /* intenta siguiente */ }
+      }
+      throw new Error("No disponible en los idiomas probados");
+    }
+
+    /** ───────── Render contenido QR1 ───────── **/
+    function renderWine(payload) {
+      // Mapeo tolerante: soporta *_texto o claves “humanas” (por si cambian nombres)
+      const get = (...keys) => {
+        for (const k of keys) {
+          const v = payload?.[k];
+          if (v !== undefined && v !== null && String(v).trim() !== "") return String(v);
+        }
+        return "";
+      };
+
+      // Ingredientes
+      const ingredientes = get('ingredientes_texto','Ingredientes','ingredientes');
+      document.getElementById('ingredientes').textContent = ingredientes || '—';
+
+      // Nutrición (si no existe, dejamos vacío)
+      const nutricion = get('nutricion_texto','Información nutricional','Informacion nutricional','nutrition_text','Nutrition');
+      document.getElementById('nutricion').textContent = nutricion || '';
+
+      // Alérgenos
+      const alergenos = get('alergenos_texto','Alérgenos','Alergenos','alérgenos');
+      document.getElementById('alergenos').textContent = alergenos || '';
+
+      // Alcohol & Volumen → combinamos si vienen por separado
+      const grad  = get('graduacion_texto','Graduación','Graduacion','ABV','Alcohol');
+      const vol   = get('volumen_texto','Volumen','Contenido','Tamaño');
+      const alcoholJoin = [grad, vol].filter(Boolean).join(' • ');
+      document.getElementById('alcoholData').textContent = alcoholJoin || grad || vol || '';
+
+      // (Opcional) podríamos exponer el lang resuelto:
+      // document.getElementById('alcoholData').insertAdjacentHTML('beforeend', `<br><small>${payload.lang||''}</small>`);
+    }
+
+    async function loadWine(requestedLang) {
+      const langReq = inLangs(norm(requestedLang)) ? norm(requestedLang) : 'en';
+      if (!vinoId) {
+        // si no hay vino_id en URL, indicamos vacío en contenido
+        document.getElementById('ingredientes').textContent = '—';
+        document.getElementById('nutricion').textContent    = '';
+        document.getElementById('alergenos').textContent    = '';
+        document.getElementById('alcoholData').textContent  = '';
+        return;
+      }
+      try {
+        const { lang, data } = await fetchQrPayload(vinoId, langReq, PREFIX_QR1);
+        // Renderiza con el JSON obtenido (data ya es el cuerpo del .json)
+        // Añadimos vino_id/lang por si no vinieran en el payload
+        renderWine(Object.assign({ vino_id: vinoId, lang }, data));
+        // Prefetch de fallbacks para fluidez
+        for (const l of FALLBACKS) if (l !== lang) {
+          const key = `${PREFIX_QR1}:${vinoId}:${l}`;
+          if (!memo.has(key)) fetch(jsonUrl(vinoId, l, PREFIX_QR1), { cache: 'no-store' })
+            .then(r => r.ok ? r.json() : null)
+            .then(j => { if (j) memo.set(key, j); })
+            .catch(()=>{});
+        }
+      } catch(e) {
+        console.error(e);
+        document.getElementById('ingredientes').textContent = '—';
+        document.getElementById('nutricion').textContent    = '';
+        document.getElementById('alergenos').textContent    = '';
+        document.getElementById('alcoholData').textContent  = '';
+      }
+    }
+
+    /** ───────── INIT ───────── **/
     async function init() {
       await loadLabels();
+
+      // Rellena selector con idiomas disponibles en LABELS (si no, con lista base)
       const sel = document.getElementById('lang');
-      const langs = Object.keys(LABELS);
-      sel.innerHTML = langs.map(c => `<option value="${c}">${NATIVE[c]||c}</option>`).join('');
+      const langsLabels = Object.keys(LABELS || {}).length ? Object.keys(LABELS) : LANGS;
+      sel.innerHTML = langsLabels.map(c => `<option value="${c}">${NATIVE[c]||c}</option>`).join('');
+
       const initial = getInitialLang();
       sel.value = initial;
       applyLang(initial);
+
       sel.addEventListener('change', () => applyLang(sel.value));
     }
 
