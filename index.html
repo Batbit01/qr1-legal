@@ -14,7 +14,7 @@
     .language-selector { position: absolute; top: 1rem; right: 1rem; }
     select { padding: 0.3rem; font-size: 0.9rem; }
     a { color: #007bff; text-decoration: none; }
-    #debug { font-size: .8rem; color:#666; margin: .5rem 0 0; display:none; }
+    #debug { font-size:.8rem; color:#666; margin:.5rem 0 0; word-break: break-all; }
   </style>
 </head>
 <body>
@@ -53,13 +53,17 @@
   </div>
 
   <script>
-    /** ====== CONFIG ====== **/
-    const CDN_BASE   = "https://f00x.backblazeb2.com/file/SommelierLab-/qr1;   // ⬅️ CAMBIA ESTO a tu CDN real (Cloudflare delante de B2)
-    const PREFIX_QR1 = "qr1";
-    const VERSION    = "";                         // ej: "?v={{source_hash}}" si publicas con versionado
-    const LABELS_URL = "./qr1.labels.ue.json";     // etiquetas UI (como ya tenías)
+    /** ====== CONFIG (con override por query) ====== **/
+    const qs = new URLSearchParams(location.search);
 
-    // Lista completa UE + cooficiales (27)
+    // ⬇️ Puedes forzar el CDN en la URL: &cdn=https://f00x.backblazeb2.com/file/SommelierLab-media
+    const OVERRIDE_CDN = qs.get('cdn');
+    const CDN_BASE   = OVERRIDE_CDN || "https://f00x.backblazeb2.com/file/SommelierLab-media"; // ← CAMBIA AQUÍ por tu CDN real
+    const PREFIX_QR1 = "qr1";
+    const VERSION    = ""; // ej: "?v={{source_hash}}"
+    const LABELS_URL = "./qr1.labels.ue.json";
+
+    // 27 idiomas
     const LANGS = ["es","ca","eu","gl","bg","cs","da","de","el","en","et","fi","fr","ga","hr","it","lv","lt","hu","mt","nl","pl","pt","ro","sk","sl","sv"];
     const FALLBACKS = ["en","es"];
     const NATIVE = {bg:'Български', cs:'Čeština', da:'Dansk', de:'Deutsch', et:'Eesti', el:'Ελληνικά',
@@ -70,19 +74,17 @@
 
     /** ====== HELPERS ====== **/
     let LABELS = null;
-    const qs = new URLSearchParams(location.search);
-    // Acepta id o vino_id (y algunos alias)
+    // Acepta id o vino_id (y alias)
     const vinoId = qs.get('id') || qs.get('vino_id') || qs.get('vino') || qs.get('VINO_ID') || "";
 
     const norm = s => String(s||"").trim().toLowerCase().slice(0,5);
     const inLangs = l => LANGS.includes(l);
-
     const jsonUrl = (vino, lang, prefix=PREFIX_QR1) =>
       `${CDN_BASE}/${prefix}/${encodeURIComponent(vino)}/${lang}.json${VERSION ? ("?" + VERSION.replace(/^\?/, "")) : ""}`;
 
     const memo = new Map();
     const $debug = document.getElementById('debug');
-    const debug = (msg) => { console.log(msg); $debug.style.display='block'; $debug.textContent = String(msg); };
+    const log = (msg) => { console.log(msg); if ($debug) { $debug.textContent = String(msg); } };
 
     /** ====== LABELS UI ====== **/
     async function loadLabels() {
@@ -104,7 +106,7 @@
     }
 
     function applyLang(lang) {
-      // Pinta textos de interfaz
+      // Pinta UI
       const t = (LABELS && LABELS[lang]) || (LABELS && LABELS.en) || {};
       document.getElementById('title').textContent            = t.title || 'DIGITAL PRODUCT LABEL';
       document.getElementById('subtitle').textContent         = t.subtitle || '';
@@ -122,7 +124,7 @@
       url.searchParams.set('lang', lang);
       history.replaceState({}, '', url.toString());
 
-      // Enlace a QR2 con mismos params
+      // Enlace QR2 con mismos params
       const a = document.getElementById('qr2link');
       if (a) {
         const u = new URL(a.href);
@@ -133,34 +135,42 @@
         a.href = u.toString();
       }
 
-      // Cargar JSON del vino en ese idioma
+      // Carga JSON del vino
       loadWine(lang);
     }
 
+    /** ====== FETCH con logging detallado ====== **/
     async function fetchQrPayload(vino, requestedLang, prefix=PREFIX_QR1) {
+      if (!vino) throw new Error("vino_id vacío");
       const chain = [requestedLang, ...FALLBACKS.filter(l => l !== requestedLang)];
       for (const lang of chain) {
         const key = `${prefix}:${vino}:${lang}`;
-        if (memo.has(key)) return { lang, data: memo.get(key) };
+        const url = jsonUrl(vino, lang, prefix);
+
+        if (memo.has(key)) {
+          log(`CACHE → ${url}`);
+          return { lang, data: memo.get(key) };
+        }
+
         try {
-          const url = jsonUrl(vino, lang, prefix);
+          log(`FETCH → ${url}`);
           const res = await fetch(url, { cache: "no-store" });
+          log(`STATUS ${res.status} ← ${url}`);
           if (res.ok) {
             const data = await res.json();
             memo.set(key, data);
             return { lang, data };
-          } else {
-            console.warn(`No encontrado (${res.status}):`, url);
           }
         } catch (e) {
-            console.warn('Error de red:', e);
+          console.warn('Error de red/CORS:', e);
+          log(`ERROR RED/CORS ← ${url}`);
         }
       }
       throw new Error("No disponible en los idiomas probados");
     }
 
+    /** ====== Render contenido QR1 ====== **/
     function renderWine(payload) {
-      // Mapeo tolerante: acepta *_texto o claves “humanas”
       const get = (...keys) => {
         for (const k of keys) {
           const v = payload?.[k];
@@ -169,19 +179,15 @@
         return "";
       };
 
-      // Ingredientes
       const ingredientes = get('ingredientes_texto','Ingredientes','ingredientes');
       document.getElementById('ingredientes').textContent = ingredientes || '—';
 
-      // Nutrición (si no existe, dejamos vacío)
       const nutricion = get('nutricion_texto','Información nutricional','Informacion nutricional','nutrition_text','Nutrition');
       document.getElementById('nutricion').textContent = nutricion || '';
 
-      // Alérgenos
       const alergenos = get('alergenos_texto','Alérgenos','Alergenos','alérgenos');
       document.getElementById('alergenos').textContent = alergenos || '';
 
-      // Alcohol & Volumen
       const grad  = get('graduacion_texto','Graduación','Graduacion','ABV','Alcohol');
       const vol   = get('volumen_texto','Volumen','Contenido','Tamaño');
       const alcoholJoin = [grad, vol].filter(Boolean).join(' • ');
@@ -189,59 +195,48 @@
     }
 
     async function loadWine(requestedLang) {
-      // Comprobación clave: si no hay id, no podremos cargar valores
       if (!vinoId) {
-        debug('Falta parámetro ?id=VXXX o ?vino_id=VXXX en la URL del QR');
-        document.getElementById('ingredientes').textContent = '—';
-        document.getElementById('nutricion').textContent    = '';
-        document.getElementById('alergenos').textContent    = '';
-        document.getElementById('alcoholData').textContent  = '';
+        log('FALTA parámetro ?id=VXXX (o ?vino_id=VXXX) en la URL del QR');
+        ['ingredientes','nutricion','alergenos','alcoholData'].forEach(id => document.getElementById(id).textContent = '');
         return;
       }
-      if (CDN_BASE.includes('cdn.tu-dominio')) {
-        debug('Configura CDN_BASE con tu dominio real; ahora mismo apunta a un placeholder.');
+      if (CDN_BASE.includes('tu-dominio')) {
+        log('Recuerda: puedes forzar el CDN con &cdn=https://... en la URL de prueba.');
       }
 
       const langReq = inLangs(norm(requestedLang)) ? norm(requestedLang) : 'en';
       try {
         const { lang, data } = await fetchQrPayload(vinoId, langReq, PREFIX_QR1);
         renderWine(Object.assign({ vino_id: vinoId, lang }, data));
-
-        // Prefetch de fallbacks
-        for (const l of FALLBACKS) if (l !== lang) {
-          const key = `${PREFIX_QR1}:${vinoId}:${l}`;
-          if (!memo.has(key)) fetch(jsonUrl(vinoId, l, PREFIX_QR1), { cache: 'no-store' })
-            .then(r => r.ok ? r.json() : null)
-            .then(j => { if (j) memo.set(key, j); })
-            .catch(()=>{});
-        }
-        debug(`Cargado: ${vinoId} [${lang}]`);
       } catch(e) {
         console.error(e);
-        debug('No se pudo cargar el JSON del vino (revisa CDN_BASE, ruta y permisos).');
-        document.getElementById('ingredientes').textContent = '—';
-        document.getElementById('nutricion').textContent    = '';
-        document.getElementById('alergenos').textContent    = '';
-        document.getElementById('alcoholData').textContent  = '';
+        log('No se pudo cargar el JSON del vino (revisa CDN_BASE, ruta y permisos).');
+        ['ingredientes','nutricion','alergenos','alcoholData'].forEach(id => document.getElementById(id).textContent = '');
       }
     }
 
+    /** ====== INIT ====== **/
     async function init() {
       await loadLabels();
 
-      // ✅ SIEMPRE llenamos el selector con los 27 idiomas (no dependemos de labels)
+      // Rellena selector SIEMPRE con los 27 idiomas
       const sel = document.getElementById('lang');
       sel.innerHTML = LANGS.map(c => `<option value="${c}">${NATIVE[c]||c.toUpperCase()}</option>`).join('');
 
-      const initial = getInitialLang();
-      sel.value = inLangs(initial) ? initial : 'en';
-      sel.addEventListener('change', () => applyLang(sel.value));
+      const initial = (() => {
+        const fromUrl = (qs.get('idioma') || qs.get('lang') || '').slice(0,2).toLowerCase();
+        const fromLS  = (localStorage.getItem('qr1.lang') || '').slice(0,2).toLowerCase();
+        const fromNav = (navigator.language || 'en').slice(0,2).toLowerCase();
+        const preferred = [fromUrl, fromLS, fromNav, 'en'].find(l => l && inLangs(l));
+        return preferred || 'en';
+      })();
 
-      applyLang(sel.value);
+      sel.value = initial;
+      sel.addEventListener('change', () => applyLang(sel.value));
+      applyLang(initial);
     }
 
     document.addEventListener('DOMContentLoaded', init);
   </script>
 </body>
 </html>
-
