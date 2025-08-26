@@ -14,7 +14,7 @@
     .language-selector { position: absolute; top: 1rem; right: 1rem; }
     select { padding: 0.3rem; font-size: 0.9rem; }
     a { color: #007bff; text-decoration: none; }
-    #debug { font-size:.8rem; color:#666; margin:.5rem 0 0; word-break: break-all; }
+    #debug { font-size:.8rem; color:#444; margin:.75rem 0 0; white-space:pre-wrap; word-break:break-all; border-top:1px dashed #ccc; padding-top:.5rem }
   </style>
 </head>
 <body>
@@ -53,15 +53,18 @@
   </div>
 
   <script>
-    /** ====== CONFIG (con override por query) ====== **/
+    /** ====== CONFIG (con overrides por query) ====== **/
     const qs = new URLSearchParams(location.search);
 
-    // ⬇️ Puedes forzar el CDN en la URL: &cdn=https://f00x.backblazeb2.com/file/SommelierLab-media
+    // Forzar CDN por query: &cdn=https://f005.backblazeb2.com/file/TU_BUCKET
     const OVERRIDE_CDN = qs.get('cdn');
-    const CDN_BASE   = OVERRIDE_CDN || "https://f00x.backblazeb2.com/file/SommelierLab-media"; // ← CAMBIA AQUÍ por tu CDN real
+    const CDN_BASE   = OVERRIDE_CDN || "https://f005.backblazeb2.com/file/TU_BUCKET"; // ← PON aquí tu Friendly URL o S3
     const PREFIX_QR1 = "qr1";
-    const VERSION    = ""; // ej: "?v={{source_hash}}"
+    const VERSION    = "";              // ej: "?v={{source_hash}}"
     const LABELS_URL = "./qr1.labels.ue.json";
+
+    // Forzar archivo directo (bypassa ruta): &file=https://.../qr1/V001/es.json
+    const FILE_URL   = qs.get('file');
 
     // 27 idiomas
     const LANGS = ["es","ca","eu","gl","bg","cs","da","de","el","en","et","fi","fr","ga","hr","it","lv","lt","hu","mt","nl","pl","pt","ro","sk","sl","sv"];
@@ -74,7 +77,8 @@
 
     /** ====== HELPERS ====== **/
     let LABELS = null;
-    // Acepta id o vino_id (y alias)
+
+    // Acepta id/vino_id/vino
     const vinoId = qs.get('id') || qs.get('vino_id') || qs.get('vino') || qs.get('VINO_ID') || "";
 
     const norm = s => String(s||"").trim().toLowerCase().slice(0,5);
@@ -84,16 +88,21 @@
 
     const memo = new Map();
     const $debug = document.getElementById('debug');
-    const log = (msg) => { console.log(msg); if ($debug) { $debug.textContent = String(msg); } };
+    function dbg(line){
+      const ts = new Date().toISOString().slice(11,19);
+      $debug.textContent += `[${ts}] ${line}\n`;
+      console.log(line);
+    }
+    function link(url){ return `<a href="${url}" target="_blank" rel="noopener">${url}</a>`; }
 
     /** ====== LABELS UI ====== **/
     async function loadLabels() {
       try {
         const res = await fetch(LABELS_URL, { cache: 'no-store' });
         LABELS = await res.json();
-      } catch (e) {
-        console.warn('No se pudo cargar qr1.labels.ue.json; usando fallback en-US.');
+      } catch {
         LABELS = { en: { title: 'DIGITAL PRODUCT LABEL', subtitle: '', ingredients: 'INGREDIENTS', nutrition: 'NUTRITION INFORMATION', allergens: 'ALLERGENS', alcohol: 'ALCOHOL CONTENT & VOLUME', more: 'Learn more about this wine?', view: 'View profile →' } };
+        dbg('No se pudo cargar qr1.labels.ue.json; usando fallback EN.');
       }
     }
 
@@ -106,7 +115,6 @@
     }
 
     function applyLang(lang) {
-      // Pinta UI
       const t = (LABELS && LABELS[lang]) || (LABELS && LABELS.en) || {};
       document.getElementById('title').textContent            = t.title || 'DIGITAL PRODUCT LABEL';
       document.getElementById('subtitle').textContent         = t.subtitle || '';
@@ -117,14 +125,12 @@
       document.getElementById('footerMore').textContent       = t.more || 'Want to learn more about this wine?';
       document.getElementById('qr2link').textContent          = t.view || 'View profile →';
 
-      // Persistencia + URL
       localStorage.setItem('qr1.lang', lang);
       const url = new URL(location.href);
       url.searchParams.set('idioma', lang);
       url.searchParams.set('lang', lang);
       history.replaceState({}, '', url.toString());
 
-      // Enlace QR2 con mismos params
       const a = document.getElementById('qr2link');
       if (a) {
         const u = new URL(a.href);
@@ -135,35 +141,36 @@
         a.href = u.toString();
       }
 
-      // Carga JSON del vino
       loadWine(lang);
     }
 
-    /** ====== FETCH con logging detallado ====== **/
+    /** ====== FETCH con logging acumulado ====== **/
     async function fetchQrPayload(vino, requestedLang, prefix=PREFIX_QR1) {
       if (!vino) throw new Error("vino_id vacío");
       const chain = [requestedLang, ...FALLBACKS.filter(l => l !== requestedLang)];
+      dbg(`Resolviendo JSON → vino_id=${vino} · pedido=${requestedLang} · cadena=${chain.join(' → ')}`);
+
       for (const lang of chain) {
         const key = `${prefix}:${vino}:${lang}`;
         const url = jsonUrl(vino, lang, prefix);
 
         if (memo.has(key)) {
-          log(`CACHE → ${url}`);
+          dbg(`CACHE ✅ ${url}`);
           return { lang, data: memo.get(key) };
         }
 
         try {
-          log(`FETCH → ${url}`);
+          dbg(`FETCH  → ${url}`);
           const res = await fetch(url, { cache: "no-store" });
-          log(`STATUS ${res.status} ← ${url}`);
+          dbg(`STATUS ← ${res.status} | ${url}`);
           if (res.ok) {
             const data = await res.json();
             memo.set(key, data);
+            dbg(`OK JSON ✅ ${url}`);
             return { lang, data };
           }
         } catch (e) {
-          console.warn('Error de red/CORS:', e);
-          log(`ERROR RED/CORS ← ${url}`);
+          dbg(`ERROR  ⛔ (red/CORS) ${url}`);
         }
       }
       throw new Error("No disponible en los idiomas probados");
@@ -179,38 +186,48 @@
         return "";
       };
 
-      const ingredientes = get('ingredientes_texto','Ingredientes','ingredientes');
-      document.getElementById('ingredientes').textContent = ingredientes || '—';
-
-      const nutricion = get('nutricion_texto','Información nutricional','Informacion nutricional','nutrition_text','Nutrition');
-      document.getElementById('nutricion').textContent = nutricion || '';
-
-      const alergenos = get('alergenos_texto','Alérgenos','Alergenos','alérgenos');
-      document.getElementById('alergenos').textContent = alergenos || '';
-
+      document.getElementById('ingredientes').textContent = get('ingredientes_texto','Ingredientes','ingredientes') || '—';
+      document.getElementById('nutricion').textContent    = get('nutricion_texto','Información nutricional','Informacion nutricional','nutrition_text','Nutrition') || '';
+      document.getElementById('alergenos').textContent    = get('alergenos_texto','Alérgenos','Alergenos','alérgenos') || '';
       const grad  = get('graduacion_texto','Graduación','Graduacion','ABV','Alcohol');
       const vol   = get('volumen_texto','Volumen','Contenido','Tamaño');
-      const alcoholJoin = [grad, vol].filter(Boolean).join(' • ');
-      document.getElementById('alcoholData').textContent = alcoholJoin || grad || vol || '';
+      document.getElementById('alcoholData').textContent  = [grad, vol].filter(Boolean).join(' • ') || grad || vol || '';
     }
 
     async function loadWine(requestedLang) {
+      // Modo test: FILE_URL bypass (para aislar problema de ruta/CDN)
+      if (FILE_URL) {
+        dbg(`OVERRIDE file= activo → ${FILE_URL}`);
+        try {
+          const r = await fetch(FILE_URL, { cache: 'no-store' });
+          dbg(`STATUS ← ${r.status} | ${FILE_URL}`);
+          if (!r.ok) throw new Error('status ' + r.status);
+          const data = await r.json();
+          renderWine(data);
+          return;
+        } catch (e) {
+          dbg('Fallo cargando FILE_URL (revisa la URL exacta, permisos o CORS)');
+          return;
+        }
+      }
+
       if (!vinoId) {
-        log('FALTA parámetro ?id=VXXX (o ?vino_id=VXXX) en la URL del QR');
+        dbg('FALTA parámetro ?id=VXXX (o ?vino_id=VXXX) en la URL del QR');
         ['ingredientes','nutricion','alergenos','alcoholData'].forEach(id => document.getElementById(id).textContent = '');
         return;
       }
-      if (CDN_BASE.includes('tu-dominio')) {
-        log('Recuerda: puedes forzar el CDN con &cdn=https://... en la URL de prueba.');
+
+      if (CDN_BASE.includes('TU_BUCKET')) {
+        dbg('Recuerda: configura CDN_BASE o usa &cdn=https://... para probar con tu bucket real.');
       }
+      dbg(`Contexto → CDN_BASE=${CDN_BASE} · PREFIX=${PREFIX_QR1} · vino_id=${vinoId}`);
 
       const langReq = inLangs(norm(requestedLang)) ? norm(requestedLang) : 'en';
       try {
         const { lang, data } = await fetchQrPayload(vinoId, langReq, PREFIX_QR1);
         renderWine(Object.assign({ vino_id: vinoId, lang }, data));
-      } catch(e) {
-        console.error(e);
-        log('No se pudo cargar el JSON del vino (revisa CDN_BASE, ruta y permisos).');
+      } catch {
+        dbg('No se pudo cargar el JSON del vino (revisa CDN_BASE, ruta y permisos).');
         ['ingredientes','nutricion','alergenos','alcoholData'].forEach(id => document.getElementById(id).textContent = '');
       }
     }
@@ -219,7 +236,7 @@
     async function init() {
       await loadLabels();
 
-      // Rellena selector SIEMPRE con los 27 idiomas
+      // Selector con 27 idiomas
       const sel = document.getElementById('lang');
       sel.innerHTML = LANGS.map(c => `<option value="${c}">${NATIVE[c]||c.toUpperCase()}</option>`).join('');
 
