@@ -255,5 +255,61 @@
 
     document.addEventListener('DOMContentLoaded', init);
   </script>
+  <script id="qr1-loader">
+(function(){
+  const CDN_BASE = window.CDN_BASE || "https://f005.backblazeb2.com/file/SommelierLab-media";
+  const PREFIX   = window.PREFIX   || "qr1";
+  const vino_id  = window.vino_id  || "V001";
+
+  // 1) Idioma pedido: ?lang=xx → window.pedido → navigator.language → 'es'
+  const urlLang  = new URLSearchParams(location.search).get("lang");
+  const navLang  = (navigator.language || "es").toLowerCase();
+  const pedido   = (window.pedido || urlLang || navLang).toLowerCase();
+
+  // 2) Conjunto de idiomas soportados (UE + cooficiales que usas)
+  const SUP = new Set([
+    "bg","cs","da","de","el","en","es","et","fi","fr","ga","hr","hu","it",
+    "lt","lv","mt","nl","pl","pt","ro","sk","sl","sv","eu","ca","gl"
+  ]);
+
+  // 3) Cadena de fallback (p.ej. "pt-BR"→["pt-br","pt","en","es"])
+  const base = pedido.split("-")[0];
+  const chain = [];
+  if (pedido && SUP.has(pedido)) chain.push(pedido);
+  if (base && base !== pedido && SUP.has(base)) chain.push(base);
+  chain.push("en","es");
+  const langs = [...new Set(chain)]; // sin duplicados
+
+  const v = window.source_hash ? `?v=${window.source_hash}` : "";
+
+  const tryFetch = async (lang) => {
+    const url = `${CDN_BASE}/${PREFIX}/${encodeURIComponent(vino_id)}/${lang}.json${v}`;
+    console.log(`[QR1] FETCH  → ${url}`);
+    const res = await fetch(url, { method: "GET", mode: "cors", cache: "no-cache" });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return res.json();
+  };
+
+  (async () => {
+    console.log(`[QR1] Contexto → CDN_BASE=${CDN_BASE} · PREFIX=${PREFIX} · vino_id=${vino_id}`);
+    console.log(`[QR1] Resolviendo JSON → vino_id=${vino_id} · pedido=${pedido} · cadena=${langs.join(" → ")}`);
+
+    let data=null, used=null, lastErr=null;
+    for (const lang of langs) {
+      try { data = await tryFetch(lang); used = lang; break; }
+      catch (e) { console.warn(`[QR1] ${lang}.json falló →`, e?.message || e); lastErr = e; }
+    }
+
+    if (!data) { console.error("[QR1] No se pudo cargar ningún JSON.", lastErr); return; }
+
+    console.log(`[QR1] OK JSON ✅ (${used})`);
+    window.__QR1_DATA__ = data;
+    window.__QR1_LANG__ = used;
+    document.dispatchEvent(new CustomEvent("qr1:loaded", { detail: { lang: used, data } }));
+    // aquí puedes llamar a tu renderizador, ej.: renderQR1(data);
+  })();
+})();
+</script>
+  
 </body>
 </html>
