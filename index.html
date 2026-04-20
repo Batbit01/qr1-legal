@@ -338,6 +338,7 @@
     const vinoId = qs.get("id") || qs.get("vino_id") || qs.get("vino") || "";
     const anyada = qs.get("anyada") || qs.get("year") || "";
     const fileOverride = qs.get("file"); // testing: &file=https://.../data.json
+    const PREVIEW_MODE = qs.get("preview") === "1"; // dashboard live preview via postMessage
 
     /* 24 UE + 3 cooficiales españolas */
     const LANGS = ["es","ca","eu","gl","bg","cs","da","de","el","en","et","fi","fr","ga","hr","it","lv","lt","hu","mt","nl","pl","pt","ro","sk","sl","sv"];
@@ -356,6 +357,7 @@
     let LABELS = null;
     let WINE = null;
     let activeLang = "en";
+    let PREVIEW_DATA = null; // relleno por postMessage en modo ?preview=1
 
     /* ─────────────────────────────────────────────────────────────
        Helpers
@@ -389,6 +391,11 @@
        Carga datos del vino
     ───────────────────────────────────────────────────────────────*/
     async function loadWineData(lang) {
+      if (PREVIEW_MODE) {
+        // En modo preview, los datos llegan por postMessage desde el dashboard.
+        // Devolvemos lo último recibido o un placeholder vacío.
+        return { lang, data: PREVIEW_DATA || { nombre: "— Esperando datos del editor —" } };
+      }
       if (fileOverride) {
         const r = await fetch(fileOverride, { cache: "no-store" });
         if (!r.ok) throw new Error("No se pudo cargar file override");
@@ -676,6 +683,22 @@
       const initial = detectInitialLang();
       activeLang = initial;
       buildLangSelector(initial);
+
+      if (PREVIEW_MODE) {
+        // Escuchar datos del dashboard y avisar que estamos listos
+        window.addEventListener("message", (ev) => {
+          if (ev.data?.type === "preview-elabel" && ev.data.data) {
+            PREVIEW_DATA = ev.data.data;
+            WINE = PREVIEW_DATA;
+            renderUI();
+            renderWine();
+          }
+        });
+        renderUI();
+        try { (window.parent || window).postMessage({ type: "preview-ready", app: "qr1" }, "*"); } catch {}
+        return;
+      }
+
       await setLang(initial);
     }
 
