@@ -43,5 +43,16 @@
     "nombre": "Bodegas Inurrieta",
     "logo_url": "https://f005.backblazeb2.com/file/SommelierLab-media/qr2/bodegas/B004/media/logo.png",
     "color_primario": "#8E2F4F"
-  }
+  },
+
+  "certificaciones": [
+    {
+      "nombre": "DOP Navarra",
+      "logo_url": "https://f005.backblazeb2.com/file/SommelierLab-media/qr1/certs/dop-navarra.png"
+    },
+    {
+      "nombre": "V-Label Vegan",
+      "logo_url": "https://f005.backblazeb2.com/file/SommelierLab-media/qr1/certs/v-label.png"
+    }
+  ]
 }
