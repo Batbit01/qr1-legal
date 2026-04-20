@@ -1,0 +1,47 @@
+{
+  "schema_version": "qr1-v2",
+  "vino_id": "V005",
+  "anyada": "2021",
+  "nombre": "Inurrieta Puro Vicio",
+  "categoria": "DOP Navarra",
+  "wine_type": "tinto",
+
+  "alcohol": "14.5",
+  "volumen": "750 ml",
+  "origen": "España",
+  "embotellador": "Bodegas Inurrieta S.L., Olite (Navarra), España",
+  "lote": "L2021-001",
+
+  "ingredientes": "Uvas (Garnacha, Graciano), sulfitos.",
+  "alergenos": ["sulfitos"],
+
+  "nutricion": {
+    "energy_kj": 306,
+    "energy_kcal": 73,
+    "fat_g": 0,
+    "saturates_g": 0,
+    "carbs_g": 2.5,
+    "sugars_g": 2.5,
+    "protein_g": 0.1,
+    "salt_g": 0.002
+  },
+
+  "pictogramas": {
+    "pregnancy": true,
+    "no_drive": true,
+    "recycling": {
+      "glass": "GL70",
+      "cap": "ALU 41",
+      "cork": "FOR 50"
+    },
+    "vegan": true,
+    "vegetarian": true,
+    "organic": false
+  },
+
+  "bodega": {
+    "nombre": "Bodegas Inurrieta",
+    "logo_url": "https://f005.backblazeb2.com/file/SommelierLab-media/qr2/bodegas/B004/media/logo.png",
+    "color_primario": "#8E2F4F"
+  }
+}
