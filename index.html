@@ -11,7 +11,8 @@
 
   <style>
     :root {
-      --brand: #8E2F4F;       /* override posible desde JSON del vino */
+      --brand: #8E2F4F;       /* primario — títulos de sección, acento visual */
+      --accent: #d4af37;      /* secundario — badges, bordes destacados */
       --bg: #faf9f7;
       --ink: #1a1a1a;
       --ink-soft: #55504e;
@@ -218,6 +219,7 @@
       font-weight: 700;
       letter-spacing: 0.04em;
       text-transform: uppercase;
+      box-shadow: inset 0 0 0 1px var(--accent);
     }
     .attr-badge svg { width: 13px; height: 13px; }
 
@@ -417,9 +419,29 @@
     /* ─────────────────────────────────────────────────────────────
        Render
     ───────────────────────────────────────────────────────────────*/
-    function applyBrandColor(hex) {
-      if (/^#[0-9a-fA-F]{6}$/.test(hex)) {
-        document.documentElement.style.setProperty("--brand", hex);
+    function applyTheme(w) {
+      const root = document.documentElement.style;
+      const rx = /^#[0-9a-fA-F]{6}$/;
+      const hex = (v) => rx.test(String(v || "")) ? v : null;
+
+      const brand = hex(w?.bodega?.color_primario) || hex(w?.color_primario);
+      const accent = hex(w?.bodega?.color_accent) || hex(w?.color_accent);
+      const bg = hex(w?.bodega?.color_fondo) || hex(w?.color_fondo);
+      const mode = (w?.bodega?.tema || w?.tema || "").toLowerCase();
+
+      if (brand) root.setProperty("--brand", brand);
+      if (accent) root.setProperty("--accent", accent);
+
+      if (bg) {
+        root.setProperty("--bg", bg);
+      } else if (mode === "dark" || mode === "oscuro") {
+        root.setProperty("--bg", "#111111");
+        root.setProperty("--ink", "#f3f1ee");
+        root.setProperty("--ink-soft", "#c6c0b9");
+        root.setProperty("--ink-light", "#8a847e");
+        root.setProperty("--card", "#1a1a1a");
+        root.setProperty("--line", "rgba(255,255,255,0.08)");
+        root.setProperty("--line-soft", "rgba(255,255,255,0.04)");
       }
     }
 
@@ -437,8 +459,8 @@
     function renderWine() {
       const w = WINE || {};
 
-      // Brand color from bodega
-      applyBrandColor(w.color_primario || w.bodega?.color_primario);
+      // Theme (brand / accent / fondo / modo) desde JSON
+      applyTheme(w);
 
       // Logo bodega (estático, sin link — solo identidad visual permitida)
       const logoEl = $("bodegaLogo");
