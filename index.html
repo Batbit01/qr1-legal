@@ -220,7 +220,7 @@
       font-size: 10px; color: var(--ink); font-weight: 600;
       letter-spacing: 0.02em;
     }
-    .recycle-icon svg { width: 56px; height: 52px; }
+    .recycle-icon svg { width: 64px; height: 60px; }
 
     /* PNG pictogramas: en modo oscuro los invertimos para que se vean blancos */
     body.theme-dark .picto-hero img { filter: invert(1); }
@@ -718,8 +718,8 @@
       noDrive: `<img src="https://f005.backblazeb2.com/file/SommelierLab-media/qr1/pictograms/no_drive.png" alt="no drive" loading="lazy" />`,
       // Mobius de reciclaje (ISO 7000-1135) — PNG oficial verde con codigo encima
       recycle: (code) => `<svg viewBox="0 0 100 93" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <image href="https://f005.backblazeb2.com/file/SommelierLab-media/qr1/pictograms/recycle.png" x="0" y="0" width="100" height="93"/>
-        <text x="50" y="53" text-anchor="middle" font-size="16" font-weight="700" fill="#1f9a3a" font-family="Helvetica, Arial, sans-serif">${escapeHtml(code)}</text>
+        <image href="https://f005.backblazeb2.com/file/SommelierLab-media/qr1/pictograms/recycle.png" x="0" y="0" width="100" height="93" preserveAspectRatio="xMidYMid meet"/>
+        <text x="50" y="49" text-anchor="middle" font-size="13" font-weight="800" fill="#1f9a3a" font-family="Helvetica, Arial, sans-serif" letter-spacing="-0.5">${escapeHtml(code)}</text>
       </svg>`,
       // Hoja simple para badges Vegan/Bio/Vegetarian
       leaf: `<svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
