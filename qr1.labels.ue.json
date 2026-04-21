@@ -32,7 +32,15 @@
     "vegan": "ВЕГАН",
     "vegetarian": "ВЕГЕТАРИАНСКО",
     "organic": "БИО",
-    "choose_language": "Изберете език"
+    "choose_language": "Изберете език",
+    "warning_minors": "Not for sale to minors under 18",
+    "denomination": "Denomination",
+    "origin_country": "Country of origin",
+    "provenance": "Place of provenance",
+    "bottling_date": "Bottling date",
+    "conservation": "Storage",
+    "sustainability": "SUSTAINABILITY & CERTIFICATES",
+    "net_quantity": "Net quantity"
   },
   "cs": {
     "title": "DIGITÁLNÍ ŠTÍTEK PRODUKTU",
@@ -67,7 +75,15 @@
     "vegan": "VEGAN",
     "vegetarian": "VEGETARIÁNSKÉ",
     "organic": "BIO",
-    "choose_language": "Vyberte jazyk"
+    "choose_language": "Vyberte jazyk",
+    "warning_minors": "Not for sale to minors under 18",
+    "denomination": "Denomination",
+    "origin_country": "Country of origin",
+    "provenance": "Place of provenance",
+    "bottling_date": "Bottling date",
+    "conservation": "Storage",
+    "sustainability": "SUSTAINABILITY & CERTIFICATES",
+    "net_quantity": "Net quantity"
   },
   "da": {
     "title": "DIGITAL PRODUKTETIKET",
@@ -102,7 +118,15 @@
     "vegan": "VEGAN",
     "vegetarian": "VEGETARISK",
     "organic": "ØKOLOGISK",
-    "choose_language": "Vælg sprog"
+    "choose_language": "Vælg sprog",
+    "warning_minors": "Not for sale to minors under 18",
+    "denomination": "Denomination",
+    "origin_country": "Country of origin",
+    "provenance": "Place of provenance",
+    "bottling_date": "Bottling date",
+    "conservation": "Storage",
+    "sustainability": "SUSTAINABILITY & CERTIFICATES",
+    "net_quantity": "Net quantity"
   },
   "de": {
     "title": "DIGITALES PRODUKTETIKETT",
@@ -137,7 +161,15 @@
     "vegan": "VEGAN",
     "vegetarian": "VEGETARISCH",
     "organic": "BIO",
-    "choose_language": "Sprache wählen"
+    "choose_language": "Sprache wählen",
+    "warning_minors": "Kein Verkauf an Personen unter 18 Jahren",
+    "denomination": "Bezeichnung",
+    "origin_country": "Herkunftsland",
+    "provenance": "Herkunftsort",
+    "bottling_date": "Abfülldatum",
+    "conservation": "Lagerung",
+    "sustainability": "NACHHALTIGKEIT UND ZERTIFIKATE",
+    "net_quantity": "Nettofüllmenge"
   },
   "et": {
     "title": "DIGITAALNE TOOTESILT",
@@ -172,7 +204,15 @@
     "vegan": "VEGAN",
     "vegetarian": "TAIMETOIDULINE",
     "organic": "MAHE",
-    "choose_language": "Vali keel"
+    "choose_language": "Vali keel",
+    "warning_minors": "Not for sale to minors under 18",
+    "denomination": "Denomination",
+    "origin_country": "Country of origin",
+    "provenance": "Place of provenance",
+    "bottling_date": "Bottling date",
+    "conservation": "Storage",
+    "sustainability": "SUSTAINABILITY & CERTIFICATES",
+    "net_quantity": "Net quantity"
   },
   "el": {
     "title": "ΨΗΦΙΑΚΗ ΕΤΙΚΕΤΑ ΠΡΟΪΟΝΤΟΣ",
@@ -207,7 +247,15 @@
     "vegan": "ΒΙΓΚΑΝ",
     "vegetarian": "ΧΟΡΤΟΦΑΓΙΚΟ",
     "organic": "ΒΙΟΛΟΓΙΚΟ",
-    "choose_language": "Επιλέξτε γλώσσα"
+    "choose_language": "Επιλέξτε γλώσσα",
+    "warning_minors": "Not for sale to minors under 18",
+    "denomination": "Denomination",
+    "origin_country": "Country of origin",
+    "provenance": "Place of provenance",
+    "bottling_date": "Bottling date",
+    "conservation": "Storage",
+    "sustainability": "SUSTAINABILITY & CERTIFICATES",
+    "net_quantity": "Net quantity"
   },
   "en": {
     "title": "DIGITAL PRODUCT LABEL",
@@ -242,7 +290,15 @@
     "vegan": "VEGAN",
     "vegetarian": "VEGETARIAN",
     "organic": "ORGANIC",
-    "choose_language": "Choose language"
+    "choose_language": "Choose language",
+    "warning_minors": "Not for sale to minors under 18",
+    "denomination": "Denomination",
+    "origin_country": "Country of origin",
+    "provenance": "Place of provenance",
+    "bottling_date": "Bottling date",
+    "conservation": "Storage",
+    "sustainability": "SUSTAINABILITY & CERTIFICATES",
+    "net_quantity": "Net quantity"
   },
   "es": {
     "title": "ETIQUETA DIGITAL DEL PRODUCTO",
@@ -277,7 +333,15 @@
     "vegan": "VEGANO",
     "vegetarian": "VEGETARIANO",
     "organic": "ECOLÓGICO",
-    "choose_language": "Elegir idioma"
+    "choose_language": "Elegir idioma",
+    "warning_minors": "Prohibida venta a menores de 18 años",
+    "denomination": "Denominación",
+    "origin_country": "País de origen",
+    "provenance": "Lugar de procedencia",
+    "bottling_date": "Fecha de embotellado",
+    "conservation": "Conservación",
+    "sustainability": "SOSTENIBILIDAD Y CERTIFICADOS",
+    "net_quantity": "Cantidad neta"
   },
   "fr": {
     "title": "ÉTIQUETTE NUMÉRIQUE DU PRODUIT",
@@ -312,7 +376,15 @@
     "vegan": "VÉGANE",
     "vegetarian": "VÉGÉTARIEN",
     "organic": "BIO",
-    "choose_language": "Choisir la langue"
+    "choose_language": "Choisir la langue",
+    "warning_minors": "Vente interdite aux mineurs de moins de 18 ans",
+    "denomination": "Dénomination",
+    "origin_country": "Pays d origine",
+    "provenance": "Lieu de provenance",
+    "bottling_date": "Date de mise en bouteille",
+    "conservation": "Conservation",
+    "sustainability": "DURABILITÉ ET CERTIFICATS",
+    "net_quantity": "Quantité nette"
   },
   "ga": {
     "title": "LIPÉAD DIGITEACH TÁIRGE",
@@ -347,7 +419,15 @@
     "vegan": "VEIGEANACH",
     "vegetarian": "FEOILSÉANTACH",
     "organic": "ORGÁNACH",
-    "choose_language": "Roghnaigh teanga"
+    "choose_language": "Roghnaigh teanga",
+    "warning_minors": "Not for sale to minors under 18",
+    "denomination": "Denomination",
+    "origin_country": "Country of origin",
+    "provenance": "Place of provenance",
+    "bottling_date": "Bottling date",
+    "conservation": "Storage",
+    "sustainability": "SUSTAINABILITY & CERTIFICATES",
+    "net_quantity": "Net quantity"
   },
   "hr": {
     "title": "DIGITALNA OZNAKA PROIZVODA",
@@ -382,7 +462,15 @@
     "vegan": "VEGANSKO",
     "vegetarian": "VEGETARIJANSKO",
     "organic": "EKOLOŠKO",
-    "choose_language": "Odaberite jezik"
+    "choose_language": "Odaberite jezik",
+    "warning_minors": "Not for sale to minors under 18",
+    "denomination": "Denomination",
+    "origin_country": "Country of origin",
+    "provenance": "Place of provenance",
+    "bottling_date": "Bottling date",
+    "conservation": "Storage",
+    "sustainability": "SUSTAINABILITY & CERTIFICATES",
+    "net_quantity": "Net quantity"
   },
   "it": {
     "title": "ETICHETTA DIGITALE DEL PRODOTTO",
@@ -417,7 +505,15 @@
     "vegan": "VEGANO",
     "vegetarian": "VEGETARIANO",
     "organic": "BIOLOGICO",
-    "choose_language": "Scegli lingua"
+    "choose_language": "Scegli lingua",
+    "warning_minors": "Vendita vietata ai minori di 18 anni",
+    "denomination": "Denominazione",
+    "origin_country": "Paese di origine",
+    "provenance": "Luogo di provenienza",
+    "bottling_date": "Data di imbottigliamento",
+    "conservation": "Conservazione",
+    "sustainability": "SOSTENIBILITÀ E CERTIFICATI",
+    "net_quantity": "Quantità netta"
   },
   "lv": {
     "title": "DIGITĀLĀ PRODUKTA ETIĶETE",
@@ -452,7 +548,15 @@
     "vegan": "VEGĀNS",
     "vegetarian": "VEĢETĀRS",
     "organic": "BIOLOĢISKS",
-    "choose_language": "Izvēlieties valodu"
+    "choose_language": "Izvēlieties valodu",
+    "warning_minors": "Not for sale to minors under 18",
+    "denomination": "Denomination",
+    "origin_country": "Country of origin",
+    "provenance": "Place of provenance",
+    "bottling_date": "Bottling date",
+    "conservation": "Storage",
+    "sustainability": "SUSTAINABILITY & CERTIFICATES",
+    "net_quantity": "Net quantity"
   },
   "lt": {
     "title": "SKAITMENINĖ PRODUKTO ETIKETĖ",
@@ -487,7 +591,15 @@
     "vegan": "VEGAN",
     "vegetarian": "VEGETARIŠKA",
     "organic": "EKOLOGIŠKAS",
-    "choose_language": "Pasirinkite kalbą"
+    "choose_language": "Pasirinkite kalbą",
+    "warning_minors": "Not for sale to minors under 18",
+    "denomination": "Denomination",
+    "origin_country": "Country of origin",
+    "provenance": "Place of provenance",
+    "bottling_date": "Bottling date",
+    "conservation": "Storage",
+    "sustainability": "SUSTAINABILITY & CERTIFICATES",
+    "net_quantity": "Net quantity"
   },
   "hu": {
     "title": "DIGITÁLIS TERMÉKCÍMKE",
@@ -522,7 +634,15 @@
     "vegan": "VEGÁN",
     "vegetarian": "VEGETÁRIÁNUS",
     "organic": "BIO",
-    "choose_language": "Válasszon nyelvet"
+    "choose_language": "Válasszon nyelvet",
+    "warning_minors": "Not for sale to minors under 18",
+    "denomination": "Denomination",
+    "origin_country": "Country of origin",
+    "provenance": "Place of provenance",
+    "bottling_date": "Bottling date",
+    "conservation": "Storage",
+    "sustainability": "SUSTAINABILITY & CERTIFICATES",
+    "net_quantity": "Net quantity"
   },
   "mt": {
     "title": "ETIKETTA DIĠITALI TAL-PRODOTT",
@@ -557,7 +677,15 @@
     "vegan": "VEGAN",
     "vegetarian": "VEĠETARJAN",
     "organic": "ORGANIKU",
-    "choose_language": "Agħżel lingwa"
+    "choose_language": "Agħżel lingwa",
+    "warning_minors": "Not for sale to minors under 18",
+    "denomination": "Denomination",
+    "origin_country": "Country of origin",
+    "provenance": "Place of provenance",
+    "bottling_date": "Bottling date",
+    "conservation": "Storage",
+    "sustainability": "SUSTAINABILITY & CERTIFICATES",
+    "net_quantity": "Net quantity"
   },
   "nl": {
     "title": "DIGITAAL PRODUCTLABEL",
@@ -592,7 +720,15 @@
     "vegan": "VEGAN",
     "vegetarian": "VEGETARISCH",
     "organic": "BIOLOGISCH",
-    "choose_language": "Kies taal"
+    "choose_language": "Kies taal",
+    "warning_minors": "Not for sale to minors under 18",
+    "denomination": "Denomination",
+    "origin_country": "Country of origin",
+    "provenance": "Place of provenance",
+    "bottling_date": "Bottling date",
+    "conservation": "Storage",
+    "sustainability": "SUSTAINABILITY & CERTIFICATES",
+    "net_quantity": "Net quantity"
   },
   "pl": {
     "title": "CYFROWA ETYKIETA PRODUKTU",
@@ -627,7 +763,15 @@
     "vegan": "WEGAŃSKIE",
     "vegetarian": "WEGETARIAŃSKIE",
     "organic": "EKOLOGICZNE",
-    "choose_language": "Wybierz język"
+    "choose_language": "Wybierz język",
+    "warning_minors": "Not for sale to minors under 18",
+    "denomination": "Denomination",
+    "origin_country": "Country of origin",
+    "provenance": "Place of provenance",
+    "bottling_date": "Bottling date",
+    "conservation": "Storage",
+    "sustainability": "SUSTAINABILITY & CERTIFICATES",
+    "net_quantity": "Net quantity"
   },
   "pt": {
     "title": "RÓTULO DIGITAL DO PRODUTO",
@@ -662,7 +806,15 @@
     "vegan": "VEGANO",
     "vegetarian": "VEGETARIANO",
     "organic": "BIOLÓGICO",
-    "choose_language": "Escolher idioma"
+    "choose_language": "Escolher idioma",
+    "warning_minors": "Venda proibida a menores de 18 anos",
+    "denomination": "Denominação",
+    "origin_country": "País de origem",
+    "provenance": "Local de proveniência",
+    "bottling_date": "Data de engarrafamento",
+    "conservation": "Conservação",
+    "sustainability": "SUSTENTABILIDADE E CERTIFICADOS",
+    "net_quantity": "Quantidade líquida"
   },
   "ro": {
     "title": "ETICHETĂ DIGITALĂ A PRODUSULUI",
@@ -697,7 +849,15 @@
     "vegan": "VEGAN",
     "vegetarian": "VEGETARIAN",
     "organic": "ECOLOGIC",
-    "choose_language": "Alege limba"
+    "choose_language": "Alege limba",
+    "warning_minors": "Not for sale to minors under 18",
+    "denomination": "Denomination",
+    "origin_country": "Country of origin",
+    "provenance": "Place of provenance",
+    "bottling_date": "Bottling date",
+    "conservation": "Storage",
+    "sustainability": "SUSTAINABILITY & CERTIFICATES",
+    "net_quantity": "Net quantity"
   },
   "sk": {
     "title": "DIGITÁLNY ŠTÍTOK PRODUKTU",
@@ -732,7 +892,15 @@
     "vegan": "VEGÁNSKE",
     "vegetarian": "VEGETARIÁNSKE",
     "organic": "BIO",
-    "choose_language": "Vybrať jazyk"
+    "choose_language": "Vybrať jazyk",
+    "warning_minors": "Not for sale to minors under 18",
+    "denomination": "Denomination",
+    "origin_country": "Country of origin",
+    "provenance": "Place of provenance",
+    "bottling_date": "Bottling date",
+    "conservation": "Storage",
+    "sustainability": "SUSTAINABILITY & CERTIFICATES",
+    "net_quantity": "Net quantity"
   },
   "sl": {
     "title": "DIGITALNA OZNAKA IZDELKA",
@@ -767,7 +935,15 @@
     "vegan": "VEGANSKO",
     "vegetarian": "VEGETARIJANSKO",
     "organic": "EKOLOŠKO",
-    "choose_language": "Izberite jezik"
+    "choose_language": "Izberite jezik",
+    "warning_minors": "Not for sale to minors under 18",
+    "denomination": "Denomination",
+    "origin_country": "Country of origin",
+    "provenance": "Place of provenance",
+    "bottling_date": "Bottling date",
+    "conservation": "Storage",
+    "sustainability": "SUSTAINABILITY & CERTIFICATES",
+    "net_quantity": "Net quantity"
   },
   "fi": {
     "title": "DIGITAALINEN TUOTEMERKINTÄ",
@@ -802,7 +978,15 @@
     "vegan": "VEGAANINEN",
     "vegetarian": "KASVISRUOKAVALIO",
     "organic": "LUOMU",
-    "choose_language": "Valitse kieli"
+    "choose_language": "Valitse kieli",
+    "warning_minors": "Not for sale to minors under 18",
+    "denomination": "Denomination",
+    "origin_country": "Country of origin",
+    "provenance": "Place of provenance",
+    "bottling_date": "Bottling date",
+    "conservation": "Storage",
+    "sustainability": "SUSTAINABILITY & CERTIFICATES",
+    "net_quantity": "Net quantity"
   },
   "sv": {
     "title": "DIGITAL PRODUKTETIKETT",
@@ -837,7 +1021,15 @@
     "vegan": "VEGAN",
     "vegetarian": "VEGETARISK",
     "organic": "EKOLOGISK",
-    "choose_language": "Välj språk"
+    "choose_language": "Välj språk",
+    "warning_minors": "Not for sale to minors under 18",
+    "denomination": "Denomination",
+    "origin_country": "Country of origin",
+    "provenance": "Place of provenance",
+    "bottling_date": "Bottling date",
+    "conservation": "Storage",
+    "sustainability": "SUSTAINABILITY & CERTIFICATES",
+    "net_quantity": "Net quantity"
   },
   "ca": {
     "category": "CATEGORIA",
@@ -864,7 +1056,15 @@
     "vegan": "VEGÀ",
     "vegetarian": "VEGETARIÀ",
     "organic": "ECOLÒGIC",
-    "choose_language": "Escolliu idioma"
+    "choose_language": "Escolliu idioma",
+    "warning_minors": "Venda prohibida a menors de 18 anys",
+    "denomination": "Denominació",
+    "origin_country": "País d origen",
+    "provenance": "Lloc de procedència",
+    "bottling_date": "Data d embotellament",
+    "conservation": "Conservació",
+    "sustainability": "SOSTENIBILITAT I CERTIFICATS",
+    "net_quantity": "Quantitat neta"
   },
   "eu": {
     "category": "KATEGORIA",
@@ -891,7 +1091,15 @@
     "vegan": "VEGANOA",
     "vegetarian": "BARAZKIJALEA",
     "organic": "EKOLOGIKOA",
-    "choose_language": "Aukeratu hizkuntza"
+    "choose_language": "Aukeratu hizkuntza",
+    "warning_minors": "18 urtetik beherakoei saltzea debekatua",
+    "denomination": "Izendapena",
+    "origin_country": "Jatorri-herrialdea",
+    "provenance": "Jatorri-lekua",
+    "bottling_date": "Botilaratze-data",
+    "conservation": "Kontserbazioa",
+    "sustainability": "IRAUNKORTASUNA ETA ZIURTAGIRIAK",
+    "net_quantity": "Garbiko kopurua"
   },
   "gl": {
     "category": "CATEGORÍA",
@@ -918,6 +1126,14 @@
     "vegan": "VEGANO",
     "vegetarian": "VEXETARIANO",
     "organic": "ECOLÓXICO",
-    "choose_language": "Escolle idioma"
+    "choose_language": "Escolle idioma",
+    "warning_minors": "Venda prohibida a menores de 18 anos",
+    "denomination": "Denominación",
+    "origin_country": "País de orixe",
+    "provenance": "Lugar de procedencia",
+    "bottling_date": "Data de embotellado",
+    "conservation": "Conservación",
+    "sustainability": "SOSTIBILIDADE E CERTIFICADOS",
+    "net_quantity": "Cantidade neta"
   }
 }

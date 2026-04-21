@@ -11,7 +11,7 @@
 
   <style>
     :root {
-      --brand: #8E2F4F;       /* primario — títulos de sección, acento visual */
+      --brand: #1168c1;       /* primario — títulos, cabeceras, hero (override desde JSON) */
       --accent: #d4af37;      /* secundario — badges, bordes destacados */
       --bg: #faf9f7;
       --ink: #1a1a1a;
@@ -104,8 +104,8 @@
     }
     .wine-name {
       font-size: 22px;
-      font-weight: 700;
-      color: var(--ink);
+      font-weight: 800;
+      color: var(--brand);
       margin: 6px 0 4px;
       letter-spacing: -0.01em;
     }
@@ -144,32 +144,38 @@
       border-collapse: collapse;
       font-size: 13px;
     }
-    table.nutrition caption {
-      font-size: 11px;
-      color: var(--ink-light);
-      text-align: right;
-      padding: 0 0 6px;
-      font-style: italic;
+    table.nutrition thead tr {
+      background: var(--brand);
+      color: #fff;
     }
-    table.nutrition th,
-    table.nutrition td {
-      padding: 6px 0;
+    table.nutrition thead th {
+      padding: 8px 10px;
+      text-align: right;
+      font-weight: 600;
+      font-size: 11px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    table.nutrition thead th:first-child { text-align: left; }
+    table.nutrition tbody th,
+    table.nutrition tbody td {
+      padding: 7px 10px;
       border-bottom: 1px solid var(--line-soft);
       vertical-align: top;
     }
-    table.nutrition th {
+    table.nutrition tbody th {
       text-align: left;
       font-weight: 500;
       color: var(--ink-soft);
     }
-    table.nutrition td {
+    table.nutrition tbody td {
       text-align: right;
       color: var(--ink);
       font-variant-numeric: tabular-nums;
     }
-    table.nutrition tr.sub th { padding-left: 14px; color: var(--ink-light); font-weight: 400; }
-    table.nutrition tr:last-child th,
-    table.nutrition tr:last-child td { border-bottom: none; }
+    table.nutrition tr.sub th { padding-left: 22px; color: var(--ink-light); font-weight: 400; }
+    table.nutrition tbody tr:last-child th,
+    table.nutrition tbody tr:last-child td { border-bottom: none; }
 
     /* Tech info grid */
     .tech-grid {
@@ -187,26 +193,21 @@
     }
     .tech-grid dd { margin: 0 0 6px; color: var(--ink); font-weight: 500; }
 
-    /* Pictograms (warnings + attributes) */
-    .pictos {
-      display: flex; flex-wrap: wrap; gap: 10px;
-      justify-content: center;
-      margin: 4px 0 0;
+    /* Pictograms hero (arriba, sin caja — como AECOC) */
+    .pictos-hero {
+      display: flex; gap: 14px;
+      justify-content: center; align-items: flex-start;
+      margin: 16px 0 4px;
     }
-    .picto {
-      display: inline-flex; flex-direction: column; align-items: center; gap: 6px;
-      background: #ffffff;
-      border: 1px solid rgba(0,0,0,0.08);
-      border-radius: 12px;
-      padding: 10px 12px;
-      min-width: 96px;
-      font-size: 10px;
-      color: #1a1a1a;
+    .picto-hero {
+      display: inline-flex; flex-direction: column; align-items: center; gap: 4px;
+      font-size: 9px;
+      color: var(--ink-light);
       text-align: center;
-      line-height: 1.3;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+      line-height: 1.2;
+      max-width: 80px;
     }
-    .picto svg { width: 40px; height: 40px; }
+    .picto-hero svg { width: 52px; height: 52px; }
 
     /* Recycling icons (triangle with code — símbolo universal) */
     .recycling {
@@ -297,7 +298,7 @@
       </div>
     </div>
 
-    <!-- Hero: heading + wine identity -->
+    <!-- Hero: heading + wine identity + pictogramas arriba (estilo AECOC) -->
     <section class="hero">
       <p class="title" id="title">DIGITAL PRODUCT LABEL</p>
       <p class="subtitle" id="subtitle"></p>
@@ -306,6 +307,7 @@
         <span id="wineCategory"></span>
         <span id="wineYear"></span>
       </div>
+      <div class="pictos-hero" id="pictosHero"></div>
     </section>
 
     <!-- Ingredients -->
@@ -318,7 +320,9 @@
     <section class="section">
       <h2 id="nutritionTitle">NUTRITION INFORMATION</h2>
       <table class="nutrition">
-        <caption id="perBasis">per 100 ml</caption>
+        <thead>
+          <tr><th></th><th id="perBasisTh">per 100 ml</th></tr>
+        </thead>
         <tbody id="nutritionTable"></tbody>
       </table>
     </section>
@@ -328,9 +332,9 @@
       <dl class="tech-grid" id="techGrid"></dl>
     </section>
 
-    <!-- Pictograms & certifications -->
+    <!-- Reciclaje, atributos y certificaciones -->
     <section class="section" id="pictogramsSection">
-      <div class="pictos" id="pictosContainer"></div>
+      <h2 id="sustainabilityTitle">SOSTENIBILIDAD Y CERTIFICADOS</h2>
       <div class="recycling" id="recyclingRow"></div>
       <div class="attrs" id="attrsRow"></div>
       <div class="certs" id="certsRow"></div>
@@ -503,7 +507,8 @@
       $("subtitle").textContent = t("subtitle") || "";
       $("ingredientsTitle").textContent = t("ingredients") || "INGREDIENTS";
       $("nutritionTitle").textContent = t("nutrition") || "NUTRITION INFORMATION";
-      $("perBasis").textContent = t("per_100ml") || "per 100 ml";
+      $("perBasisTh").textContent = t("per_100ml") || "per 100 ml";
+      if ($("sustainabilityTitle")) $("sustainabilityTitle").textContent = t("sustainability") || "SUSTAINABILITY & CERTIFICATES";
       $("responsibleText").textContent = t("drink_responsibly") || "Drink responsibly";
       document.documentElement.lang = activeLang;
       document.title = `${t("title")} · ${WINE?.nombre || ""}`;
@@ -561,6 +566,8 @@
     function renderNutrition(n) {
       const tbl = $("nutritionTable");
       tbl.innerHTML = "";
+      const w = WINE || {};
+      const cantidadNeta = w.volumen || w.volume || "";
       const rows = [
         { key: "energy",        label: t("energy"),        value: formatEnergy(n) },
         { key: "fat",           label: t("fat"),           value: formatNum(n.fat_g ?? n.grasas_g, "g") },
@@ -569,6 +576,7 @@
         { key: "sugars",        label: t("sugars"),        value: formatNum(n.sugars_g ?? n.azucares_g, "g"), sub: true },
         { key: "protein",       label: t("protein"),       value: formatNum(n.protein_g ?? n.proteinas_g, "g") },
         { key: "salt",          label: t("salt"),          value: formatNum(n.salt_g ?? n.sal_g, "g") },
+        { key: "net",           label: t("net_quantity") || "Cantidad neta", value: cantidadNeta, plain: true },
       ];
       for (const r of rows) {
         if (r.value === null || r.value === "—") continue;
@@ -612,26 +620,34 @@
         dl.appendChild(dd);
       };
       const abv = w.alcohol || w.graduacion_texto || w.graduacion;
+      add(t("denomination") || "Denominación", w.denominacion);
       add(t("abv"), abv ? (String(abv).includes("%") ? abv : `${abv}% vol.`) : "");
       add(t("volume"), w.volumen || w.volume || w.volumen_texto);
       add(t("category"), w.categoria);
-      add(t("origin"), w.origen || w.origin);
+      add(t("origin_country") || t("origin"), w.origen || w.origin);
+      add(t("provenance") || "Lugar de procedencia", w.procedencia);
+      add(t("bottling_date") || "Fecha de embotellado", w.fecha_embotellado);
+      add(t("conservation") || "Conservación", w.conservacion);
       add(t("bottler"), w.embotellador || w.bottler);
       add(t("lot"), w.lote || w.lot);
     }
 
     function renderPictograms(p) {
-      const pct = $("pictosContainer");
+      const hero = $("pictosHero");
       const rec = $("recyclingRow");
       const attrs = $("attrsRow");
-      pct.innerHTML = ""; rec.innerHTML = ""; attrs.innerHTML = "";
+      hero.innerHTML = ""; rec.innerHTML = ""; attrs.innerHTML = "";
 
-      // Warnings (embarazadas + no conducir)
-      if (p.pregnancy !== false) { // true o undefined → mostrar por defecto
-        pct.appendChild(makePicto(ICONS.pregnancy, t("warning_pregnancy")));
+      // Pictogramas obligatorios arriba (estilo AECOC)
+      // Orden: -18 · embarazada · no conducir
+      if (p.no_minors !== false) { // por defecto sí (vino > 18)
+        hero.appendChild(makeHeroPicto(ICONS.noMinors, t("warning_minors") || "+18"));
       }
-      if (p.no_drive) {
-        pct.appendChild(makePicto(ICONS.noDrive, t("warning_drive")));
+      if (p.pregnancy !== false) {
+        hero.appendChild(makeHeroPicto(ICONS.pregnancy, t("warning_pregnancy")));
+      }
+      if (p.no_drive !== false) { // opcional pero lo ponemos por defecto (puede desactivarse)
+        hero.appendChild(makeHeroPicto(ICONS.noDrive, t("warning_drive")));
       }
 
       // Recycling — icono triángulo con código dentro (universal)
@@ -664,14 +680,14 @@
         certsRow.appendChild(el);
       });
 
-      const hasContent = pct.children.length || rec.children.length || attrs.children.length || certsRow.children.length;
-      $("pictogramsSection").style.display = hasContent ? "" : "none";
+      const hasSustainability = rec.children.length || attrs.children.length || certsRow.children.length;
+      $("pictogramsSection").style.display = hasSustainability ? "" : "none";
     }
 
-    function makePicto(svgMarkup, label) {
+    function makeHeroPicto(svgMarkup, label) {
       const el = document.createElement("div");
-      el.className = "picto";
-      el.innerHTML = svgMarkup + `<span>${escapeHtml(label)}</span>`;
+      el.className = "picto-hero";
+      el.innerHTML = svgMarkup + `<span>${escapeHtml(label || "")}</span>`;
       return el;
     }
 
@@ -690,28 +706,41 @@
        Pictograma SVG (embarazadas tachada + coche tachado)
     ───────────────────────────────────────────────────────────────*/
     const ICONS = {
-      // Pictograma UE "no embarazadas": silueta negra bebiendo + copa vino + tachado rojo grueso
-      pregnancy: `<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <circle cx="32" cy="32" r="30" fill="#ffffff" stroke="#1a1a1a" stroke-width="2"/>
-        <g fill="#1a1a1a">
-          <circle cx="24" cy="17" r="4"/>
-          <path d="M20 22 C18 22 17 24 17 27 L17 38 C17 39.5 18 40.5 19.5 40.5 L20 40.5 L20 52 C20 53.4 21.1 54.5 22.5 54.5 C23.9 54.5 25 53.4 25 52 L25 42 L27 42 L27 52 C27 53.4 28.1 54.5 29.5 54.5 C30.9 54.5 32 53.4 32 52 L32 40 C34.2 39.3 36 37.2 36 34.5 L36 28 C36 24.5 33.5 22 30 22 Z"/>
-          <ellipse cx="34" cy="32" rx="7" ry="8.5"/>
-        </g>
-        <g transform="translate(40,18)">
-          <path d="M0 0 L10 0 L8.5 9 C8.2 10.8 7 11.8 5 11.8 C3 11.8 1.8 10.8 1.5 9 Z" fill="#8c0820" stroke="#3a0009" stroke-width="0.6"/>
-          <line x1="5" y1="11.8" x2="5" y2="18" stroke="#3a0009" stroke-width="1.4"/>
-          <line x1="1" y1="19" x2="9" y2="19" stroke="#3a0009" stroke-width="1.4"/>
-        </g>
-        <line x1="13" y1="13" x2="51" y2="51" stroke="#e11d1d" stroke-width="6.5" stroke-linecap="round"/>
+      // Pictograma -18 (prohibido menores) — círculo rojo + texto -18 + diagonal
+      noMinors: `<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="32" cy="32" r="26" fill="#ffffff"/>
+        <circle cx="32" cy="32" r="28" fill="none" stroke="#e11d1d" stroke-width="6"/>
+        <text x="32" y="42" text-anchor="middle" font-size="24" font-weight="900" fill="#1a1a1a" font-family="Arial, Helvetica, sans-serif">-18</text>
+        <line x1="13" y1="13" x2="51" y2="51" stroke="#e11d1d" stroke-width="6" stroke-linecap="round"/>
       </svg>`,
-      // Pictograma "no conducir tras consumir": copa de vino grande + diagonal roja
+      // Pictograma embarazada prohibido — silueta negra de perfil en circulo rojo
+      pregnancy: `<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="32" cy="32" r="26" fill="#ffffff"/>
+        <circle cx="32" cy="32" r="28" fill="none" stroke="#e11d1d" stroke-width="6"/>
+        <g fill="#1a1a1a">
+          <circle cx="26" cy="16" r="3.5"/>
+          <path d="M23 21 C21 21 20 23 20 26 L20 34 C20 36 21 37 23 37 L23 38 L21 50 C20.7 51.4 21.7 52.5 23 52.5 C24 52.5 24.7 51.8 25 51 L26.5 42 L27.5 42 L28 50 C28.2 51.4 29 52.5 30.5 52.5 C31.8 52.5 32.8 51.4 32.5 50 L30 38 L30 37.2 C33 36.6 36 34 37 30 C39 30 40 28 40 26.5 C40 25 39 23 36.5 23 L30 23 C28.8 22 28 21 26 21 Z"/>
+          <ellipse cx="33" cy="32" rx="7" ry="8"/>
+        </g>
+        <line x1="13" y1="13" x2="51" y2="51" stroke="#e11d1d" stroke-width="6" stroke-linecap="round"/>
+      </svg>`,
+      // Pictograma no conducir — silueta con volante y copa en circulo rojo
       noDrive: `<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <circle cx="32" cy="32" r="30" fill="#ffffff" stroke="#1a1a1a" stroke-width="2"/>
-        <path d="M18 16 L46 16 L41 36 C40 41 36 43 32 43 C28 43 24 41 23 36 Z" fill="#8c0820" stroke="#3a0009" stroke-width="1.2"/>
-        <line x1="32" y1="43" x2="32" y2="52" stroke="#1a1a1a" stroke-width="2.8"/>
-        <line x1="22" y1="52.5" x2="42" y2="52.5" stroke="#1a1a1a" stroke-width="2.8" stroke-linecap="round"/>
-        <line x1="13" y1="13" x2="51" y2="51" stroke="#e11d1d" stroke-width="6.5" stroke-linecap="round"/>
+        <circle cx="32" cy="32" r="26" fill="#ffffff"/>
+        <circle cx="32" cy="32" r="28" fill="none" stroke="#e11d1d" stroke-width="6"/>
+        <g fill="#1a1a1a">
+          <circle cx="28" cy="15" r="3.5"/>
+          <path d="M24 20 C22 20 21 21.5 21 24 L21 32 L24 32 L24 42 L26 42 L26 52 L30 52 L30 42 L32 42 L32 52 L36 52 L36 42 L36 32 L35 28 C34.5 24 32 21 30 20 Z"/>
+        </g>
+        <g fill="none" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round">
+          <circle cx="42" cy="38" r="6" fill="#1a1a1a"/>
+          <circle cx="42" cy="38" r="2" fill="#ffffff"/>
+          <line x1="42" y1="32" x2="42" y2="36"/>
+          <line x1="36" y1="38" x2="40" y2="38"/>
+          <line x1="44" y1="38" x2="48" y2="38"/>
+          <line x1="42" y1="40" x2="42" y2="44"/>
+        </g>
+        <line x1="13" y1="13" x2="51" y2="51" stroke="#e11d1d" stroke-width="6" stroke-linecap="round"/>
       </svg>`,
       // Triángulo Möbius universal (verde oficial) con código material dentro
       recycle: (code) => `<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
