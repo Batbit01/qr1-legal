@@ -40,7 +40,8 @@
     "bottling_date": "Bottling date",
     "conservation": "Storage",
     "sustainability": "SUSTAINABILITY & CERTIFICATES",
-    "net_quantity": "Net quantity"
+    "net_quantity": "Net quantity",
+    "operator": "Food business operator"
   },
   "cs": {
     "title": "DIGITÁLNÍ ŠTÍTEK PRODUKTU",
@@ -83,7 +84,8 @@
     "bottling_date": "Bottling date",
     "conservation": "Storage",
     "sustainability": "SUSTAINABILITY & CERTIFICATES",
-    "net_quantity": "Net quantity"
+    "net_quantity": "Net quantity",
+    "operator": "Food business operator"
   },
   "da": {
     "title": "DIGITAL PRODUKTETIKET",
@@ -126,7 +128,8 @@
     "bottling_date": "Bottling date",
     "conservation": "Storage",
     "sustainability": "SUSTAINABILITY & CERTIFICATES",
-    "net_quantity": "Net quantity"
+    "net_quantity": "Net quantity",
+    "operator": "Food business operator"
   },
   "de": {
     "title": "DIGITALES PRODUKTETIKETT",
@@ -169,7 +172,8 @@
     "bottling_date": "Abfülldatum",
     "conservation": "Lagerung",
     "sustainability": "NACHHALTIGKEIT UND ZERTIFIKATE",
-    "net_quantity": "Nettofüllmenge"
+    "net_quantity": "Nettofüllmenge",
+    "operator": "Lebensmittelunternehmer"
   },
   "et": {
     "title": "DIGITAALNE TOOTESILT",
@@ -212,7 +216,8 @@
     "bottling_date": "Bottling date",
     "conservation": "Storage",
     "sustainability": "SUSTAINABILITY & CERTIFICATES",
-    "net_quantity": "Net quantity"
+    "net_quantity": "Net quantity",
+    "operator": "Food business operator"
   },
   "el": {
     "title": "ΨΗΦΙΑΚΗ ΕΤΙΚΕΤΑ ΠΡΟΪΟΝΤΟΣ",
@@ -255,7 +260,8 @@
     "bottling_date": "Bottling date",
     "conservation": "Storage",
     "sustainability": "SUSTAINABILITY & CERTIFICATES",
-    "net_quantity": "Net quantity"
+    "net_quantity": "Net quantity",
+    "operator": "Food business operator"
   },
   "en": {
     "title": "DIGITAL PRODUCT LABEL",
@@ -298,7 +304,8 @@
     "bottling_date": "Bottling date",
     "conservation": "Storage",
     "sustainability": "SUSTAINABILITY & CERTIFICATES",
-    "net_quantity": "Net quantity"
+    "net_quantity": "Net quantity",
+    "operator": "Food business operator"
   },
   "es": {
     "title": "ETIQUETA DIGITAL DEL PRODUCTO",
@@ -341,7 +348,8 @@
     "bottling_date": "Fecha de embotellado",
     "conservation": "Conservación",
     "sustainability": "SOSTENIBILIDAD Y CERTIFICADOS",
-    "net_quantity": "Cantidad neta"
+    "net_quantity": "Cantidad neta",
+    "operator": "Operador alimentario"
   },
   "fr": {
     "title": "ÉTIQUETTE NUMÉRIQUE DU PRODUIT",
@@ -384,7 +392,8 @@
     "bottling_date": "Date de mise en bouteille",
     "conservation": "Conservation",
     "sustainability": "DURABILITÉ ET CERTIFICATS",
-    "net_quantity": "Quantité nette"
+    "net_quantity": "Quantité nette",
+    "operator": "Opérateur alimentaire"
   },
   "ga": {
     "title": "LIPÉAD DIGITEACH TÁIRGE",
@@ -427,7 +436,8 @@
     "bottling_date": "Bottling date",
     "conservation": "Storage",
     "sustainability": "SUSTAINABILITY & CERTIFICATES",
-    "net_quantity": "Net quantity"
+    "net_quantity": "Net quantity",
+    "operator": "Food business operator"
   },
   "hr": {
     "title": "DIGITALNA OZNAKA PROIZVODA",
@@ -470,7 +480,8 @@
     "bottling_date": "Bottling date",
     "conservation": "Storage",
     "sustainability": "SUSTAINABILITY & CERTIFICATES",
-    "net_quantity": "Net quantity"
+    "net_quantity": "Net quantity",
+    "operator": "Food business operator"
   },
   "it": {
     "title": "ETICHETTA DIGITALE DEL PRODOTTO",
@@ -513,7 +524,8 @@
     "bottling_date": "Data di imbottigliamento",
     "conservation": "Conservazione",
     "sustainability": "SOSTENIBILITÀ E CERTIFICATI",
-    "net_quantity": "Quantità netta"
+    "net_quantity": "Quantità netta",
+    "operator": "Operatore alimentare"
   },
   "lv": {
     "title": "DIGITĀLĀ PRODUKTA ETIĶETE",
@@ -556,7 +568,8 @@
     "bottling_date": "Bottling date",
     "conservation": "Storage",
     "sustainability": "SUSTAINABILITY & CERTIFICATES",
-    "net_quantity": "Net quantity"
+    "net_quantity": "Net quantity",
+    "operator": "Food business operator"
   },
   "lt": {
     "title": "SKAITMENINĖ PRODUKTO ETIKETĖ",
@@ -599,7 +612,8 @@
     "bottling_date": "Bottling date",
     "conservation": "Storage",
     "sustainability": "SUSTAINABILITY & CERTIFICATES",
-    "net_quantity": "Net quantity"
+    "net_quantity": "Net quantity",
+    "operator": "Food business operator"
   },
   "hu": {
     "title": "DIGITÁLIS TERMÉKCÍMKE",
@@ -642,7 +656,8 @@
     "bottling_date": "Bottling date",
     "conservation": "Storage",
     "sustainability": "SUSTAINABILITY & CERTIFICATES",
-    "net_quantity": "Net quantity"
+    "net_quantity": "Net quantity",
+    "operator": "Food business operator"
   },
   "mt": {
     "title": "ETIKETTA DIĠITALI TAL-PRODOTT",
@@ -685,7 +700,8 @@
     "bottling_date": "Bottling date",
     "conservation": "Storage",
     "sustainability": "SUSTAINABILITY & CERTIFICATES",
-    "net_quantity": "Net quantity"
+    "net_quantity": "Net quantity",
+    "operator": "Food business operator"
   },
   "nl": {
     "title": "DIGITAAL PRODUCTLABEL",
@@ -728,7 +744,8 @@
     "bottling_date": "Bottling date",
     "conservation": "Storage",
     "sustainability": "SUSTAINABILITY & CERTIFICATES",
-    "net_quantity": "Net quantity"
+    "net_quantity": "Net quantity",
+    "operator": "Food business operator"
   },
   "pl": {
     "title": "CYFROWA ETYKIETA PRODUKTU",
@@ -771,7 +788,8 @@
     "bottling_date": "Bottling date",
     "conservation": "Storage",
     "sustainability": "SUSTAINABILITY & CERTIFICATES",
-    "net_quantity": "Net quantity"
+    "net_quantity": "Net quantity",
+    "operator": "Food business operator"
   },
   "pt": {
     "title": "RÓTULO DIGITAL DO PRODUTO",
@@ -814,7 +832,8 @@
     "bottling_date": "Data de engarrafamento",
     "conservation": "Conservação",
     "sustainability": "SUSTENTABILIDADE E CERTIFICADOS",
-    "net_quantity": "Quantidade líquida"
+    "net_quantity": "Quantidade líquida",
+    "operator": "Operador alimentar"
   },
   "ro": {
     "title": "ETICHETĂ DIGITALĂ A PRODUSULUI",
@@ -857,7 +876,8 @@
     "bottling_date": "Bottling date",
     "conservation": "Storage",
     "sustainability": "SUSTAINABILITY & CERTIFICATES",
-    "net_quantity": "Net quantity"
+    "net_quantity": "Net quantity",
+    "operator": "Food business operator"
   },
   "sk": {
     "title": "DIGITÁLNY ŠTÍTOK PRODUKTU",
@@ -900,7 +920,8 @@
     "bottling_date": "Bottling date",
     "conservation": "Storage",
     "sustainability": "SUSTAINABILITY & CERTIFICATES",
-    "net_quantity": "Net quantity"
+    "net_quantity": "Net quantity",
+    "operator": "Food business operator"
   },
   "sl": {
     "title": "DIGITALNA OZNAKA IZDELKA",
@@ -943,7 +964,8 @@
     "bottling_date": "Bottling date",
     "conservation": "Storage",
     "sustainability": "SUSTAINABILITY & CERTIFICATES",
-    "net_quantity": "Net quantity"
+    "net_quantity": "Net quantity",
+    "operator": "Food business operator"
   },
   "fi": {
     "title": "DIGITAALINEN TUOTEMERKINTÄ",
@@ -986,7 +1008,8 @@
     "bottling_date": "Bottling date",
     "conservation": "Storage",
     "sustainability": "SUSTAINABILITY & CERTIFICATES",
-    "net_quantity": "Net quantity"
+    "net_quantity": "Net quantity",
+    "operator": "Food business operator"
   },
   "sv": {
     "title": "DIGITAL PRODUKTETIKETT",
@@ -1029,7 +1052,8 @@
     "bottling_date": "Bottling date",
     "conservation": "Storage",
     "sustainability": "SUSTAINABILITY & CERTIFICATES",
-    "net_quantity": "Net quantity"
+    "net_quantity": "Net quantity",
+    "operator": "Food business operator"
   },
   "ca": {
     "category": "CATEGORIA",
@@ -1064,7 +1088,8 @@
     "bottling_date": "Data d embotellament",
     "conservation": "Conservació",
     "sustainability": "SOSTENIBILITAT I CERTIFICATS",
-    "net_quantity": "Quantitat neta"
+    "net_quantity": "Quantitat neta",
+    "operator": "Operador alimentari"
   },
   "eu": {
     "category": "KATEGORIA",
@@ -1099,7 +1124,8 @@
     "bottling_date": "Botilaratze-data",
     "conservation": "Kontserbazioa",
     "sustainability": "IRAUNKORTASUNA ETA ZIURTAGIRIAK",
-    "net_quantity": "Garbiko kopurua"
+    "net_quantity": "Garbiko kopurua",
+    "operator": "Elikagai-operadorea"
   },
   "gl": {
     "category": "CATEGORÍA",
@@ -1134,6 +1160,7 @@
     "bottling_date": "Data de embotellado",
     "conservation": "Conservación",
     "sustainability": "SOSTIBILIDADE E CERTIFICADOS",
-    "net_quantity": "Cantidade neta"
+    "net_quantity": "Cantidade neta",
+    "operator": "Operador alimentario"
   }
 }

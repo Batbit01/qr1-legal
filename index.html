@@ -207,7 +207,8 @@
       line-height: 1.2;
       max-width: 80px;
     }
-    .picto-hero svg { width: 52px; height: 52px; }
+    .picto-hero svg,
+    .picto-hero img { width: 60px; height: 60px; object-fit: contain; }
 
     /* Recycling icons (triangle with code — símbolo universal) */
     .recycling {
@@ -216,24 +217,26 @@
     }
     .recycle-icon {
       display: inline-flex; flex-direction: column; align-items: center; gap: 4px;
-      font-size: 10px; color: var(--ink-soft); font-weight: 600;
+      font-size: 10px; color: var(--ink); font-weight: 600;
       letter-spacing: 0.02em;
     }
-    .recycle-icon svg { width: 48px; height: 48px; }
+    .recycle-icon svg { width: 48px; height: 48px; color: var(--ink-soft); }
+
+    /* PNG pictogramas: en modo oscuro los invertimos para que se vean blancos */
+    body.theme-dark .picto-hero img { filter: invert(1); }
 
     /* Attribute badges */
     .attrs { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-top: 10px; }
     .attr-badge {
       display: inline-flex; align-items: center; gap: 6px;
-      background: var(--brand);
-      color: #fff;
+      background: var(--accent);
+      color: #1a1a1a;
       padding: 5px 12px;
       border-radius: 999px;
       font-size: 10px;
       font-weight: 700;
       letter-spacing: 0.04em;
       text-transform: uppercase;
-      box-shadow: inset 0 0 0 1px var(--accent);
     }
     .attr-badge svg { width: 13px; height: 13px; }
 
@@ -466,6 +469,8 @@
 
     function applyThemeMode(mode, customBg) {
       const root = document.documentElement.style;
+      document.body.classList.toggle("theme-dark", mode === "dark");
+      document.body.classList.toggle("theme-light", mode !== "dark");
       if (mode === "dark") {
         root.setProperty("--bg", customBg || "#111111");
         root.setProperty("--ink", "#f3f1ee");
@@ -629,6 +634,7 @@
       add(t("bottling_date") || "Fecha de embotellado", w.fecha_embotellado);
       add(t("conservation") || "Conservación", w.conservacion);
       add(t("bottler"), w.embotellador || w.bottler);
+      add(t("operator") || "Operador alimentario", w.operador);
       add(t("lot"), w.lote || w.lot);
     }
 
@@ -706,50 +712,26 @@
        Pictograma SVG (embarazadas tachada + coche tachado)
     ───────────────────────────────────────────────────────────────*/
     const ICONS = {
-      // Pictograma -18 (prohibido menores) — círculo rojo + texto -18 + diagonal
-      noMinors: `<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <circle cx="32" cy="32" r="26" fill="#ffffff"/>
-        <circle cx="32" cy="32" r="28" fill="none" stroke="#e11d1d" stroke-width="6"/>
-        <text x="32" y="42" text-anchor="middle" font-size="24" font-weight="900" fill="#1a1a1a" font-family="Arial, Helvetica, sans-serif">-18</text>
-        <line x1="13" y1="13" x2="51" y2="51" stroke="#e11d1d" stroke-width="6" stroke-linecap="round"/>
-      </svg>`,
-      // Pictograma embarazada prohibido — silueta negra de perfil en circulo rojo
-      pregnancy: `<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <circle cx="32" cy="32" r="26" fill="#ffffff"/>
-        <circle cx="32" cy="32" r="28" fill="none" stroke="#e11d1d" stroke-width="6"/>
-        <g fill="#1a1a1a">
-          <circle cx="26" cy="16" r="3.5"/>
-          <path d="M23 21 C21 21 20 23 20 26 L20 34 C20 36 21 37 23 37 L23 38 L21 50 C20.7 51.4 21.7 52.5 23 52.5 C24 52.5 24.7 51.8 25 51 L26.5 42 L27.5 42 L28 50 C28.2 51.4 29 52.5 30.5 52.5 C31.8 52.5 32.8 51.4 32.5 50 L30 38 L30 37.2 C33 36.6 36 34 37 30 C39 30 40 28 40 26.5 C40 25 39 23 36.5 23 L30 23 C28.8 22 28 21 26 21 Z"/>
-          <ellipse cx="33" cy="32" rx="7" ry="8"/>
-        </g>
-        <line x1="13" y1="13" x2="51" y2="51" stroke="#e11d1d" stroke-width="6" stroke-linecap="round"/>
-      </svg>`,
-      // Pictograma no conducir — silueta con volante y copa en circulo rojo
-      noDrive: `<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <circle cx="32" cy="32" r="26" fill="#ffffff"/>
-        <circle cx="32" cy="32" r="28" fill="none" stroke="#e11d1d" stroke-width="6"/>
-        <g fill="#1a1a1a">
-          <circle cx="28" cy="15" r="3.5"/>
-          <path d="M24 20 C22 20 21 21.5 21 24 L21 32 L24 32 L24 42 L26 42 L26 52 L30 52 L30 42 L32 42 L32 52 L36 52 L36 42 L36 32 L35 28 C34.5 24 32 21 30 20 Z"/>
-        </g>
-        <g fill="none" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round">
-          <circle cx="42" cy="38" r="6" fill="#1a1a1a"/>
-          <circle cx="42" cy="38" r="2" fill="#ffffff"/>
-          <line x1="42" y1="32" x2="42" y2="36"/>
-          <line x1="36" y1="38" x2="40" y2="38"/>
-          <line x1="44" y1="38" x2="48" y2="38"/>
-          <line x1="42" y1="40" x2="42" y2="44"/>
-        </g>
-        <line x1="13" y1="13" x2="51" y2="51" stroke="#e11d1d" stroke-width="6" stroke-linecap="round"/>
-      </svg>`,
-      // Triángulo Möbius universal (verde oficial) con código material dentro
+      // Pictogramas OIVE oficiales (PNG negros sobre transparente, servidos desde Backblaze)
+      noMinors: `<img src="https://f005.backblazeb2.com/file/SommelierLab-media/qr1/pictograms/no_minors.png" alt="+18" loading="lazy" />`,
+      pregnancy: `<img src="https://f005.backblazeb2.com/file/SommelierLab-media/qr1/pictograms/pregnancy.png" alt="no pregnancy" loading="lazy" />`,
+      noDrive: `<img src="https://f005.backblazeb2.com/file/SommelierLab-media/qr1/pictograms/no_drive.png" alt="no drive" loading="lazy" />`,
+      // Triangulo Mobius universal (estandar EU) — contorno de 3 flechas + numero opcional dentro
       recycle: (code) => `<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <g fill="#1f7a3a" stroke="#0f3d1c" stroke-width="0.8" stroke-linejoin="round">
-          <path d="M32 6 L41 21 L37 21 L37 25 L29 25 L29 21 L23 21 Z"/>
-          <path d="M10 44 L19 28 L21 32 L24.5 30 L28.5 37 L25 39 L27 43 Z"/>
-          <path d="M54 44 L45 46 L47 42 L43.5 40 L47.5 33 L51 35 L53 31 Z"/>
+        <g fill="none" stroke="currentColor" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round">
+          <path d="M22 14 L32 7 L42 14"/>
+          <path d="M47 22 L54 35 L47 46"/>
+          <path d="M17 46 L10 35 L17 22"/>
+          <path d="M42 14 L42 19" />
+          <path d="M17 46 L24 46" />
+          <path d="M47 22 L42 28" />
         </g>
-        <text x="32" y="58" text-anchor="middle" font-size="12" font-weight="700" fill="#0f3d1c" font-family="Helvetica, Arial, sans-serif">${escapeHtml(code)}</text>
+        <g fill="currentColor">
+          <path d="M22 14 L17 18 L22 22 Z"/>
+          <path d="M47 46 L54 46 L50 51 Z"/>
+          <path d="M10 35 L7 29 L14 30 Z"/>
+        </g>
+        <text x="32" y="42" text-anchor="middle" font-size="14" font-weight="700" fill="currentColor" font-family="Helvetica, Arial, sans-serif">${escapeHtml(code)}</text>
       </svg>`,
       // Hoja simple para badges Vegan/Bio/Vegetarian
       leaf: `<svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
