@@ -822,7 +822,21 @@
       activeLang = lang;
       localStorage.setItem("qr1.lang", lang);
       const url = new URL(location.href);
-      url.searchParams.set("lang", lang);
+      // Si el path es /legal/V/A/L, reescribimos el último segmento del path con el nuevo lang
+      // y borramos cualquier ?lang= residual. Si no, fallback a querystring (modo legacy).
+      const pathParts = url.pathname.replace(/^\/+|\/+$/g, "").split("/").filter(Boolean);
+      const isLegalPath = pathParts[0] === "legal" && pathParts.length >= 3;
+      if (isLegalPath) {
+        if (pathParts.length >= 4 && /^[a-z]{2}$/.test(pathParts[3])) {
+          pathParts[3] = lang;
+        } else {
+          pathParts.push(lang);
+        }
+        url.pathname = "/" + pathParts.join("/");
+        url.searchParams.delete("lang");
+      } else {
+        url.searchParams.set("lang", lang);
+      }
       history.replaceState({}, "", url.toString());
 
       renderUI(); // labels UI
