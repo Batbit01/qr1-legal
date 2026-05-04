@@ -1056,6 +1056,14 @@
     "operator": "Food business operator"
   },
   "ca": {
+    "title": "ETIQUETA DIGITAL DEL PRODUCTE",
+    "subtitle": "Informació proporcionada mitjançant un codi QR a l'envàs de la beguda",
+    "ingredients": "INGREDIENTS",
+    "nutrition": "INFORMACIÓ NUTRICIONAL",
+    "allergens": "AL·LÈRGENS",
+    "alcohol": "GRAU ALCOHÒLIC I VOLUM",
+    "more": "Vols saber-ne més sobre aquest vi?",
+    "view": "Veure perfil →",
     "category": "CATEGORIA",
     "bottler": "EMBOTELLADOR",
     "lot": "LOT",
@@ -1092,6 +1100,14 @@
     "operator": "Operador alimentari"
   },
   "eu": {
+    "title": "PRODUKTUAREN ETIKETA DIGITALA",
+    "subtitle": "Edariaren ontziaren QR kode bidez emandako informazioa",
+    "ingredients": "OSAGAIAK",
+    "nutrition": "ELIKADURA-INFORMAZIOA",
+    "allergens": "ALERGENOAK",
+    "alcohol": "ALKOHOL-GRADUA ETA EDUKIA",
+    "more": "Ardo honi buruz gehiago jakin nahi al duzu?",
+    "view": "Ikusi profila →",
     "category": "KATEGORIA",
     "bottler": "BOTILAZAILEA",
     "lot": "ZENBAKIA",
@@ -1128,6 +1144,14 @@
     "operator": "Elikagai-operadorea"
   },
   "gl": {
+    "title": "ETIQUETA DIXITAL DO PRODUTO",
+    "subtitle": "Información proporcionada mediante un código QR no envase da bebida",
+    "ingredients": "INGREDIENTES",
+    "nutrition": "INFORMACIÓN NUTRICIONAL",
+    "allergens": "ALÉRXENOS",
+    "alcohol": "GRADUACIÓN ALCOHÓLICA E VOLUME",
+    "more": "Queres saber máis sobre este viño?",
+    "view": "Ver perfil →",
     "category": "CATEGORÍA",
     "bottler": "EMBOTELLADOR",
     "lot": "LOTE",
