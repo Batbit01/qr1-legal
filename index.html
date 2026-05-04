@@ -11,7 +11,7 @@
 
   <style>
     :root {
-      --brand: #1168c1;       /* primario — títulos, cabeceras, hero (override desde JSON) */
+      --brand: #2a2a2a;       /* primario — títulos, cabeceras, hero (override desde JSON). Neutro por defecto para evitar flash de color hasta que cargue el tema. */
       --accent: #d4af37;      /* secundario — badges, bordes destacados */
       --bg: #faf9f7;
       --ink: #1a1a1a;
@@ -285,9 +285,35 @@
     /* Skeleton loading */
     .skel { background: linear-gradient(90deg, #eee 0%, #f5f5f5 50%, #eee 100%); background-size: 200% 100%; animation: skel 1.2s infinite; color: transparent !important; border-radius: 6px; }
     @keyframes skel { from { background-position: 200% 0; } to { background-position: -200% 0; } }
+
+    /* Splash de carga — oculta el flash de UI sin tematizar */
+    #splash {
+      position: fixed; inset: 0; z-index: 9999;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 14px;
+      background: var(--bg);
+      color: var(--ink-light);
+      transition: opacity .35s ease;
+    }
+    #splash.hide { opacity: 0; pointer-events: none; }
+    #splash .spinner {
+      width: 26px; height: 26px;
+      border: 2px solid rgba(0,0,0,0.08);
+      border-top-color: var(--brand);
+      border-radius: 50%;
+      animation: spin 0.9s linear infinite;
+    }
+    #splash .splash-bodega { font-size: 13px; letter-spacing: 0.04em; opacity: 0.7; }
+    #splash img { max-height: 32px; max-width: 160px; object-fit: contain; opacity: 0.85; }
+    @keyframes spin { to { transform: rotate(360deg); } }
   </style>
 </head>
 <body>
+  <div id="splash">
+    <img id="splashLogo" alt="" style="display:none;" />
+    <div class="splash-bodega" id="splashBodega"></div>
+    <div class="spinner" aria-hidden="true"></div>
+  </div>
   <main>
 
     <!-- Top bar: logo + theme toggle + language selector -->
@@ -562,6 +588,20 @@
         logoEl.alt = w.bodega?.nombre || "";
       }
 
+      // Ocultar splash una vez tenemos los datos del vino + tema aplicado
+      const splash = $("splash");
+      if (splash && !splash.classList.contains("hide")) {
+        const splashLogo = $("splashLogo");
+        const splashBodega = $("splashBodega");
+        if (logoSrc && splashLogo) { splashLogo.src = logoSrc; splashLogo.style.display = "block"; }
+        if (splashBodega) splashBodega.textContent = w.bodega?.nombre || "";
+        // Pequeña espera para que se vea el logo + theme antes de fade out
+        setTimeout(() => {
+          splash.classList.add("hide");
+          setTimeout(() => splash.remove(), 400);
+        }, 200);
+      }
+
       // Hero
       $("wineName").textContent = w.nombre || "—";
       const cat = w.categoria || w.DOP || w.dop || "";
@@ -801,6 +841,15 @@
        Init
     ───────────────────────────────────────────────────────────────*/
     async function init() {
+      // Timeout de seguridad: si renderWine no se ejecuta en 6s, ocultar splash igualmente
+      setTimeout(() => {
+        const sp = $("splash");
+        if (sp && !sp.classList.contains("hide")) {
+          sp.classList.add("hide");
+          setTimeout(() => sp.remove(), 400);
+        }
+      }, 6000);
+
       await loadLabels();
       const initial = detectInitialLang();
       activeLang = initial;
