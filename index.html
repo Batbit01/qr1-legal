@@ -257,15 +257,16 @@
     /* PNG pictogramas: en modo oscuro los invertimos para que se vean blancos */
     body.theme-dark .picto-hero img { filter: invert(1); }
 
-    /* Pictogramas de consumo responsable EN ROJO (norma OIVE/AECOC).
-       El PNG fuente es negro sobre transparente, lo tintamos con filtro CSS
-       a un rojo intenso #c8102e (Wine in Moderation institucional). */
-    .pictos-warning .picto-hero img {
-      filter: brightness(0) saturate(100%) invert(15%) sepia(86%) saturate(5928%) hue-rotate(345deg) brightness(95%) contrast(98%);
-    }
-    body.theme-dark .pictos-warning .picto-hero img {
-      filter: brightness(0) saturate(100%) invert(40%) sepia(95%) saturate(2600%) hue-rotate(335deg) brightness(105%) contrast(105%);
-    }
+    /* Pictogramas de consumo responsable · SVG inline con círculo y barra
+       ROJOS (#c8102e) y símbolo interior NEGRO. En tema oscuro, el símbolo
+       pasa a blanco para contraste. */
+    .pictos-warning .picto-hero svg { width: 64px; height: 64px; }
+    .pictos-warning .picto-hero .pw-stop { stroke: #c8102e; fill: none; stroke-width: 7; }
+    .pictos-warning .picto-hero .pw-bar  { stroke: #c8102e; stroke-width: 7; stroke-linecap: round; }
+    .pictos-warning .picto-hero .pw-ink,
+    .pictos-warning .picto-hero .pw-ink * { fill: #1a1a1a; }
+    body.theme-dark .pictos-warning .picto-hero .pw-ink,
+    body.theme-dark .pictos-warning .picto-hero .pw-ink * { fill: #f3f1ee; }
 
     /* Wine in Moderation badge · banner rojo institucional */
     .wine-moderation {
@@ -1088,6 +1089,11 @@
         hero.appendChild(makeHeroPicto(ICONS.noDrive, t("warning_drive")));
       }
 
+      /* Wine in Moderation · opt-in por bodega/añada (default OFF).
+         Solo se muestra si pictogramas.wine_moderation === true */
+      const wimBadge = $("wineModerationBadge");
+      if (wimBadge) wimBadge.style.display = p.wine_moderation === true ? "" : "none";
+
       // Recycling — icono triángulo con código dentro (universal)
       const r = p.recycling || {};
       const addRec = (code, label) => {
@@ -1149,10 +1155,33 @@
        Pictograma SVG (embarazadas tachada + coche tachado)
     ───────────────────────────────────────────────────────────────*/
     const ICONS = {
-      // Pictogramas OIVE oficiales (PNG negros sobre transparente, servidos desde Backblaze)
-      noMinors: `<img src="https://f005.backblazeb2.com/file/SommelierLab-media/qr1/pictograms/no_minors.png" alt="+18" loading="lazy" />`,
-      pregnancy: `<img src="https://f005.backblazeb2.com/file/SommelierLab-media/qr1/pictograms/pregnancy.png" alt="no pregnancy" loading="lazy" />`,
-      noDrive: `<img src="https://f005.backblazeb2.com/file/SommelierLab-media/qr1/pictograms/no_drive.png" alt="no drive" loading="lazy" />`,
+      /* Pictogramas SVG inline · círculo + barra rojos, símbolo negro
+         Estilo: copia visual de los pictos OIVE/Digital Label (captura
+         de cellercapcanes.com 17-may). Si la bodega tiene assets oficiales
+         vectorizados, sustituir aquí por <img src=...> apuntando al CDN. */
+      noMinors: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-label="No menores de 18">
+        <circle class="pw-stop" cx="50" cy="50" r="42"/>
+        <text class="pw-ink" x="50" y="62" text-anchor="middle" font-size="30" font-weight="900" font-family="Arial Black, Arial, sans-serif" letter-spacing="-1">-18</text>
+        <line class="pw-bar" x1="22" y1="22" x2="78" y2="78"/>
+      </svg>`,
+      pregnancy: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-label="No consumir durante el embarazo">
+        <circle class="pw-stop" cx="50" cy="50" r="42"/>
+        <g class="pw-ink">
+          <circle cx="50" cy="30" r="6.5"/>
+          <path d="M44 39 q-3 4 -3 12 q0 6 3 10 q-4 3 -5 10 l0 12 4 0 0 -10 12 0 0 10 4 0 0 -12 q-1 -7 -5 -10 q5 -4 5 -12 q0 -6 -3 -10 z M55 50 q0 5 -5 5 q-5 0 -5 -5 q0 -4 5 -4 q5 0 5 4 z"/>
+        </g>
+        <line class="pw-bar" x1="22" y1="22" x2="78" y2="78"/>
+      </svg>`,
+      noDrive: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-label="No conducir bajo los efectos del alcohol">
+        <circle class="pw-stop" cx="50" cy="50" r="42"/>
+        <g class="pw-ink">
+          <!-- copa -->
+          <path d="M30 32 h22 l-3 14 q-2 7 -8 8 l0 12 5 0 0 4 -16 0 0 -4 5 0 0 -12 q-6 -1 -8 -8 z"/>
+          <!-- coche -->
+          <path d="M55 56 q1 -4 3 -4 l14 0 q2 0 3 4 l1 4 2 0 0 6 -3 0 0 -2 -20 0 0 2 -3 0 0 -6 2 0 z M60 61 a2 2 0 1 0 0.1 0 z M72 61 a2 2 0 1 0 0.1 0 z"/>
+        </g>
+        <line class="pw-bar" x1="22" y1="22" x2="78" y2="78"/>
+      </svg>`,
       // Mobius de reciclaje (ISO 7000-1135) — PNG oficial verde con codigo encima
       recycle: (code) => `<svg viewBox="0 0 100 93" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
         <image href="https://f005.backblazeb2.com/file/SommelierLab-media/qr1/pictograms/recycle.png" x="0" y="0" width="100" height="93" preserveAspectRatio="xMidYMid meet"/>
