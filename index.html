@@ -441,13 +441,13 @@
 
     <!-- Hero: logo bodega grande -->
     <section class="hero-brand">
-      <img class="brand-logo-big" id="brandLogoBig" alt="" onerror="this.style.display='none';document.getElementById('brandName').style.display='';" />
+      <img class="brand-logo-big" id="brandLogoBig" alt="" />
       <p class="brand-name" id="brandName" style="display:none;"></p>
     </section>
 
     <!-- Hero: foto botella destacada -->
     <section class="hero-bottle">
-      <img class="bottle-img" id="bottleImg" alt="" onerror="this.style.display='none';" />
+      <img class="bottle-img" id="bottleImg" alt="" />
     </section>
 
     <!-- Hero: identidad del vino · nombre + añada + variedades + graduación -->
@@ -738,20 +738,30 @@
         }, 200);
       }
 
-      // Hero · logo bodega grande
+      // Hero · logo bodega grande · si la imagen no existe en CDN,
+      // ocultamos <img> y mostramos el nombre en mayúsculas como fallback.
       const brandLogoBig = $("brandLogoBig");
       const brandName = $("brandName");
+      const bodegaNombre = w.bodega?.nombre || "";
+      const showBrandFallback = () => {
+        if (brandLogoBig) brandLogoBig.style.display = "none";
+        if (brandName) {
+          brandName.textContent = bodegaNombre;
+          brandName.style.display = bodegaNombre ? "" : "none";
+        }
+      };
       if (brandLogoBig) {
-        if (logoSrc) {
-          brandLogoBig.src = logoSrc;
-          brandLogoBig.alt = w.bodega?.nombre || "";
+        brandLogoBig.alt = ""; // sin alt: evita el "texto roto" si 404
+        brandLogoBig.onerror = showBrandFallback;
+        brandLogoBig.onload = () => {
+          brandLogoBig.style.display = "";
           if (brandName) brandName.style.display = "none";
+        };
+        if (logoSrc) {
+          brandLogoBig.style.display = "";
+          brandLogoBig.src = logoSrc;
         } else {
-          brandLogoBig.removeAttribute("src");
-          if (brandName) {
-            brandName.textContent = w.bodega?.nombre || "";
-            brandName.style.display = w.bodega?.nombre ? "" : "none";
-          }
+          showBrandFallback();
         }
       }
 
@@ -759,11 +769,14 @@
       const bottleImg = $("bottleImg");
       const bottleSrc = w.botella_url || w.imagen_url || w.image_url || "";
       if (bottleImg) {
+        bottleImg.alt = "";
+        bottleImg.onerror = () => { bottleImg.style.display = "none"; };
+        bottleImg.onload = () => { bottleImg.style.display = ""; };
         if (bottleSrc) {
+          bottleImg.style.display = "";
           bottleImg.src = bottleSrc;
-          bottleImg.alt = w.nombre || "";
         } else {
-          bottleImg.removeAttribute("src");
+          bottleImg.style.display = "none";
         }
       }
 
