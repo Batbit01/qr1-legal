@@ -257,62 +257,18 @@
     /* PNG pictogramas: en modo oscuro los invertimos para que se vean blancos */
     body.theme-dark .picto-hero img { filter: invert(1); }
 
-    /* Pictogramas de consumo responsable · SVG inline con círculo y barra
-       ROJOS (#c8102e) y símbolo interior NEGRO. En tema oscuro, el símbolo
-       pasa a blanco para contraste. */
-    .pictos-warning .picto-hero svg { width: 64px; height: 64px; }
-    .pictos-warning .picto-hero .pw-stop { stroke: #c8102e; fill: none; stroke-width: 7; }
-    .pictos-warning .picto-hero .pw-bar  { stroke: #c8102e; stroke-width: 7; stroke-linecap: round; }
-    .pictos-warning .picto-hero .pw-ink,
-    .pictos-warning .picto-hero .pw-ink * { fill: #1a1a1a; }
-    body.theme-dark .pictos-warning .picto-hero .pw-ink,
-    body.theme-dark .pictos-warning .picto-hero .pw-ink * { fill: #f3f1ee; }
-
-    /* Wine in Moderation badge · banner rojo institucional */
+    /* Wine in Moderation badge · logo oficial centrado */
     .wine-moderation {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      max-width: 360px;
-      margin: 14px auto 4px;
-      padding: 10px 18px;
-      background: linear-gradient(135deg, #8a0e23 0%, #c8102e 100%);
-      border-radius: 10px;
-      text-decoration: none;
-      color: #fff;
-      box-shadow: 0 4px 14px rgba(140, 14, 35, 0.25);
+      display: block;
+      max-width: 240px;
+      margin: 18px auto 4px;
+      text-align: center;
     }
-    .wine-moderation .wim-mark {
-      display: inline-flex; flex-direction: column; gap: 2px;
-      padding-top: 2px;
-    }
-    .wine-moderation .wim-dot {
-      width: 6px; height: 6px; border-radius: 50%;
-      background: #ffb84d;
-    }
-    .wine-moderation .wim-text {
-      display: flex; flex-direction: column; align-items: flex-start;
-      gap: 3px;
-      line-height: 1.1;
-    }
-    .wine-moderation .wim-text strong {
-      font-size: 15px;
-      font-weight: 800;
-      letter-spacing: 0.04em;
-    }
-    .wine-moderation .wim-text strong em {
-      font-style: italic;
-      font-weight: 400;
-      opacity: 0.9;
-      margin: 0 1px;
-    }
-    .wine-moderation .wim-claim {
-      font-size: 9px;
-      letter-spacing: 0.15em;
-      opacity: 0.85;
-      border-top: 1px solid rgba(255,255,255,0.3);
-      padding-top: 3px;
-      width: 100%;
+    .wine-moderation img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: 0 auto;
     }
 
     /* Iconos reciclaje en VERDE institucional (norma simbólica) */
@@ -570,13 +526,7 @@
       <h2 id="consumoResponsableTitle">CONSUMO RESPONSABLE</h2>
       <div class="pictos-hero pictos-warning" id="pictosHero"></div>
       <a class="wine-moderation" id="wineModerationBadge" href="https://www.wineinmoderation.eu/" target="_blank" rel="noopener noreferrer" aria-label="Wine in Moderation">
-        <span class="wim-mark" aria-hidden="true">
-          <span class="wim-dot"></span><span class="wim-dot"></span><span class="wim-dot"></span>
-        </span>
-        <span class="wim-text">
-          <strong>WINE<em>in</em>MODERATION</strong>
-          <span class="wim-claim">CHOOSE&nbsp;&nbsp;|&nbsp;&nbsp;SHARE&nbsp;&nbsp;|&nbsp;&nbsp;CARE</span>
-        </span>
+        <img src="https://f005.backblazeb2.com/file/SommelierLab-media/qr2/icons/wine-moderation-logo.png" alt="Wine in Moderation · Choose · Share · Care" loading="lazy" />
       </a>
     </section>
 
@@ -1155,33 +1105,10 @@
        Pictograma SVG (embarazadas tachada + coche tachado)
     ───────────────────────────────────────────────────────────────*/
     const ICONS = {
-      /* Pictogramas SVG inline · círculo + barra rojos, símbolo negro
-         Estilo: copia visual de los pictos OIVE/Digital Label (captura
-         de cellercapcanes.com 17-may). Si la bodega tiene assets oficiales
-         vectorizados, sustituir aquí por <img src=...> apuntando al CDN. */
-      noMinors: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-label="No menores de 18">
-        <circle class="pw-stop" cx="50" cy="50" r="42"/>
-        <text class="pw-ink" x="50" y="62" text-anchor="middle" font-size="30" font-weight="900" font-family="Arial Black, Arial, sans-serif" letter-spacing="-1">-18</text>
-        <line class="pw-bar" x1="22" y1="22" x2="78" y2="78"/>
-      </svg>`,
-      pregnancy: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-label="No consumir durante el embarazo">
-        <circle class="pw-stop" cx="50" cy="50" r="42"/>
-        <g class="pw-ink">
-          <circle cx="50" cy="30" r="6.5"/>
-          <path d="M44 39 q-3 4 -3 12 q0 6 3 10 q-4 3 -5 10 l0 12 4 0 0 -10 12 0 0 10 4 0 0 -12 q-1 -7 -5 -10 q5 -4 5 -12 q0 -6 -3 -10 z M55 50 q0 5 -5 5 q-5 0 -5 -5 q0 -4 5 -4 q5 0 5 4 z"/>
-        </g>
-        <line class="pw-bar" x1="22" y1="22" x2="78" y2="78"/>
-      </svg>`,
-      noDrive: `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-label="No conducir bajo los efectos del alcohol">
-        <circle class="pw-stop" cx="50" cy="50" r="42"/>
-        <g class="pw-ink">
-          <!-- copa -->
-          <path d="M30 32 h22 l-3 14 q-2 7 -8 8 l0 12 5 0 0 4 -16 0 0 -4 5 0 0 -12 q-6 -1 -8 -8 z"/>
-          <!-- coche -->
-          <path d="M55 56 q1 -4 3 -4 l14 0 q2 0 3 4 l1 4 2 0 0 6 -3 0 0 -2 -20 0 0 2 -3 0 0 -6 2 0 z M60 61 a2 2 0 1 0 0.1 0 z M72 61 a2 2 0 1 0 0.1 0 z"/>
-        </g>
-        <line class="pw-bar" x1="22" y1="22" x2="78" y2="78"/>
-      </svg>`,
+      // Pictogramas OIVE oficiales (PNG negros sobre transparente, servidos desde Backblaze)
+      noMinors: `<img src="https://f005.backblazeb2.com/file/SommelierLab-media/qr1/pictograms/no_minors.png" alt="+18" loading="lazy" />`,
+      pregnancy: `<img src="https://f005.backblazeb2.com/file/SommelierLab-media/qr1/pictograms/pregnancy.png" alt="no pregnancy" loading="lazy" />`,
+      noDrive: `<img src="https://f005.backblazeb2.com/file/SommelierLab-media/qr1/pictograms/no_drive.png" alt="no drive" loading="lazy" />`,
       // Mobius de reciclaje (ISO 7000-1135) — PNG oficial verde con codigo encima
       recycle: (code) => `<svg viewBox="0 0 100 93" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
         <image href="https://f005.backblazeb2.com/file/SommelierLab-media/qr1/pictograms/recycle.png" x="0" y="0" width="100" height="93" preserveAspectRatio="xMidYMid meet"/>
