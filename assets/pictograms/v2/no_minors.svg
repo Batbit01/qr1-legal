@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="Prohibido a menores de 18">
+  <title>Prohibido a menores de 18 años</title>
+
+  <!-- ============ TEXTO -18 (negro, sans-serif extra-bold) ============ -->
+  <text x="100" y="100"
+        text-anchor="middle"
+        dominant-baseline="central"
+        font-family="Helvetica, Arial, 'Liberation Sans', sans-serif"
+        font-weight="900"
+        font-size="86"
+        letter-spacing="-3"
+        fill="#111111">-18</text>
+
+  <!-- ============ CÍRCULO + BARRA DE PROHIBICIÓN ============ -->
+  <circle cx="100" cy="100" r="86" fill="none" stroke="#c8102e" stroke-width="14"/>
+  <line x1="42" y1="42" x2="158" y2="158" stroke="#c8102e" stroke-width="14" stroke-linecap="square"/>
+</svg>
