@@ -738,18 +738,6 @@
         }, 200);
       }
 
-      // DEBUG temporal: muestra la URL exacta del logo que el preview intenta cargar
-      if (PREVIEW_MODE) {
-        let dbg = document.getElementById("__dbg");
-        if (!dbg) {
-          dbg = document.createElement("div");
-          dbg.id = "__dbg";
-          dbg.style.cssText = "background:#fff3cd;border:1px solid #ffc107;padding:8px;margin:8px;font-size:10px;font-family:monospace;color:#333;word-break:break-all;";
-          document.querySelector("main")?.prepend(dbg);
-        }
-        dbg.innerHTML = `<strong>URL logo:</strong> ${escapeHtml(logoSrc || "(vacío)")}<br><strong>URL foto:</strong> ${escapeHtml(w.botella_url || "(vacío)")}`;
-      }
-
       // Hero · logo bodega grande · si la imagen no existe en CDN,
       // ocultamos <img> y mostramos el nombre en mayúsculas como fallback.
       const brandLogoBig = $("brandLogoBig");
