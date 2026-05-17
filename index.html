@@ -350,16 +350,18 @@
     .hero-bottle .bottle-img[src=""] { display: none; }
 
     .hero-identity {
-      text-align: left;
+      text-align: center;
       padding: 16px 4px 22px;
       border-bottom: 1px solid var(--line-soft);
       margin-bottom: 12px;
     }
     .hero-identity .bodega-line {
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--ink-soft);
-      margin: 0 0 4px;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--ink);
+      letter-spacing: 0.02em;
+      margin: 0 0 8px;
+      font-family: var(--brand-font, inherit);
     }
     .hero-identity .wine-name-big {
       font-size: 28px;
@@ -368,6 +370,7 @@
       color: var(--ink);
       line-height: 1.05;
       margin: 0;
+      font-family: var(--brand-font, inherit);
     }
     .hero-identity .wine-year-big {
       font-size: 28px;
@@ -375,6 +378,7 @@
       color: var(--ink);
       line-height: 1.05;
       margin: 2px 0 14px;
+      font-family: var(--brand-font, inherit);
     }
     .hero-identity .wine-essentials {
       font-size: 14px;
@@ -640,6 +644,34 @@
       return THEME_OVERRIDE || THEME_DEFAULT || "light";
     }
 
+    /* Biblioteca curada · debe coincidir con sommelierlab-qr2-vite/src/utils/fontLibrary.ts */
+    const FONT_LIBRARY = {
+      playfair:   { family: "'Playfair Display', serif",   label: "Playfair+Display", weights: [400, 600, 700, 800] },
+      cormorant:  { family: "'Cormorant Garamond', serif", label: "Cormorant+Garamond", weights: [400, 500, 600, 700] },
+      ebgaramond: { family: "'EB Garamond', serif",        label: "EB+Garamond",      weights: [400, 500, 600, 700] },
+      lora:       { family: "'Lora', serif",                label: "Lora",             weights: [400, 500, 600, 700] },
+      crimson:    { family: "'Crimson Pro', serif",         label: "Crimson+Pro",      weights: [400, 500, 600, 700] },
+      inter:      { family: "'Inter', sans-serif",          label: "Inter",            weights: [400, 500, 600, 700] },
+      manrope:    { family: "'Manrope', sans-serif",        label: "Manrope",          weights: [400, 500, 600, 700] },
+      montserrat: { family: "'Montserrat', sans-serif",     label: "Montserrat",       weights: [400, 500, 600, 700] },
+      raleway:    { family: "'Raleway', sans-serif",        label: "Raleway",          weights: [400, 500, 600, 700] },
+      cinzel:     { family: "'Cinzel', serif",              label: "Cinzel",           weights: [400, 600, 700] },
+    };
+    function loadGoogleFont(id) {
+      const f = FONT_LIBRARY[id];
+      if (!f) return null;
+      const href = `https://fonts.googleapis.com/css2?family=${f.label}:wght@${f.weights.join(";")}&display=swap`;
+      let link = document.getElementById("sl-google-fonts");
+      if (!link) {
+        link = document.createElement("link");
+        link.id = "sl-google-fonts";
+        link.rel = "stylesheet";
+        document.head.appendChild(link);
+      }
+      if (link.href !== href) link.href = href;
+      return f.family;
+    }
+
     function applyTheme(w) {
       const root = document.documentElement.style;
       const rx = /^#[0-9a-fA-F]{6}$/;
@@ -653,6 +685,13 @@
 
       if (brand) root.setProperty("--brand", brand);
       if (accent) root.setProperty("--accent", accent);
+
+      /* Fuente de marca heredada del tema QR2 (font_titulos es un id de
+         FONT_LIBRARY persistido en BD). Si está, cargamos Google Font y
+         aplicamos la familia al hero vía variable CSS --brand-font. */
+      const fontId = String(w?.bodega?.font_titulos || "").trim();
+      const fontFamily = loadGoogleFont(fontId);
+      root.setProperty("--brand-font", fontFamily || "inherit");
 
       applyThemeMode(resolveTheme(), bg);
       renderThemeBtn();
@@ -876,12 +915,22 @@
       tbl.innerHTML = "";
       const w = WINE || {};
       const cantidadNeta = w.volumen || w.volume || "";
+      /* Reg. UE 1169/2011 art. 30 · saturadas ⊆ grasas y azúcares ⊆ hidratos.
+         Si el bodeguero declara grasas=0 pero no rellena saturadas, mostramos
+         saturadas=0g por lógica (no puede haber saturadas sin grasas). Igual
+         con azúcares vs hidratos. Solo lo omitimos si el padre tampoco está. */
+      const fatVal     = n.fat_g ?? n.grasas_g;
+      const satVal     = n.saturates_g ?? n.grasas_saturadas_g;
+      const carbsVal   = n.carbs_g ?? n.hidratos_g ?? n.carbohydrates_g;
+      const sugarsVal  = n.sugars_g ?? n.azucares_g;
+      const satFinal   = (satVal == null || satVal === "") ? (fatVal != null && fatVal !== "" ? 0 : null) : satVal;
+      const sugarsFinal = (sugarsVal == null || sugarsVal === "") ? (carbsVal != null && carbsVal !== "" ? 0 : null) : sugarsVal;
       const rows = [
         { key: "energy",        label: t("energy"),        value: formatEnergy(n) },
-        { key: "fat",           label: t("fat"),           value: formatNum(n.fat_g ?? n.grasas_g, "g") },
-        { key: "saturates",     label: t("saturates"),     value: formatNum(n.saturates_g ?? n.grasas_saturadas_g ?? n.saturates_g, "g"), sub: true },
-        { key: "carbohydrates", label: t("carbohydrates"), value: formatNum(n.carbs_g ?? n.hidratos_g ?? n.carbohydrates_g, "g") },
-        { key: "sugars",        label: t("sugars"),        value: formatNum(n.sugars_g ?? n.azucares_g, "g"), sub: true },
+        { key: "fat",           label: t("fat"),           value: formatNum(fatVal, "g") },
+        { key: "saturates",     label: t("saturates"),     value: formatNum(satFinal, "g"), sub: true },
+        { key: "carbohydrates", label: t("carbohydrates"), value: formatNum(carbsVal, "g") },
+        { key: "sugars",        label: t("sugars"),        value: formatNum(sugarsFinal, "g"), sub: true },
         { key: "protein",       label: t("protein"),       value: formatNum(n.protein_g ?? n.proteinas_g, "g") },
         { key: "salt",          label: t("salt"),          value: formatNum(n.salt_g ?? n.sal_g, "g") },
         { key: "net",           label: t("net_quantity") || "Cantidad neta", value: cantidadNeta, plain: true },
