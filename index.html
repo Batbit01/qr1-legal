@@ -254,8 +254,14 @@
     }
     .recycle-icon svg { width: 64px; height: 60px; }
 
-    /* PNG pictogramas: en modo oscuro los invertimos para que se vean blancos */
-    body.theme-dark .picto-hero img { filter: invert(1); }
+    /* Pictogramas v2 son SVG bicolor con colores explícitos · NO se invierten
+       en modo oscuro porque el rojo institucional y el negro deben quedar
+       fieles. Solo aplicamos fondo blanco al lienzo para contraste si hay
+       tema oscuro de bodega. */
+    body.theme-dark .pictos-warning .picto-hero img {
+      background: #fff;
+      border-radius: 50%;
+    }
 
     /* Wine in Moderation badge · logo oficial centrado */
     .wine-moderation {
@@ -1105,10 +1111,14 @@
        Pictograma SVG (embarazadas tachada + coche tachado)
     ───────────────────────────────────────────────────────────────*/
     const ICONS = {
-      // Pictogramas OIVE oficiales (PNG negros sobre transparente, servidos desde Backblaze)
-      noMinors: `<img src="https://f005.backblazeb2.com/file/SommelierLab-media/qr1/pictograms/no_minors.png" alt="+18" loading="lazy" />`,
-      pregnancy: `<img src="https://f005.backblazeb2.com/file/SommelierLab-media/qr1/pictograms/pregnancy.png" alt="no pregnancy" loading="lazy" />`,
-      noDrive: `<img src="https://f005.backblazeb2.com/file/SommelierLab-media/qr1/pictograms/no_drive.png" alt="no drive" loading="lazy" />`,
+      /* Pictogramas v2 bicolor · círculo+barra rojo institucional (#c8102e),
+         símbolo interior negro (-18 texto, embarazada y coche+copa OpenMoji
+         silueta). Composición propia, SVG en B2.
+         Si una bodega tiene assets oficiales OIVE/AECOC, sustituir las URLs
+         a su carpeta dedicada manteniendo el mismo nombre de archivo. */
+      noMinors: `<img src="https://f005.backblazeb2.com/file/SommelierLab-media/qr1/pictograms/v2/no_minors.svg" alt="" loading="lazy" />`,
+      pregnancy: `<img src="https://f005.backblazeb2.com/file/SommelierLab-media/qr1/pictograms/v2/pregnancy.svg" alt="" loading="lazy" />`,
+      noDrive: `<img src="https://f005.backblazeb2.com/file/SommelierLab-media/qr1/pictograms/v2/no_drive.svg" alt="" loading="lazy" />`,
       // Mobius de reciclaje (ISO 7000-1135) — PNG oficial verde con codigo encima
       recycle: (code) => `<svg viewBox="0 0 100 93" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
         <image href="https://f005.backblazeb2.com/file/SommelierLab-media/qr1/pictograms/recycle.png" x="0" y="0" width="100" height="93" preserveAspectRatio="xMidYMid meet"/>
