@@ -136,6 +136,38 @@
 
     /* Ingredients with highlighted allergens */
     .ingredients { font-size: 14px; line-height: 1.6; color: var(--ink); }
+
+    /* Ingredientes por categorías · estructura EU 2117 (Digital Label style) */
+    .ingredients-groups {
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .ingredients-group {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 2px;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--line-soft);
+    }
+    .ingredients-group:last-child { border-bottom: 0; }
+    .ingredients-group-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--ink-soft);
+      letter-spacing: 0.01em;
+      margin: 0;
+    }
+    .ingredients-group-items {
+      font-size: 14px;
+      color: var(--ink);
+      margin: 2px 0 0;
+      line-height: 1.5;
+    }
+    .ingredients-group-items strong {
+      font-weight: 600;
+    }
     .ingredients strong { font-weight: 700; color: var(--ink); }
 
     /* Nutrition table */
@@ -342,7 +374,7 @@
     <!-- Ingredients -->
     <section class="section">
       <h2 id="ingredientsTitle">INGREDIENTS</h2>
-      <p class="ingredients" id="ingredients">—</p>
+      <div class="ingredients" id="ingredients">—</div>
     </section>
 
     <!-- Nutrition -->
@@ -622,19 +654,49 @@
     }
 
     function renderIngredients(w) {
-      const text = w.ingredientes_texto || w.ingredientes || w.ingredients || "—";
       const allergens = Array.isArray(w.alergenos) ? w.alergenos : [];
-      if (!allergens.length) {
-        $("ingredients").textContent = text;
+      const el = $("ingredients");
+
+      function highlightAllergens(text) {
+        if (!allergens.length) return escapeHtml(text);
+        let html = escapeHtml(text);
+        allergens.forEach(a => {
+          const safe = escapeHtml(a).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+          html = html.replace(new RegExp(`\\b${safe}\\b`, "gi"), m => `<strong>${m}</strong>`);
+        });
+        return html;
+      }
+
+      // Modo estructurado · ingredientes_groups con sub-categorías (Digital Label style)
+      const groups = Array.isArray(w.ingredientes_groups) ? w.ingredientes_groups.filter(g => g && Array.isArray(g.items) && g.items.length > 0) : null;
+      if (groups && groups.length > 0) {
+        const wrap = document.createElement("div");
+        wrap.className = "ingredients-groups";
+        for (const g of groups) {
+          const groupDiv = document.createElement("div");
+          groupDiv.className = "ingredients-group";
+          const labelEl = document.createElement("p");
+          labelEl.className = "ingredients-group-label";
+          labelEl.textContent = g.label || g.key || "";
+          const itemsEl = document.createElement("p");
+          itemsEl.className = "ingredients-group-items";
+          itemsEl.innerHTML = highlightAllergens(g.items.join(", "));
+          groupDiv.appendChild(labelEl);
+          groupDiv.appendChild(itemsEl);
+          wrap.appendChild(groupDiv);
+        }
+        el.innerHTML = "";
+        el.appendChild(wrap);
         return;
       }
-      // Highlight each allergen (case-insensitive) with <strong>
-      let html = escapeHtml(text);
-      allergens.forEach(a => {
-        const safe = escapeHtml(a).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-        html = html.replace(new RegExp(`\\b${safe}\\b`, "gi"), m => `<strong>${m}</strong>`);
-      });
-      $("ingredients").innerHTML = html;
+
+      // Fallback · texto plano (legacy)
+      const text = w.ingredientes_texto || w.ingredientes || w.ingredients || "—";
+      if (!allergens.length) {
+        el.textContent = text;
+        return;
+      }
+      el.innerHTML = highlightAllergens(text);
     }
 
     function renderNutrition(n) {
