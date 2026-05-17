@@ -747,12 +747,21 @@
           dbg.style.cssText = "background:#fff3cd;border:1px solid #ffc107;padding:8px;margin:8px;font-size:11px;font-family:monospace;color:#333;word-break:break-all;";
           document.querySelector("main")?.prepend(dbg);
         }
+        const dbgRaw = w.__debug || {};
         dbg.innerHTML = `
           <strong>DEBUG · datos recibidos</strong><br>
           bodega.nombre: <code>${escapeHtml(w.bodega?.nombre || "(vacío)")}</code><br>
           bodega.logo_url: <code>${escapeHtml(w.bodega?.logo_url || "(vacío)")}</code><br>
           botella_url: <code>${escapeHtml(w.botella_url || "(vacío)")}</code><br>
           variedad: <code>${escapeHtml(w.variedad || "(vacío)")}</code>
+          <hr style="margin:6px 0;border:0;border-top:1px solid #ffc107;">
+          <strong>RAW BD</strong><br>
+          bf["Logo de la Bodega"] type=${escapeHtml(String(dbgRaw.bf_logo_type))}<br>
+          bf["Logo de la Bodega"] raw: <code>${escapeHtml(JSON.stringify(dbgRaw.bf_logo_raw))}</code><br>
+          bf keys con "logo": <code>${escapeHtml(JSON.stringify(dbgRaw.bf_logo_keys_with_logo))}</code><br>
+          vf["Imagen"] type=${escapeHtml(String(dbgRaw.vf_imagen_type))}<br>
+          vf["Imagen"] raw: <code>${escapeHtml(JSON.stringify(dbgRaw.vf_imagen_raw))}</code><br>
+          vf keys con "imag": <code>${escapeHtml(JSON.stringify(dbgRaw.vf_keys_with_imagen))}</code>
         `;
       }
 
