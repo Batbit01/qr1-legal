@@ -738,6 +738,24 @@
         }, 200);
       }
 
+      // Debug visible · solo en preview mode · muestra valores recibidos
+      if (PREVIEW_MODE) {
+        let dbg = document.getElementById("__dbg");
+        if (!dbg) {
+          dbg = document.createElement("div");
+          dbg.id = "__dbg";
+          dbg.style.cssText = "background:#fff3cd;border:1px solid #ffc107;padding:8px;margin:8px;font-size:11px;font-family:monospace;color:#333;word-break:break-all;";
+          document.querySelector("main")?.prepend(dbg);
+        }
+        dbg.innerHTML = `
+          <strong>DEBUG · datos recibidos</strong><br>
+          bodega.nombre: <code>${escapeHtml(w.bodega?.nombre || "(vacío)")}</code><br>
+          bodega.logo_url: <code>${escapeHtml(w.bodega?.logo_url || "(vacío)")}</code><br>
+          botella_url: <code>${escapeHtml(w.botella_url || "(vacío)")}</code><br>
+          variedad: <code>${escapeHtml(w.variedad || "(vacío)")}</code>
+        `;
+      }
+
       // Hero · logo bodega grande
       const brandLogoBig = $("brandLogoBig");
       const brandName = $("brandName");
