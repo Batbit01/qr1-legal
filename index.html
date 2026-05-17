@@ -314,6 +314,86 @@
       margin-top: 8px;
     }
 
+    /* ─── Hero · estilo Digital Label (logo + foto + identidad) ─── */
+    .hero-brand {
+      text-align: center;
+      padding: 24px 0 8px;
+    }
+    .hero-brand .brand-logo-big {
+      max-height: 80px;
+      max-width: 220px;
+      object-fit: contain;
+      display: inline-block;
+    }
+    .hero-brand .brand-logo-big:not([src]),
+    .hero-brand .brand-logo-big[src=""] { display: none; }
+    .hero-brand .brand-name {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--brand);
+      margin: 6px 0 0;
+    }
+    .hero-bottle {
+      text-align: center;
+      padding: 18px 0 8px;
+    }
+    .hero-bottle .bottle-img {
+      max-height: 240px;
+      max-width: 60%;
+      object-fit: contain;
+      display: inline-block;
+      filter: drop-shadow(0 12px 22px rgba(0,0,0,0.18));
+    }
+    .hero-bottle .bottle-img:not([src]),
+    .hero-bottle .bottle-img[src=""] { display: none; }
+
+    .hero-identity {
+      text-align: left;
+      padding: 16px 4px 22px;
+      border-bottom: 1px solid var(--line-soft);
+      margin-bottom: 12px;
+    }
+    .hero-identity .bodega-line {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--ink-soft);
+      margin: 0 0 4px;
+    }
+    .hero-identity .wine-name-big {
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      color: var(--ink);
+      line-height: 1.05;
+      margin: 0;
+    }
+    .hero-identity .wine-year-big {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--ink);
+      line-height: 1.05;
+      margin: 2px 0 14px;
+    }
+    .hero-identity .wine-essentials {
+      font-size: 14px;
+      color: var(--ink-soft);
+      line-height: 1.7;
+    }
+    .hero-identity .wine-essentials > div { margin: 2px 0; }
+
+    /* Footer SommelierLab */
+    .sl-footer {
+      margin-top: 32px;
+      padding: 18px 0 8px;
+      text-align: center;
+      font-size: 11px;
+      color: var(--ink-light);
+      border-top: 1px solid var(--line-soft);
+    }
+    .sl-footer strong { color: var(--ink-soft); font-weight: 700; letter-spacing: 0.04em; }
+
     /* Skeleton loading */
     .skel { background: linear-gradient(90deg, #eee 0%, #f5f5f5 50%, #eee 100%); background-size: 200% 100%; animation: skel 1.2s infinite; color: transparent !important; border-radius: 6px; }
     @keyframes skel { from { background-position: 200% 0; } to { background-position: -200% 0; } }
@@ -359,17 +439,36 @@
       </div>
     </div>
 
-    <!-- Hero: heading + wine identity + pictogramas arriba (estilo AECOC) -->
-    <section class="hero">
-      <p class="title" id="title">DIGITAL PRODUCT LABEL</p>
-      <p class="subtitle" id="subtitle"></p>
-      <h1 class="wine-name" id="wineName">—</h1>
-      <div class="wine-meta">
-        <span id="wineCategory"></span>
-        <span id="wineYear"></span>
-      </div>
-      <div class="pictos-hero" id="pictosHero"></div>
+    <!-- Hero: logo bodega grande -->
+    <section class="hero-brand">
+      <img class="brand-logo-big" id="brandLogoBig" alt="" />
+      <p class="brand-name" id="brandName"></p>
     </section>
+
+    <!-- Hero: foto botella destacada -->
+    <section class="hero-bottle">
+      <img class="bottle-img" id="bottleImg" alt="" />
+    </section>
+
+    <!-- Hero: identidad del vino · nombre + añada + variedades + graduación -->
+    <section class="hero-identity">
+      <p class="bodega-line" id="bodegaLine"></p>
+      <h1 class="wine-name-big" id="wineNameBig">—</h1>
+      <p class="wine-year-big" id="wineYearBig"></p>
+      <div class="wine-essentials">
+        <div id="wineVarieties"></div>
+        <div id="wineAlcohol"></div>
+        <div id="wineCategoryLine"></div>
+      </div>
+      <div class="pictos-hero" id="pictosHero" style="margin-top:18px;"></div>
+    </section>
+
+    <!-- Etiqueta legal (oculta visualmente, mantiene contrato) -->
+    <p class="title" id="title" style="display:none;">DIGITAL PRODUCT LABEL</p>
+    <p class="subtitle" id="subtitle" style="display:none;"></p>
+    <span id="wineName" style="display:none;"></span>
+    <span id="wineCategory" style="display:none;"></span>
+    <span id="wineYear" style="display:none;"></span>
 
     <!-- Ingredients -->
     <section class="section">
@@ -405,6 +504,10 @@
       <div class="responsible" id="responsibleText">Drink responsibly</div>
       <div class="eu-regulation">Reg. (UE) 2021/2117</div>
     </footer>
+
+    <div class="sl-footer">
+      <p>Powered by <strong>SommelierLab</strong></p>
+    </div>
 
   </main>
 
@@ -634,9 +737,64 @@
         }, 200);
       }
 
-      // Hero
-      $("wineName").textContent = w.nombre || "—";
+      // Hero · logo bodega grande
+      const brandLogoBig = $("brandLogoBig");
+      const brandName = $("brandName");
+      if (brandLogoBig) {
+        if (logoSrc) {
+          brandLogoBig.src = logoSrc;
+          brandLogoBig.alt = w.bodega?.nombre || "";
+          if (brandName) brandName.style.display = "none";
+        } else {
+          brandLogoBig.removeAttribute("src");
+          if (brandName) {
+            brandName.textContent = w.bodega?.nombre || "";
+            brandName.style.display = w.bodega?.nombre ? "" : "none";
+          }
+        }
+      }
+
+      // Hero · foto botella
+      const bottleImg = $("bottleImg");
+      const bottleSrc = w.botella_url || w.imagen_url || w.image_url || "";
+      if (bottleImg) {
+        if (bottleSrc) {
+          bottleImg.src = bottleSrc;
+          bottleImg.alt = w.nombre || "";
+        } else {
+          bottleImg.removeAttribute("src");
+        }
+      }
+
+      // Hero · identidad del vino
+      const bodegaLine = $("bodegaLine");
+      if (bodegaLine) bodegaLine.textContent = w.bodega?.nombre || "";
+      $("wineNameBig").textContent = w.nombre || "—";
+      $("wineYearBig").textContent = w.anyada || anyada || "";
+
+      // Essentials: variedades · graduación · DOP/categoría
+      const variedades = w.variedad || w.varieties || "";
+      const wineVarieties = $("wineVarieties");
+      if (wineVarieties) {
+        wineVarieties.textContent = variedades || "";
+        wineVarieties.style.display = variedades ? "" : "none";
+      }
+      const abvVal = w.alcohol || w.graduacion_texto || w.graduacion || "";
+      const wineAlcohol = $("wineAlcohol");
+      if (wineAlcohol) {
+        const abvText = abvVal ? (String(abvVal).includes("%") ? abvVal : `${abvVal}% vol.`) : "";
+        wineAlcohol.textContent = abvText;
+        wineAlcohol.style.display = abvText ? "" : "none";
+      }
       const cat = w.categoria || w.DOP || w.dop || "";
+      const wineCategoryLine = $("wineCategoryLine");
+      if (wineCategoryLine) {
+        wineCategoryLine.textContent = cat || "";
+        wineCategoryLine.style.display = cat ? "" : "none";
+      }
+
+      // Compat oculto (mantiene contrato con código heredado)
+      $("wineName").textContent = w.nombre || "";
       $("wineCategory").textContent = cat;
       $("wineYear").textContent = w.anyada || anyada || "";
 
