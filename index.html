@@ -1175,6 +1175,13 @@
       }
       history.replaceState({}, "", url.toString());
 
+      // En modo preview, avisar al dashboard padre para que re-fetche
+      // los datos del vino traducidos al nuevo idioma (dry_run + langs:[lang]).
+      // Sin esto la preview muestra UI traducida pero data en ES.
+      if (PREVIEW_MODE) {
+        try { (window.parent || window).postMessage({ type: "preview-lang-changed", app: "qr1", lang }, "*"); } catch {}
+      }
+
       renderUI(); // labels UI
 
       // Recarga los datos del vino en el idioma elegido (con fallback EN/ES)
