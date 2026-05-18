@@ -699,18 +699,42 @@
       return THEME_OVERRIDE || THEME_DEFAULT || "light";
     }
 
-    /* Biblioteca curada · debe coincidir con sommelierlab-qr2-vite/src/utils/fontLibrary.ts */
+    /* Biblioteca curada · 30 fonts. Debe coincidir con
+       sommelierlab-qr2-vite/src/utils/fontLibrary.ts */
     const FONT_LIBRARY = {
-      playfair:   { family: "'Playfair Display', serif",   label: "Playfair+Display", weights: [400, 600, 700, 800] },
-      cormorant:  { family: "'Cormorant Garamond', serif", label: "Cormorant+Garamond", weights: [400, 500, 600, 700] },
-      ebgaramond: { family: "'EB Garamond', serif",        label: "EB+Garamond",      weights: [400, 500, 600, 700] },
-      lora:       { family: "'Lora', serif",                label: "Lora",             weights: [400, 500, 600, 700] },
-      crimson:    { family: "'Crimson Pro', serif",         label: "Crimson+Pro",      weights: [400, 500, 600, 700] },
-      inter:      { family: "'Inter', sans-serif",          label: "Inter",            weights: [400, 500, 600, 700] },
-      manrope:    { family: "'Manrope', sans-serif",        label: "Manrope",          weights: [400, 500, 600, 700] },
-      montserrat: { family: "'Montserrat', sans-serif",     label: "Montserrat",       weights: [400, 500, 600, 700] },
-      raleway:    { family: "'Raleway', sans-serif",        label: "Raleway",          weights: [400, 500, 600, 700] },
-      cinzel:     { family: "'Cinzel', serif",              label: "Cinzel",           weights: [400, 600, 700] },
+      /* Serif clásicas */
+      playfair:        { family: "'Playfair Display', serif",   label: "Playfair+Display",   weights: [400, 600, 700, 800] },
+      cormorant:       { family: "'Cormorant Garamond', serif", label: "Cormorant+Garamond", weights: [400, 500, 600, 700] },
+      ebgaramond:      { family: "'EB Garamond', serif",        label: "EB+Garamond",        weights: [400, 500, 600, 700] },
+      lora:            { family: "'Lora', serif",                label: "Lora",               weights: [400, 500, 600, 700] },
+      crimson:         { family: "'Crimson Pro', serif",         label: "Crimson+Pro",        weights: [400, 500, 600, 700] },
+      merriweather:    { family: "'Merriweather', serif",        label: "Merriweather",       weights: [400, 700, 900] },
+      spectral:        { family: "'Spectral', serif",            label: "Spectral",           weights: [400, 500, 600, 700] },
+      cardo:           { family: "'Cardo', serif",               label: "Cardo",              weights: [400, 700] },
+      ptserif:         { family: "'PT Serif', serif",            label: "PT+Serif",           weights: [400, 700] },
+      cormorantinfant: { family: "'Cormorant Infant', serif",    label: "Cormorant+Infant",   weights: [400, 500, 600, 700] },
+      /* Sans modernas */
+      inter:      { family: "'Inter', sans-serif",       label: "Inter",      weights: [400, 500, 600, 700] },
+      manrope:    { family: "'Manrope', sans-serif",     label: "Manrope",    weights: [400, 500, 600, 700] },
+      montserrat: { family: "'Montserrat', sans-serif",  label: "Montserrat", weights: [400, 500, 600, 700] },
+      raleway:    { family: "'Raleway', sans-serif",     label: "Raleway",    weights: [400, 500, 600, 700] },
+      worksans:   { family: "'Work Sans', sans-serif",   label: "Work+Sans",  weights: [400, 500, 600, 700] },
+      dmsans:     { family: "'DM Sans', sans-serif",     label: "DM+Sans",    weights: [400, 500, 700] },
+      outfit:     { family: "'Outfit', sans-serif",      label: "Outfit",     weights: [400, 500, 600, 700] },
+      poppins:    { family: "'Poppins', sans-serif",     label: "Poppins",    weights: [400, 500, 600, 700] },
+      nunito:     { family: "'Nunito', sans-serif",      label: "Nunito",     weights: [400, 500, 600, 700] },
+      karla:      { family: "'Karla', sans-serif",       label: "Karla",      weights: [400, 500, 700] },
+      /* Display / marca */
+      cinzel:           { family: "'Cinzel', serif",            label: "Cinzel",            weights: [400, 600, 700] },
+      bodonimoda:       { family: "'Bodoni Moda', serif",        label: "Bodoni+Moda",        weights: [400, 600, 700] },
+      italiana:         { family: "'Italiana', serif",           label: "Italiana",           weights: [400] },
+      marcellus:        { family: "'Marcellus', serif",          label: "Marcellus",          weights: [400] },
+      vidaloka:         { family: "'Vidaloka', serif",           label: "Vidaloka",           weights: [400] },
+      forum:            { family: "'Forum', serif",              label: "Forum",              weights: [400] },
+      anticdidone:      { family: "'Antic Didone', serif",       label: "Antic+Didone",       weights: [400] },
+      cinzeldecorative: { family: "'Cinzel Decorative', serif",  label: "Cinzel+Decorative",  weights: [400, 700, 900] },
+      cormorantsc:      { family: "'Cormorant SC', serif",       label: "Cormorant+SC",       weights: [400, 500, 600, 700] },
+      tenorsans:        { family: "'Tenor Sans', sans-serif",    label: "Tenor+Sans",         weights: [400] },
     };
     function loadGoogleFont(id) {
       const f = FONT_LIBRARY[id];
