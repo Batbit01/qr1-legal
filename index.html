@@ -1114,11 +1114,12 @@
       addRec(r.cap,   t("recycling_cap"));
       addRec(r.cork,  t("recycling_cork"));
 
-      // Attribute icons — logos oficiales (V-Label vegan / V-Label vegetarian / EU Organic)
+      // Attribute icons — logos oficiales (V-Label vegan / V-Label vegetarian / EU Organic / Punto Verde)
       // con texto debajo. Reemplaza los chips por logos universales reconocibles.
-      if (p.vegan)      attrs.appendChild(makeAttrIcon(ICONS.veganLogo,      t("vegan")));
-      if (p.vegetarian) attrs.appendChild(makeAttrIcon(ICONS.vegetarianLogo, t("vegetarian")));
-      if (p.organic)    attrs.appendChild(makeAttrIcon(ICONS.organicLogo,    t("organic")));
+      if (p.vegan)        attrs.appendChild(makeAttrIcon(ICONS.veganLogo,      t("vegan")));
+      if (p.vegetarian)   attrs.appendChild(makeAttrIcon(ICONS.vegetarianLogo, t("vegetarian")));
+      if (p.organic)      attrs.appendChild(makeAttrIcon(ICONS.organicLogo,    t("organic")));
+      if (p.punto_verde)  attrs.appendChild(makeAttrIcon(ICONS.puntoVerdeLogo, t("punto_verde") || "Punto Verde"));
 
       // Certifications (logos subidos por la bodega: DOP, bio, V-Label, etc.)
       const certsRow = $("certsRow");
@@ -1193,6 +1194,8 @@
       veganLogo:      "https://f005.backblazeb2.com/file/SommelierLab-media/qr1/icons/vegan-logo.png",
       vegetarianLogo: "https://f005.backblazeb2.com/file/SommelierLab-media/qr1/icons/vegetarian-logo.png",
       organicLogo:    "https://f005.backblazeb2.com/file/SommelierLab-media/qr1/icons/organic-eurohoja.svg",
+      // Punto Verde (Ecoembes) · acreditación de adhesión al sistema de gestión de envases.
+      puntoVerdeLogo: "https://f005.backblazeb2.com/file/SommelierLab-media/qr1/icons/punto-verde.png",
       sun: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
         <circle cx="12" cy="12" r="4"/>
         <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
