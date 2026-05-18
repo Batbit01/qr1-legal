@@ -124,13 +124,27 @@
       padding: 16px 18px;
       margin: 12px 0;
     }
+    /* Título de sección · estilo "divider con etiqueta centrada"
+       (línea horizontal con el título en el medio, tipo separator). */
     .section h2 {
-      font-size: 11px;
+      font-size: 12px;
       text-transform: uppercase;
-      letter-spacing: 0.12em;
+      letter-spacing: 0.18em;
       font-weight: 700;
-      color: var(--brand);
-      margin: 0 0 10px;
+      color: var(--ink);
+      margin: 4px 0 14px;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-family: var(--brand-font, inherit);
+    }
+    .section h2::before,
+    .section h2::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: var(--line);
     }
     .section p { margin: 0; color: var(--ink); }
 
@@ -176,16 +190,20 @@
       border-collapse: collapse;
       font-size: 13px;
     }
+    /* La cabecera de la tabla NO es un separador de bloque: usaba fondo brand
+       y se confundía con el título de sección. Ahora: sin fondo, solo línea
+       inferior sutil. El "separador de bloque" lo hace .section h2. */
     table.nutrition thead tr {
-      background: var(--brand);
-      color: #fff;
+      background: transparent;
+      color: var(--ink-soft);
+      border-bottom: 1px solid var(--line);
     }
     table.nutrition thead th {
-      padding: 8px 10px;
+      padding: 6px 10px;
       text-align: right;
       font-weight: 600;
-      font-size: 11px;
-      letter-spacing: 0.04em;
+      font-size: 10px;
+      letter-spacing: 0.06em;
       text-transform: uppercase;
     }
     table.nutrition thead th:first-child { text-align: left; }
