@@ -797,8 +797,10 @@
       const fontFamily = loadGoogleFont(fontId);
       root.setProperty("--brand-font", fontFamily || "inherit");
 
-      /* Estilo de cabeceras (minimal | tint | fill). Default minimal. */
-      const estilo = String(w?.bodega?.titulos_estilo || w?.titulos_estilo || "minimal").toLowerCase();
+      /* Estilo de cabeceras (minimal | tint | fill). Default minimal.
+         Vive a nivel añada (paralelo a elabel_tema). Compat con versiones
+         antiguas que lo guardaban en bodega.titulos_estilo. */
+      const estilo = String(w?.titulos_estilo || w?.bodega?.titulos_estilo || "minimal").toLowerCase();
       document.body.classList.remove("h-style-minimal", "h-style-tint", "h-style-fill");
       document.body.classList.add(`h-style-${["minimal","tint","fill"].includes(estilo) ? estilo : "minimal"}`);
 
