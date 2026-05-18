@@ -762,10 +762,30 @@
       cormorantsc:      { family: "'Cormorant SC', serif",       label: "Cormorant+SC",       weights: [400, 500, 600, 700] },
       tenorsans:        { family: "'Tenor Sans', sans-serif",    label: "Tenor+Sans",         weights: [400] },
     };
-    function loadGoogleFont(id) {
-      const f = FONT_LIBRARY[id];
-      if (!f) return null;
-      const href = `https://fonts.googleapis.com/css2?family=${f.label}:wght@${f.weights.join(";")}&display=swap`;
+    /* Carga Google Font. Acepta:
+       - ID curado de FONT_LIBRARY (ej. "playfair" → "Playfair Display")
+       - Nombre literal de Google Font detectado del web del bodeguero
+         (ej. "Schibsted Grotesk", "GT Eesti Pro Display"). Esto permite
+         que cualquier bodega tenga su fuente exacta sin que esté en
+         nuestra lib curada. */
+    function loadGoogleFont(idOrName) {
+      if (!idOrName) return null;
+      const key = String(idOrName).trim();
+      let label, family, weights;
+      const f = FONT_LIBRARY[key];
+      if (f) {
+        label = f.label;
+        family = f.family;
+        weights = f.weights;
+      } else {
+        /* Nombre literal: ej. "Schibsted Grotesk" → label "Schibsted+Grotesk".
+           Asumimos pesos típicos 400/600/700. Si Google no la tiene
+           devolverá 404 pero el browser ignorará y aplicará fallback. */
+        label = key.replace(/\s+/g, "+");
+        family = `'${key.replace(/['"]/g, "")}', sans-serif`;
+        weights = [400, 600, 700];
+      }
+      const href = `https://fonts.googleapis.com/css2?family=${label}:wght@${weights.join(";")}&display=swap`;
       let link = document.getElementById("sl-google-fonts");
       if (!link) {
         link = document.createElement("link");
@@ -774,7 +794,7 @@
         document.head.appendChild(link);
       }
       if (link.href !== href) link.href = href;
-      return f.family;
+      return family;
     }
 
     function applyTheme(w) {
