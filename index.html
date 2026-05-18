@@ -124,8 +124,10 @@
       padding: 16px 18px;
       margin: 12px 0;
     }
-    /* Título de sección · estilo "divider con etiqueta centrada"
-       (línea horizontal con el título en el medio, tipo separator). */
+    /* Título de sección · estilo configurable según `bodega.titulos_estilo`:
+       - "minimal" (default): líneas grises + texto ink
+       - "tint": texto en color brand + líneas brand semitransparentes
+       - "fill": cabecera tipo banner con fondo brand + texto contraste */
     .section h2 {
       font-size: 12px;
       text-transform: uppercase;
@@ -146,6 +148,22 @@
       height: 1px;
       background: var(--line);
     }
+    /* Variante TINT · título en color brand */
+    body.h-style-tint .section h2 { color: var(--brand); }
+    body.h-style-tint .section h2::before,
+    body.h-style-tint .section h2::after { background: color-mix(in srgb, var(--brand) 35%, transparent); }
+    /* Variante FILL · cabecera banner con fondo brand */
+    body.h-style-fill .section { padding-top: 0; overflow: hidden; }
+    body.h-style-fill .section h2 {
+      background: var(--brand);
+      color: #fff;
+      margin: -1px -18px 14px;
+      padding: 10px 18px;
+      gap: 0;
+      letter-spacing: 0.14em;
+    }
+    body.h-style-fill .section h2::before,
+    body.h-style-fill .section h2::after { display: none; }
     .section p { margin: 0; color: var(--ink); }
 
     /* Ingredients with highlighted allergens */
@@ -778,6 +796,11 @@
       const fontId = String(w?.bodega?.font_titulos || "").trim();
       const fontFamily = loadGoogleFont(fontId);
       root.setProperty("--brand-font", fontFamily || "inherit");
+
+      /* Estilo de cabeceras (minimal | tint | fill). Default minimal. */
+      const estilo = String(w?.bodega?.titulos_estilo || w?.titulos_estilo || "minimal").toLowerCase();
+      document.body.classList.remove("h-style-minimal", "h-style-tint", "h-style-fill");
+      document.body.classList.add(`h-style-${["minimal","tint","fill"].includes(estilo) ? estilo : "minimal"}`);
 
       applyThemeMode(resolveTheme(), bg);
       renderThemeBtn();
