@@ -781,6 +781,8 @@
       $("nutritionTitle").textContent = t("nutrition") || "NUTRITION INFORMATION";
       $("perBasisTh").textContent = t("per_100ml") || "per 100 ml";
       if ($("sustainabilityTitle")) $("sustainabilityTitle").textContent = t("sustainability") || "SUSTAINABILITY & CERTIFICATES";
+      if ($("consumoResponsableTitle")) $("consumoResponsableTitle").textContent = t("responsible_consumption") || "RESPONSIBLE CONSUMPTION";
+      if ($("recyclingTitle")) $("recyclingTitle").textContent = t("recycling_title") || "RECYCLING";
       $("responsibleText").textContent = t("drink_responsibly") || "Drink responsibly";
       document.documentElement.lang = activeLang;
       document.title = `${t("title")} · ${WINE?.nombre || ""}`;
