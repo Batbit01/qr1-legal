@@ -797,6 +797,34 @@
       return family;
     }
 
+    /* Inyecta @font-face inline para fuentes alojadas en el CDN del
+       bodeguero (NO Google Fonts). Idempotente vía id del <style>.
+       Caso "Eighties Comeback" (Mas de la Sabatera): el .ttf está en
+       /wp-content/uploads/ y debemos cargarlo directamente porque no
+       existe en Google Fonts. Devuelve la familia CSS construida. */
+    function injectFontFaceFromUrl(name, url) {
+      if (!name || !url) return null;
+      const safeName = String(name).replace(/['"\\]/g, "");
+      const safeId = safeName.replace(/\W+/g, "-").toLowerCase();
+      const id = "sl-font-face-" + safeId;
+      const ext = (url.split("?")[0].split("#")[0].split(".").pop() || "").toLowerCase();
+      const format = ext === "woff2" ? "woff2"
+        : ext === "woff" ? "woff"
+        : ext === "otf" ? "opentype"
+        : "truetype";
+      const css = "@font-face { font-family: '" + safeName + "'; src: url('" + url + "') format('" + format + "'); font-display: swap; }";
+      let style = document.getElementById(id);
+      if (style) {
+        if (style.textContent !== css) style.textContent = css;
+      } else {
+        style = document.createElement("style");
+        style.id = id;
+        style.textContent = css;
+        document.head.appendChild(style);
+      }
+      return "'" + safeName + "', sans-serif";
+    }
+
     function applyTheme(w) {
       const root = document.documentElement.style;
       const rx = /^#[0-9a-fA-F]{6}$/;
@@ -811,11 +839,19 @@
       if (brand) root.setProperty("--brand", brand);
       if (accent) root.setProperty("--accent", accent);
 
-      /* Fuente de marca heredada del tema QR2 (font_titulos es un id de
-         FONT_LIBRARY persistido en BD). Si está, cargamos Google Font y
-         aplicamos la familia al hero vía variable CSS --brand-font. */
+      /* Fuente de marca heredada del tema QR2 (font_titulos = id o nombre).
+         Si bodega.font_titulos_url existe, la fuente NO está en Google Fonts
+         (vive en el CDN del bodeguero, ej. WP uploads). En ese caso
+         inyectamos @font-face inline. Si solo viene el nombre, flujo
+         legacy Google Fonts. */
       const fontId = String(w?.bodega?.font_titulos || "").trim();
-      const fontFamily = loadGoogleFont(fontId);
+      const fontUrl = String(w?.bodega?.font_titulos_url || "").trim();
+      let fontFamily;
+      if (fontId && fontUrl) {
+        fontFamily = injectFontFaceFromUrl(fontId, fontUrl);
+      } else {
+        fontFamily = loadGoogleFont(fontId);
+      }
       root.setProperty("--brand-font", fontFamily || "inherit");
 
       /* Estilo de cabeceras (minimal | tint | fill). Default minimal.
