@@ -1,43 +1,51 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="No conduzcas si bebes">
   <title>No conduzcas si bebes</title>
 
-  <!-- ============ COCHE (silueta lateral, paths OpenMoji 1F697 black) ============ -->
-  <!-- viewBox OpenMoji 0..72. Escala 1.1 → 79.2. Translate (22, 56) → x[22..101], y[56..135] -->
-  <g transform="translate(22 56) scale(1.1)" stroke="#111111" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none">
-    <line x1="47.6" y1="51" x2="27" y2="51.4"/>
-    <path d="M8.1,51.4
-             c-0.9-0.2-1.7-0.5-1.8-1
-             c-0.1-1-0.3-3.8-0.3-5.1
-             c0-0.5,0.1-1.1,0.4-1.5
-             c1.1-2,4.8-6.8,14.9-6.4
-             l10.3-6.9
-             c0.5-0.3,1.1-0.5,1.6-0.5
-             l19.6-0.1
-             c0.3,0,0.6,0,0.9,0.1
-             c2.2,0.6,11.7,4,10.4,12.6
-             l1.1,0.6
-             c0.5,0.2,0.9,0.7,1,1.2
-             c0.4,1.4,0.3,2.9-0.2,4.3"/>
-    <polyline points="24.9,39.9 55.1,39.7 55.1,35.2"/>
-    <circle cx="17.3" cy="50.4" r="5"/>
-    <circle cx="57.1" cy="50.4" r="5"/>
-    <polyline points="12.3,42.9 10.5,45.1 6.8,45"/>
+  <!-- Conjunto subido para no chocar con la barra diagonal. -->
+  <g transform="translate(0 -10)">
+    <!-- ============ COCHE silueta lateral RELLENA (izquierda) ============ -->
+    <g fill="#111111">
+      <!-- Carroceria: capó bajo a la izquierda, cabina central elevada, maletero a la derecha -->
+      <path d="
+        M 35 118
+        L 35 108
+        C 35 105, 37 103, 40 102
+        L 50 100
+        L 58 88
+        C 60 85, 63 84, 67 84
+        L 82 84
+        C 86 84, 89 85, 91 88
+        L 97 100
+        L 102 102
+        C 104 103, 105 105, 105 108
+        L 105 118
+        Z"/>
+      <!-- Rueda izquierda -->
+      <circle cx="50" cy="120" r="9"/>
+      <!-- Rueda derecha -->
+      <circle cx="92" cy="120" r="9"/>
+    </g>
+    <!-- Huecos blancos dentro de las ruedas para llanta -->
+    <circle cx="50" cy="120" r="3" fill="#ffffff"/>
+    <circle cx="92" cy="120" r="3" fill="#ffffff"/>
+
+    <!-- ============ COPA DE VINO silueta RELLENA (derecha) ============ -->
+    <g fill="#111111">
+      <!-- Cuenco -->
+      <path d="
+        M 130 78
+        L 168 78
+        C 168 92, 162 104, 149 106
+        C 136 104, 130 92, 130 78
+        Z"/>
+      <!-- Tallo -->
+      <rect x="147" y="106" width="4" height="22"/>
+      <!-- Pie -->
+      <rect x="135" y="128" width="28" height="4" rx="2"/>
+    </g>
   </g>
 
-  <!-- ============ COPA DE VINO (paths OpenMoji 1F377 black) ============ -->
-  <!-- viewBox OpenMoji 0..72. Escala 0.9 → 64.8. Translate (108, 52) → x[108..172], y[52..117] -->
-  <g transform="translate(108 52) scale(0.9)" stroke="#111111" stroke-width="3.3" stroke-linecap="round" stroke-linejoin="round" fill="none">
-    <line x1="20" y1="67" x2="52" y2="67"/>
-    <line x1="36" y1="44" x2="36" y2="67"/>
-    <path d="m56,24
-             c0,3.265-.7824,6.3473-2.1699,9.0696
-             c-3.3065,6.4874-10.0494,10.9304-17.8301,10.9304
-             c-11.0457,0-20-8.9543-20-20"/>
-    <line x1="16" y1="5" x2="16" y2="24"/>
-    <line x1="56" y1="5" x2="56" y2="24"/>
-  </g>
-
-  <!-- ============ CÍRCULO + BARRA DE PROHIBICIÓN ============ -->
+  <!-- ============ CIRCULO + BARRA DE PROHIBICION ============ -->
   <g fill="none" stroke="#c8102e" stroke-width="14" stroke-linecap="butt">
     <circle cx="100" cy="100" r="86"/>
     <line x1="42" y1="42" x2="158" y2="158"/>
